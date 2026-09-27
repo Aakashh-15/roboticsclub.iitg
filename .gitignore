@@ -1,0 +1,16 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.vscode/
+.idea/
+
+# local tooling
+node_modules/
+_site/
+*.log
+
+# drafts / scratch
+*.tmp
+scratch/

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Robotics Club · IIT Guwahati</title>
+  <meta name="description" content="The Robotics Club of IIT Guwahati — projects, competitions, team, announcements and learning resources." />
+  <meta name="theme-color" content="#000000" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Robotics Club IIT Guwahati" />
+  <meta property="og:title" content="Robotics Club · IIT Guwahati" />
+  <meta property="og:description" content="The Robotics Club of IIT Guwahati — projects, competitions, team, announcements and learning resources." />
+  <meta property="og:image" content="images/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="images/logo.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@500;700;800&family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="home">
+  <!-- boot screen -->
+  <div class="boot" id="boot" aria-hidden="true">
+    <div class="boot-inner">
+      <img src="images/logo.svg" alt="" class="boot-logo" />
+      <div class="boot-bar"><span></span></div>
+      <p class="boot-text">Booting systems<span class="dots"></span></p>
+    </div>
+  </div>
+
+  <div id="site-header"></div>
+
+  <main id="top">
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="hero-copy">
+        <h1 class="hero-title">
+          <span class="line"><span class="outline">ROBOTICS CLUB:</span> ENGINEERING</span>
+          <span class="line">INTELLIGENT MACHINES</span>
+        </h1>
+        <p class="hero-sub" data-bind="tagline"></p>
+        <div class="hero-ctas">
+          <a href="projects.html" class="btn btn-solid magnetic">Explore Projects</a>
+          <a href="updates.html" class="btn btn-outline magnetic"><span class="play"></span>Join the Club</a>
+        </div>
+      </div>
+
+      <div class="factory" id="factory">
+        <svg viewBox="0 0 1440 440" preserveAspectRatio="xMidYMax slice" role="img" aria-label="Animated assembly line: robotic arms turn plain shells into finished robots">
+          <g class="decor" id="decor">
+            <circle cx="470" cy="95" r="13" fill="none" stroke="var(--pink)" stroke-width="6" />
+            <path d="M455 290 L505 235 Q520 220 530 235 Q538 250 520 262 L475 305" fill="none" stroke="var(--amber)" stroke-width="7" stroke-linecap="round" />
+            <path d="M870 130 L915 75" stroke="var(--yellow)" stroke-width="6" stroke-linecap="round" />
+            <path d="M890 185 L965 88" stroke="var(--yellow)" stroke-width="6" stroke-linecap="round" />
+            <path d="M1270 120 q14 -16 28 0 t28 0 t28 0" fill="none" stroke="var(--purple)" stroke-width="6" stroke-linecap="round" />
+            <path d="M1020 160 a18 18 0 1 1 6 30" fill="none" stroke="var(--purple)" stroke-width="7" stroke-linecap="round" />
+            <circle cx="1390" cy="210" r="9" fill="none" stroke="var(--yellow)" stroke-width="5" />
+            <circle cx="140" cy="140" r="7" fill="var(--purple)" />
+            <path d="M230 80 l20 20 M250 80 l-20 20" stroke="var(--pink)" stroke-width="5" stroke-linecap="round" />
+          </g>
+
+          <!-- gripper arm -->
+          <g class="arm arm1">
+            <path d="M585 330 L585 45 L720 45 L790 95" fill="none" stroke="var(--purple)" stroke-width="50" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M585 330 L585 45" stroke="var(--purple-dark)" stroke-width="50" stroke-linecap="butt" opacity=".35" />
+            <g class="arm1-tool">
+              <path d="M790 70 L790 170" stroke="var(--purple)" stroke-width="42" stroke-linecap="round" />
+              <path d="M760 190 Q758 238 790 238 Q822 238 820 190" fill="none" stroke="var(--purple)" stroke-width="16" stroke-linecap="round" />
+              <circle cx="790" cy="185" r="26" fill="var(--purple)" />
+              <circle cx="790" cy="185" r="7" fill="#fff" />
+              <circle cx="790" cy="220" r="7" fill="var(--amber)" class="spark-dot" />
+            </g>
+            <circle cx="585" cy="45" r="8" fill="#fff" />
+            <circle cx="720" cy="45" r="8" fill="#fff" />
+            <circle cx="790" cy="95" r="8" fill="#fff" />
+          </g>
+
+          <!-- dispenser arm -->
+          <g class="arm arm2">
+            <path d="M1255 -20 L1190 40 L1120 80" fill="none" stroke="var(--purple)" stroke-width="46" stroke-linecap="round" stroke-linejoin="round" />
+            <g class="arm2-tool">
+              <path d="M1120 70 L1120 150" stroke="var(--purple)" stroke-width="42" stroke-linecap="round" />
+              <path d="M1092 150 L1148 150 L1134 188 L1106 188 Z" fill="var(--purple)" />
+              <rect x="1112" y="186" width="16" height="12" rx="3" fill="var(--purple-dark)" />
+              <circle cx="1120" cy="205" r="7" fill="var(--pink)" class="drip" />
+            </g>
+            <circle cx="1190" cy="40" r="8" fill="#fff" />
+            <circle cx="1120" cy="80" r="8" fill="#fff" />
+          </g>
+
+          <g id="items"></g>
+
+          <!-- conveyor -->
+          <rect x="0" y="330" width="1440" height="96" fill="var(--yellow)" />
+          <rect x="0" y="330" width="1440" height="6" fill="#fff" opacity=".35" />
+          <g class="rings" id="rings"></g>
+          <g id="sparks"></g>
+        </svg>
+        <p class="factory-hint">psst — click a bot</p>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section class="section about" id="about">
+      <div class="container about-grid">
+        <div class="reveal">
+          <span class="eyebrow">About us</span>
+          <h2 class="h-display" data-bind="about.heading"></h2>
+          <div class="about-body" id="aboutBody"></div>
+        </div>
+        <div class="about-side reveal">
+          <div class="pills" id="pillars"></div>
+          <div class="stats" id="stats"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EXPLORE (links to the other pages) ============ -->
+    <section class="section band explore" id="explore">
+      <a class="ticker" href="updates.html" aria-label="Latest announcements"><div class="ticker-track" id="ticker"></div></a>
+      <div class="container">
+        <div class="sec-head reveal">
+          <div>
+            <span class="eyebrow">Explore</span>
+            <h2 class="h2">Inside <span class="outline">the club</span></h2>
+          </div>
+          <p class="sec-note">Everything else has its own page: projects, updates, competitions, the team and our learning material.</p>
+        </div>
+        <div class="explore-grid" id="exploreGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============ ACHIEVEMENTS (compact) ============ -->
+    <section class="section" id="achievements">
+      <div class="container">
+        <div class="sec-head reveal">
+          <div>
+            <span class="eyebrow">Achievements</span>
+            <h2 class="h2">Hall of <span class="outline">fame</span></h2>
+          </div>
+        </div>
+        <div class="hof reveal" id="hof">
+          <div class="hof-tally" id="hofTally"></div>
+          <div class="hof-body">
+            <div class="hof-stage" id="hofStage" aria-live="polite"></div>
+            <div class="hof-list" id="hofList" role="tablist" aria-label="Achievements"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TEAM (compact strip) ============ -->
+    <section class="section team-home" id="team">
+      <div class="container">
+        <div class="sec-head reveal">
+          <div>
+            <span class="eyebrow">Core team 2026–27</span>
+            <h2 class="h2">Meet the <span class="outline">crew</span></h2>
+          </div>
+          <a class="btn btn-outline magnetic" href="team.html">Meet the full team</a>
+        </div>
+      </div>
+      <div class="crew" id="crew"><div class="crew-track" id="crewTrack"></div></div>
+    </section>
+
+    <!-- ============ GALLERY (preview) ============ -->
+    <section class="section band" id="gallery">
+      <div class="container">
+        <div class="sec-head reveal">
+          <div>
+            <span class="eyebrow">Gallery</span>
+            <h2 class="h2">Life at <span class="outline">the lab</span></h2>
+          </div>
+          <a class="btn btn-outline magnetic" href="gallery.html">View all photos</a>
+        </div>
+        <div class="gallery preview" id="galleryGrid" data-limit="5"></div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="section contact" id="contact">
+      <div class="container contact-grid">
+        <div class="reveal">
+          <span class="eyebrow">Contact</span>
+          <h2 class="h-display">Let's build <span class="outline">something</span> together.</h2>
+          <p class="muted">Sponsorships, collaborations, workshops or just curious about robots — drop us a line.</p>
+          <ul class="contact-list" id="contactList"></ul>
+          <div class="socials" id="socials"></div>
+        </div>
+        <form class="contact-form reveal" id="contactForm" novalidate>
+          <div class="field">
+            <label for="cf-name">Name</label>
+            <input id="cf-name" name="name" required autocomplete="name" />
+          </div>
+          <div class="field">
+            <label for="cf-email">Email</label>
+            <input id="cf-email" name="email" type="email" required autocomplete="email" />
+          </div>
+          <div class="field">
+            <label for="cf-topic">Topic</label>
+            <select id="cf-topic" name="topic">
+              <option>General enquiry</option>
+              <option>Joining the club</option>
+              <option>Sponsorship / collaboration</option>
+              <option>Workshop request</option>
+              <option>Inventory request</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="cf-msg">Message</label>
+            <textarea id="cf-msg" name="message" rows="4" required></textarea>
+          </div>
+          <button class="btn btn-solid magnetic" type="submit">Send message</button>
+          <p class="form-note" id="formNote">Opens your email app with the message ready to send.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <!-- lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Gallery image" hidden>
+    <button class="lb-close" id="lbClose" aria-label="Close">×</button>
+    <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous">‹</button>
+    <figure class="lb-figure" id="lbFigure"></figure>
+    <button class="lb-nav lb-next" id="lbNext" aria-label="Next">›</button>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

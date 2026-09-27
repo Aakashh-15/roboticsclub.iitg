@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Robotics Club IIT Guwahati logo">
+  <defs>
+    <clipPath id="sq"><rect width="100" height="100" rx="10"/></clipPath>
+  </defs>
+  <g clip-path="url(#sq)">
+    <rect width="100" height="100" fill="#2B3448"/>
+    <g fill="none" stroke="#fff">
+      <!-- slot from the left edge -->
+      <line x1="-6" y1="21.5" x2="33" y2="21.5" stroke-width="10" stroke-linecap="round"/>
+      <!-- U ring -->
+      <path d="M45.2 16.5 A19.3 19.3 0 0 0 83.8 16.5" stroke-width="9"/>
+      <!-- diagonal slash to the lower-left edge -->
+      <line x1="37" y1="49" x2="-8" y2="97" stroke-width="10" stroke-linecap="round"/>
+    </g>
+  </g>
+</svg>

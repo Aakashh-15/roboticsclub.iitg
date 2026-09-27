@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Updates · Robotics Club IIT Guwahati</title>
+  <meta name="description" content="Announcements and events from the Robotics Club, IIT Guwahati." />
+  <meta name="theme-color" content="#000000" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Robotics Club IIT Guwahati" />
+  <meta property="og:title" content="Updates · Robotics Club IIT Guwahati" />
+  <meta property="og:description" content="Announcements and events from the Robotics Club, IIT Guwahati." />
+  <meta property="og:image" content="images/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="images/logo.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@500;700;800&family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="updates" class="booted">
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page-hero" data-eyebrow="Updates" data-title="Latest" data-outline="updates" data-sub="Announcements, recruitment, workshops and events: everything happening at the club right now."></section>
+    <section class="section page-body">
+      <div class="container">
+        <div class="toolbar reveal">
+          <div class="chips" id="annFilters" role="tablist" aria-label="Filter announcements"></div>
+        </div>
+        <div class="ann-layout">
+          <div id="annPinned"></div>
+          <ul class="ann-list" id="annList"></ul>
+        </div>
+        <div class="sub-head reveal">
+          <h2 class="h3">Signature events</h2>
+          <div class="row-ctrl">
+            <button class="icon-btn" data-scroll="-1" aria-label="Scroll events left">‹</button>
+            <button class="icon-btn" data-scroll="1" aria-label="Scroll events right">›</button>
+          </div>
+        </div>
+        <div class="events-row" id="eventsRow"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
