@@ -198,6 +198,13 @@ window.CLUB = {
       overview: "A U-shaped arrangement of LEDs projects near-infrared light. Blood absorbs it while tissue reflects it, so veins stand out when viewed through an infrared-filtered camera." },
   ],
 
+  /* ---------- IMPORTANT NOTICES (moving news bar on the home page) ----------
+     Short one-line messages shown first in the bar, before announcements.
+     link is optional (defaults to the Updates page). Remove when outdated. */
+  notices: [
+    // { text: "ROBO101 registrations close on 10 October", tag: "Important", link: "updates.html" },
+  ],
+
   announcements: [
     {
       date: "2026-09-26",

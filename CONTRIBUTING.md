@@ -58,6 +58,16 @@ Add to `announcements`. Dates are `YYYY-MM-DD`. Posts from the last 21 days get 
 },
 ```
 
+### Put an important message in the news bar
+
+The bar at the bottom of the home page's first screen scrolls important notices first, then the
+announcements (pinned first, recent ones marked **New**). Add a notice to `notices` in `js/data.js`
+and delete it once it's no longer relevant:
+
+```js
+{ text: "ROBO101 registrations close on 10 October", tag: "Important", link: "updates.html" },
+```
+
 ### Add an event to the timeline (recent & upcoming)
 
 Dated events go in `timeline` in `js/data.js`. They appear on the home page timeline and on the

@@ -58,6 +58,12 @@ const ids = new Set();
   checkLocal(p.image, at);
 });
 
+// ---- notices (news bar) ----
+(C.notices || []).forEach((n, i) => {
+  if (!n.text) err(`notices[${i}]: missing text`);
+  checkLocal(n.link, `notices[${i}]`);
+});
+
 // ---- announcements ----
 (C.announcements || []).forEach((a, i) => {
   const at = `announcements[${i}] "${a.title || "?"}"`;

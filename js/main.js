@@ -61,6 +61,24 @@
     $$("[data-count]").forEach((el) => countObs.observe(el));
   }
 
+  /* ---------- news bar (home): important notices + announcements, looping ---------- */
+  if (has("#newsTrack")) {
+    const fresh = (d) => (today - toDate(d)) / 864e5 <= 21;
+    const items = [
+      ...(C.notices || []).map((n) => ({ tag: n.tag || "Important", text: n.text, href: n.link || "updates.html#announcements", important: true })),
+      ...[...anns].sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0)).map((a) => ({ tag: a.type, text: a.title, href: "updates.html#announcements", isNew: fresh(a.date) })),
+    ];
+    const one = items.map((it) => `
+      <a class="news-item${it.important ? " important" : ""}" href="${esc(it.href)}">
+        <b>${esc(it.tag)}</b>${esc(it.text)}${it.isNew ? '<span class="news-new">New</span>' : ""}
+      </a><span class="news-sep" aria-hidden="true">✦</span>`).join("");
+    const track = $("#newsTrack");
+    // two copies make the loop seamless; the second is hidden from screen readers and tabbing
+    track.innerHTML = one + one.replace(/<a class="news-item/g, '<a tabindex="-1" aria-hidden="true" class="news-item');
+    // constant reading speed (~70 px/s) whatever the amount of text
+    requestAnimationFrame(() => track.style.setProperty("--news-dur", `${Math.max(20, track.scrollWidth / 2 / 70)}s`));
+  }
+
   /* ---------- recent & upcoming timeline ---------- */
   const igLink = (C.contact.socials.find(([n]) => /instagram/i.test(n)) || [])[1] || "#";
   const tbaItem = { kind: "tba", status: "upcoming", title: "Next event to be announced", desc: "Follow our Instagram for dates, registrations and posters as soon as they are out." };
