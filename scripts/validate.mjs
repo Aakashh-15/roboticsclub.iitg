@@ -67,6 +67,16 @@ const ids = new Set();
 });
 if ((C.announcements || []).filter((a) => a.pinned).length > 1) warn("more than one announcement is pinned; only the newest pinned one is featured");
 
+// ---- timeline ----
+(C.timeline || []).forEach((t, i) => {
+  const at = `timeline[${i}] "${t.title || "?"}"`;
+  if (!isoDate.test(t.start || "")) err(`${at}: start must look like 2026-06-29`);
+  if (t.end && !isoDate.test(t.end)) err(`${at}: end must look like 2026-07-05`);
+  if (t.end && t.start && t.end < t.start) err(`${at}: end is before start`);
+  if (!t.title) err(`${at}: missing title`);
+  checkLocal(t.image, at);
+});
+
 // ---- achievements ----
 (C.achievements || []).forEach((a, i) => {
   const at = `achievements[${i}] "${a.event || "?"}"`;
@@ -76,14 +86,22 @@ if ((C.announcements || []).filter((a) => a.pinned).length > 1) warn("more than 
 });
 
 // ---- team ----
+// same slug rule as portrait() in js/common.js
+const slug = (s) =>
+  s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const names = new Set();
+const noPhoto = [];
 (C.team || []).forEach((m, i) => {
   const at = `team[${i}]`;
   if (!m.name || !m.role) err(`${at}: needs name and role`);
   if (names.has(m.name)) warn(`${at}: "${m.name}" appears twice`);
   names.add(m.name);
-  checkLocal(m.image, at);
+  if (m.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(m.email)) err(`${at} (${m.name}): email looks invalid`);
+  if (m.linkedin && !/^https:\/\/(www\.|[a-z]{2}\.)?linkedin\.com\//.test(m.linkedin)) err(`${at} (${m.name}): linkedin should be a full https://linkedin.com/in/... URL`);
+  if (m.image) checkLocal(m.image, at);
+  else if (m.name && !existsSync(join(root, "images/team", `${slug(m.name)}.jpg`))) noPhoto.push(`${slug(m.name)}.jpg`);
 });
+if (noPhoto.length) warn(`${noPhoto.length} team photo(s) missing in images/team/ (initials shown instead): ${noPhoto.join(", ")}`);
 
 // ---- gallery / events ----
 (C.gallery || []).forEach((g, i) => checkLocal(g.image, `gallery[${i}]`));

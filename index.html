@@ -15,18 +15,10 @@
   <link rel="icon" href="images/logo.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@500;700;800&family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@500;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body data-page="home">
-  <!-- boot screen -->
-  <div class="boot" id="boot" aria-hidden="true">
-    <div class="boot-inner">
-      <img src="images/logo.svg" alt="" class="boot-logo" />
-      <div class="boot-bar"><span></span></div>
-      <p class="boot-text">Booting systems<span class="dots"></span></p>
-    </div>
-  </div>
 
   <div id="site-header"></div>
 
@@ -40,8 +32,8 @@
         </h1>
         <p class="hero-sub" data-bind="tagline"></p>
         <div class="hero-ctas">
-          <a href="projects.html" class="btn btn-solid magnetic">Explore Projects</a>
-          <a href="updates.html" class="btn btn-outline magnetic"><span class="play"></span>Join the Club</a>
+          <a href="projects.html" class="btn btn-solid">Explore Projects</a>
+          <a href="updates.html" class="btn btn-outline">Join the Club</a>
         </div>
       </div>
 
@@ -96,7 +88,6 @@
           <g class="rings" id="rings"></g>
           <g id="sparks"></g>
         </svg>
-        <p class="factory-hint">psst — click a bot</p>
       </div>
     </section>
 
@@ -115,23 +106,50 @@
       </div>
     </section>
 
+    <!-- ============ EVENTS & UPDATES ============ -->
+    <section class="section band happening" id="happening" aria-label="Events and updates">
+      <div class="container">
+        <div class="sec-head reveal">
+          <div>
+            <span class="eyebrow">What's happening</span>
+            <h2 class="h2">Events &amp; <span class="outline">Updates</span></h2>
+          </div>
+          <a class="btn btn-outline" href="updates.html">All events &amp; updates</a>
+        </div>
+
+        <div class="hp-sub reveal">
+          <h3 class="h3">Recent &amp; upcoming</h3>
+          <div class="tl2-legend" aria-hidden="true"><span class="s-upcoming">Upcoming</span><span class="s-live">Live now</span><span class="s-recent">Recent</span></div>
+        </div>
+        <div class="tl2" id="tline"></div>
+
+        <div class="hp-sub reveal">
+          <h3 class="h3">Flagship events</h3>
+          <button class="icon-btn flow-toggle" id="flowToggle" type="button" aria-pressed="false" aria-label="Pause the moving cards">
+            <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+            <svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="flow" id="flow"><div class="flow-track" id="flowTrack"></div></div>
+    </section>
+
     <!-- ============ EXPLORE (links to the other pages) ============ -->
-    <section class="section band explore" id="explore">
-      <a class="ticker" href="updates.html" aria-label="Latest announcements"><div class="ticker-track" id="ticker"></div></a>
+    <section class="section explore" id="explore">
       <div class="container">
         <div class="sec-head reveal">
           <div>
             <span class="eyebrow">Explore</span>
-            <h2 class="h2">Inside <span class="outline">the club</span></h2>
+            <h2 class="h2">Explore <span class="outline">the Club</span></h2>
           </div>
-          <p class="sec-note">Everything else has its own page: projects, updates, competitions, the team and our learning material.</p>
+          <p class="sec-note">Detailed information on our projects, announcements, competitions, team and learning resources.</p>
         </div>
         <div class="explore-grid" id="exploreGrid"></div>
       </div>
     </section>
 
     <!-- ============ ACHIEVEMENTS (compact) ============ -->
-    <section class="section" id="achievements">
+    <section class="section band" id="achievements">
       <div class="container">
         <div class="sec-head reveal">
           <div>
@@ -140,7 +158,6 @@
           </div>
         </div>
         <div class="hof reveal" id="hof">
-          <div class="hof-tally" id="hofTally"></div>
           <div class="hof-body">
             <div class="hof-stage" id="hofStage" aria-live="polite"></div>
             <div class="hof-list" id="hofList" role="tablist" aria-label="Achievements"></div>
@@ -149,41 +166,28 @@
       </div>
     </section>
 
-    <!-- ============ TEAM (compact strip) ============ -->
-    <section class="section team-home" id="team">
+    <!-- ============ LEADERSHIP ============ -->
+    <section class="section" id="team">
       <div class="container">
         <div class="sec-head reveal">
           <div>
-            <span class="eyebrow">Core team 2026–27</span>
-            <h2 class="h2">Meet the <span class="outline">crew</span></h2>
+            <span class="eyebrow">Core Team 2026–27</span>
+            <h2 class="h2">Club <span class="outline">Leadership</span></h2>
           </div>
-          <a class="btn btn-outline magnetic" href="team.html">Meet the full team</a>
+          <a class="btn btn-outline" href="team.html">View full team</a>
         </div>
+        <div class="leaders" id="leaders"></div>
       </div>
-      <div class="crew" id="crew"><div class="crew-track" id="crewTrack"></div></div>
     </section>
 
-    <!-- ============ GALLERY (preview) ============ -->
-    <section class="section band" id="gallery">
-      <div class="container">
-        <div class="sec-head reveal">
-          <div>
-            <span class="eyebrow">Gallery</span>
-            <h2 class="h2">Life at <span class="outline">the lab</span></h2>
-          </div>
-          <a class="btn btn-outline magnetic" href="gallery.html">View all photos</a>
-        </div>
-        <div class="gallery preview" id="galleryGrid" data-limit="5"></div>
-      </div>
-    </section>
 
     <!-- ============ CONTACT ============ -->
-    <section class="section contact" id="contact">
+    <section class="section band contact" id="contact">
       <div class="container contact-grid">
         <div class="reveal">
           <span class="eyebrow">Contact</span>
-          <h2 class="h-display">Let's build <span class="outline">something</span> together.</h2>
-          <p class="muted">Sponsorships, collaborations, workshops or just curious about robots — drop us a line.</p>
+          <h2 class="h-display">Get in <span class="outline">touch</span></h2>
+          <p class="muted">For sponsorships, collaborations, workshop requests or general enquiries, please write to us.</p>
           <ul class="contact-list" id="contactList"></ul>
           <div class="socials" id="socials"></div>
         </div>
@@ -210,7 +214,7 @@
             <label for="cf-msg">Message</label>
             <textarea id="cf-msg" name="message" rows="4" required></textarea>
           </div>
-          <button class="btn btn-solid magnetic" type="submit">Send message</button>
+          <button class="btn btn-solid" type="submit">Send message</button>
           <p class="form-note" id="formNote">Opens your email app with the message ready to send.</p>
         </form>
       </div>
@@ -219,13 +223,6 @@
 
   <div id="site-footer"></div>
 
-  <!-- lightbox -->
-  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Gallery image" hidden>
-    <button class="lb-close" id="lbClose" aria-label="Close">×</button>
-    <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous">‹</button>
-    <figure class="lb-figure" id="lbFigure"></figure>
-    <button class="lb-nav lb-next" id="lbNext" aria-label="Next">›</button>
-  </div>
 
   <script src="js/data.js"></script>
   <script src="js/icons.js"></script>

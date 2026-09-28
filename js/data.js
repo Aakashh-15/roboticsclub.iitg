@@ -210,17 +210,56 @@ window.CLUB = {
         ["Install guide · Jazzy", "materials/ros2-jazzy-install-guide.pdf"],
       ],
       pinned: true,
+      timeline: true, // also show on the Recent & upcoming timeline
     },
     { date: "2026-09-20", type: "Workshop", title: "ROS 2 bootcamp for freshers", sample: true,
       body: "A hands-on session on nodes, topics, launch files and Gazebo simulation. Bring a laptop with Ubuntu and ROS 2 installed." },
-    { date: "2026-09-10", type: "Event", title: "Introductory session & club open house", sample: true,
-      body: "Meet the team, see our robots in action and find out how to join a project this semester." },
     { date: "2026-08-28", type: "Competition", title: "Inter IIT Tech Meet: register your interest", sample: true,
       body: "Want to represent IIT Guwahati? Reach out to the Competition Manager to join the prep teams." },
   ],
 
+  /* ---------- RECENT & UPCOMING TIMELINE ----------
+     Dated events. Future dates show as "Upcoming", current ones as
+     "Live now", past ones as "Recent". Announcements with timeline: true
+     appear here too. end is optional (one-day events). image = poster.
+     time / venue are optional and shown on the card. */
+  timeline: [
+    {
+      start: "2026-06-29", end: "2026-07-05",
+      title: "Minecraft Championship",
+      subtitle: "The Engineer's Gauntlet",
+      type: "Competition",
+      host: "Funniche Week '26 × Robotics Club, IIT Guwahati",
+      desc: "A week-long Minecraft championship, The Engineer's Gauntlet, held as part of Funniche Week '26.",
+      highlights: ["Prize pool worth 20K", "29 June – 5 July 2026"],
+      image: "images/events/minecraft-championship-2026.webp",
+    },
+    {
+      start: "2026-06-01",
+      title: "ROBO101 course launch",
+      type: "Course",
+      host: "Robotics Club, IIT Guwahati",
+      desc: "The 2026 edition of ROBO101, the club's robotics course, went live on 1 June 2026.",
+      highlights: ["ROS 2", "TensorFlow", "Fusion 360", "ANSYS", "Electronics"],
+    },
+    {
+      start: "2026-09-04",
+      title: "Freshers' Orientation",
+      type: "Orientation",
+      time: "7:30 PM",
+      venue: "Core 5",
+      host: "Robotics Club, IIT Guwahati",
+      desc: "The club's introductory session for the incoming batch: who we are, what we build, and how freshers can get involved.",
+      image: "images/events/freshers-orientation-2026.webp",
+    },
+  ],
+
+  /* ---------- FLAGSHIP EVENTS ----------
+     The club's recurring signature events (no dates). */
   events: [
-    { title: "Introductory Session", desc: "Freshers' orientation: what the club does and how to get started.", image: OLD + "orientation.jpg" },
+    { title: "Freshers' Orientation", desc: "The start-of-year introduction for the new batch: what the club does and how to get started.", image: OLD + "orientation.jpg" },
+    { title: "ROBO101", desc: "The club's robotics course: ROS 2, TensorFlow, Fusion 360, ANSYS and electronics.", icon: "chip" },
+    // ↑ add  image: "images/events/robo101.webp"  once the poster is in the repo
     { title: "Arduino Workshop", desc: "Microcontrollers, sensors and motors: your first working circuit.", image: OLD + "arduino_workshop.jpg" },
     { title: "OpenCV Workshop", desc: "Computer vision fundamentals for robots that see.", image: OLD + "opencv_workshop.jpg" },
     { title: "AI Workshop", desc: "Machine learning concepts applied to robotics.", image: OLD + "ai_workshop.jpg" },
@@ -259,19 +298,23 @@ window.CLUB = {
       image: OLD + "projects/20. warehouse.jpg", link: "projects.html" },
   ],
 
+  /* ---------- TEAM ----------
+     Photos are picked up automatically from images/team/<name>.jpg.
+     Fill in email / linkedin to show them on each person's contact card
+     (empty = card offers the club email instead). Optional: department,
+     year, about (one line), image (custom photo path). */
   team: [
-    { name: "B Gautam Rao", role: "Secretary" },
-    { name: "Akshat Agarwal", role: "Overall Coordinator" },
-    { name: "Tirth Patel", role: "Yuvaan Lead" },
-    { name: "Siddharth Gupta", role: "Project Manager" },
-    { name: "Ananya Dongsarwar", role: "Project Manager" },
-    { name: "Nidhi Maria Santosh", role: "Competition Manager" },
-    { name: "Aakash Kumar Meena", role: "Events Head" },
-    { name: "Arya Kshirsagar", role: "Events Head" },
-    { name: "Sukant Agrawal", role: "Growth and Outreach" },
-    { name: "Jai Mishra", role: "Growth and Outreach" },
-    { name: "Ishan Boral", role: "Inventory Head" },
-    // Optional per member:  image: "images/name.jpg", linkedin: "https://...", email: "..."
+    { name: "B Gautam Rao", role: "Secretary", email: "", linkedin: "" },
+    { name: "Akshat Agarwal", role: "Overall Coordinator", email: "", linkedin: "" },
+    { name: "Tirth Patel", role: "Yuvaan Lead", email: "", linkedin: "" },
+    { name: "Siddharth Gupta", role: "Project Manager", email: "", linkedin: "" },
+    { name: "Ananya Dongsarwar", role: "Project Manager", email: "", linkedin: "" },
+    { name: "Nidhi Maria Santosh", role: "Competition Manager", email: "", linkedin: "" },
+    { name: "Aakash Kumar Meena", role: "Events Head", email: "", linkedin: "" },
+    { name: "Arya Kshirsagar", role: "Events Head", email: "", linkedin: "" },
+    { name: "Sukant Agrawal", role: "Growth and Outreach", email: "", linkedin: "" },
+    { name: "Jai Mishra", role: "Growth and Outreach", email: "", linkedin: "" },
+    { name: "Ishan Boral", role: "Inventory Head", email: "", linkedin: "" },
   ],
 
   // Gallery = event photos + extra shots. Add { image, caption, tag } freely.

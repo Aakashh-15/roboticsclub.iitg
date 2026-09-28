@@ -58,6 +58,29 @@ Add to `announcements`. Dates are `YYYY-MM-DD`. Posts from the last 21 days get 
 },
 ```
 
+### Add an event to the timeline (recent & upcoming)
+
+Dated events go in `timeline` in `js/data.js`. They appear on the home page timeline and on the
+Updates page. The status is automatic: future dates show **Upcoming**, today falls in **Live now**,
+and past dates show **Recent**. Put the poster in `images/events/` (WebP or JPG, under ~300 KB).
+
+```js
+{
+  start: "2026-11-14", end: "2026-11-15",          // end optional for one-day events
+  title: "Robowars", subtitle: "Techniche 2026",    // subtitle optional
+  type: "Competition",
+  host: "Robotics Club, IIT Guwahati",              // optional
+  desc: "One or two sentences about the event.",
+  highlights: ["Prize pool worth 50K", "Open to all colleges"],   // optional chips
+  image: "images/events/robowars-2026.webp",        // optional poster (click to enlarge)
+},
+```
+
+Add `timeline: true` to an announcement to also show it on the timeline. When nothing upcoming is
+listed, the timeline ends with a "Next event to be announced" card linking to Instagram.
+
+**Flagship events** (`events`) are the recurring, undated ones shown in the moving carousel.
+
 ### Record an achievement
 
 Add to the **top** of `achievements` (newest first). `rank` drives the medal:
@@ -74,11 +97,26 @@ Add to the **top** of `achievements` (newest first). `rank` drives the medal:
 
 ### Update the team
 
-Edit `team`. Optional extras per member: `image`, `linkedin`, `email`.
+Edit `team`. Hovering a person's photo shows **Get in touch**, which opens their contact card
+with whatever is filled in below. Empty fields are simply hidden; with no `email`, the card offers
+the club email instead.
 
 ```js
-{ name: "Full Name", role: "Secretary", image: "images/team/full-name.jpg", linkedin: "https://linkedin.com/in/..." },
+{
+  name: "Full Name", role: "Secretary",
+  email: "name@iitg.ac.in",                          // shown + Email / Copy buttons
+  linkedin: "https://www.linkedin.com/in/username",  // full https URL
+  department: "Mechanical Engineering",              // optional
+  year: "3rd year",                                  // optional
+  about: "One line about their work in the club.",   // optional
+},
 ```
+
+**Photos:** save a portrait (4:5, e.g. 800×1000 px, JPG) as `images/team/<full-name>.jpg`, with the name
+in lower case and spaces replaced by dashes, e.g. `B Gautam Rao` → `b-gautam-rao.jpg`. It appears automatically on
+the home page, the Team page and any project where that person is lead/mentor. Until then, their
+initials are shown. [`images/team/README.md`](images/team/README.md) lists the exact file names, and
+`node scripts/validate.mjs` reports which photos are still missing.
 
 ### Add photos
 

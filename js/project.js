@@ -11,9 +11,9 @@
   if (idx < 0) {
     root.innerHTML = `
       <section class="container pd-missing">
-        <span class="eyebrow">404 — Bot not found</span>
-        <h1 class="h2">This project <span class="outline">wandered off</span></h1>
-        <p class="muted">We couldn't find that project. It may have been renamed.</p>
+        <span class="eyebrow">Error 404</span>
+        <h1 class="h2">Project <span class="outline">not found</span></h1>
+        <p class="muted">The requested project could not be found. It may have been renamed or removed.</p>
         <a class="btn btn-solid" href="projects.html">Back to all projects</a>
       </section>`;
     return;
@@ -41,7 +41,6 @@
     ...(p.mentors || []).map((m) => ({ name: m, role: "Mentor" })),
   ];
   const related = list.filter((q) => q !== p && q.group === p.group).slice(0, 3);
-  const tones = ["t-purple", "t-pink", "t-yellow", "t-amber"];
 
   root.innerHTML = `
     <section class="pd-hero container">
@@ -79,8 +78,8 @@
           <h2>Links</h2>
           <div class="ann-links">${p.links.map(([l, u]) => `<a class="btn btn-outline btn-sm" href="${esc(u)}" target="_blank" rel="noopener">${esc(l)} <i>${ICONS.arrow}</i></a>`).join("")}</div>
         </section>` : ""}
-        <p class="note reveal">Worked on this project? Send photos, videos, results or a write-up to
-          <a class="text-link" href="mailto:${esc(C.contact.email)}?subject=${encodeURIComponent("Project page: " + p.title)}">${esc(C.contact.email)}</a> and we'll add them here.</p>
+        <p class="note reveal">Contributed to this project? Please send photographs, results or a technical write-up to
+          <a class="text-link" href="mailto:${esc(C.contact.email)}?subject=${encodeURIComponent("Project page: " + p.title)}">${esc(C.contact.email)}</a> for inclusion on this page.</p>
       </div>
 
       <aside class="pd-aside">
@@ -92,7 +91,7 @@
         <div class="pd-box reveal">
           <h3>People</h3>
           <div class="pd-people">${people.map((m, i) => `
-            <div class="pd-person"><div class="avatar ${tones[i % 4]}"><span>${esc(initials(m.name))}</span></div><div><b>${esc(m.name)}</b><small>${esc(m.role)}</small></div></div>`).join("")}
+            <div class="pd-person">${portrait(m, i, "pd-face")}<div><b>${esc(m.name)}</b><small>${esc(m.role)}</small></div></div>`).join("")}
           </div>
         </div>` : ""}
         ${p.stack?.length ? `

@@ -15,11 +15,12 @@ dependencies**, so anyone in the club can edit it, and it runs on any static hos
 
 ## ✨ Features
 
-- **Animated hero**: an assembly-line of bots built by robotic arms (click a bot!)
+- **Animated hero**: an assembly line of bots built by robotic arms
 - **Projects** with filters and a dedicated **deep-dive page** for every project
-- **Announcements** with pinned posts, "New" badges, filters and a live ticker
+- **Events & Updates**: a recent & upcoming timeline (auto Upcoming / Live / Recent, posters open full size) and a continuously moving carousel of flagship events
+- **Announcements** page with pinned posts, "New" badges and filters
 - **Hall of Fame** showcase with medal tally, auto-rotating highlights and a full timeline
-- **Team** cards that flip on hover or tap, plus a compact strip on the home page
+- **Leadership** portrait grid on the home page and a full **Team** page (photos from `images/team/`)
 - **Gallery** mosaic with a keyboard-friendly lightbox
 - **Resources**: searchable learning material, the club archive and an inventory request list
 - **Contact** form (opens the visitor's email app, no backend needed)
@@ -29,7 +30,7 @@ dependencies**, so anyone in the club can edit it, and it runs on any static hos
 
 ```
 .
-├── index.html            Home: hero, about, explore, hall of fame, team strip, gallery preview, contact
+├── index.html            Home: hero, about, events & updates, explore, hall of fame, leadership, contact
 ├── projects.html         All projects (filterable)
 ├── project.html          Project deep-dive (project.html?id=<project-id>)
 ├── updates.html          Announcements + signature events
@@ -111,7 +112,7 @@ After going live, change `og:image` in each page's `<head>` to the full URL
   some competitions, inventory list). Replace them with real details.
 - Project and event photos currently load from the old site (`iitg.ac.in/sa/roboclub/img/`).
   Copy them into `images/` and update the paths so the site doesn't depend on the old server.
-- Add team headshots (`image:` field on each member).
+- Add team headshots to `images/team/` (file names listed in [`images/team/README.md`](images/team/README.md)).
 
 ## 🤝 Contributing
 

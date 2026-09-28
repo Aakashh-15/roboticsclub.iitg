@@ -18,7 +18,7 @@
   const anns = [...C.announcements].sort((a, b) => b.date.localeCompare(a.date));
   const statusClass = (s = "") =>
     /position|1st|2nd|3rd/i.test(s) ? "gold" : /active|ongoing/i.test(s) ? "live" : "";
-  const medal = (t = "") => (/^1st/.test(t) ? "🥇 " : /^2nd/.test(t) ? "🥈 " : /^3rd/.test(t) ? "🥉 " : "");
+  const medal = () => "";
   const tier = (r = "") => (/^1st/.test(r) ? "gold" : /^2nd/.test(r) ? "silver" : /^3rd/.test(r) ? "bronze" : "");
 
   function selectChip(container, btn) {
@@ -69,6 +69,86 @@
       .join("");
   }
 
+  /* ---------- recent & upcoming timeline ---------- */
+  const igLink = (C.contact.socials.find(([n]) => /instagram/i.test(n)) || [])[1] || "#";
+  const tbaItem = { kind: "tba", status: "upcoming", title: "Next event to be announced", desc: "Follow our Instagram for dates, registrations and posters as soon as they are out." };
+  const tlAll = timelineItems();
+  const tlCard = (it, big = false) => {
+    const when = it.kind === "tba" ? "Coming soon" : fmtRange(it.start, it.end);
+    const head = `<div class="tl-head"><span class="tl-status s-${it.status}">${STATUS_LABEL[it.status]}</span>${it.type ? `<span class="tl-type">${esc(it.type)}</span>` : ""}</div>`;
+    const body = `
+      ${head}
+      <h4>${esc(it.title)}</h4>
+      ${it.subtitle ? `<p class="tl-sub">${esc(it.subtitle)}</p>` : ""}
+      ${it.time || it.venue ? `<p class="tl-meta">${[it.time, it.venue].filter(Boolean).map(esc).join(" · ")}</p>` : ""}
+      ${big && it.host ? `<p class="tl-host">${esc(it.host)}</p>` : ""}
+      <p class="tl-desc">${esc(it.desc || "")}</p>
+      ${big && it.highlights?.length ? `<div class="tl-chips">${it.highlights.map((h) => `<span>${esc(h)}</span>`).join("")}</div>` : ""}`;
+    if (it.kind === "tba") return { when, html: `<a class="tl-card tl-tba" href="${esc(igLink)}" target="_blank" rel="noopener"><div class="tl-body">${body}<span class="tl-more">Follow on Instagram ${ICONS.arrow}</span></div></a>` };
+    if (it.image) return { when, html: `<button class="tl-card has-poster" type="button" data-poster="${esc(it.image)}" data-title="${esc(it.title + (it.subtitle ? " — " + it.subtitle : ""))}">${media(it.image, "trophy", it.title, "tl-poster")}<div class="tl-body">${body}<span class="tl-more">View poster ${ICONS.arrow}</span></div></button>` };
+    const links = big && it.links?.length ? `<div class="ann-links">${it.links.map(([l, u]) => `<a class="btn btn-sm btn-outline" href="${esc(u)}">${esc(l)}</a>`).join("")}</div>` : "";
+    return { when, html: big ? `<div class="tl-card"><div class="tl-body">${body}${links}</div></div>` : `<a class="tl-card" href="${esc(it.href || "updates.html")}"><div class="tl-body">${body}<span class="tl-more">Details ${ICONS.arrow}</span></div></a>` };
+  };
+
+  // home: horizontal timeline, oldest → newest, ending with what's next
+  if (has("#tline")) {
+    const upcoming = tlAll.filter((i) => i.status !== "recent");
+    // four columns fit the page width: latest recent items + what's next
+    const next = upcoming.length ? upcoming.slice(0, 2) : [tbaItem];
+    const recent = tlAll.filter((i) => i.status === "recent").slice(-(4 - next.length));
+    const list = [...recent, ...next];
+    $("#tline").innerHTML = list.map((it) => {
+      const c = tlCard(it);
+      return `<div class="tl2-item s-${it.status} reveal"><span class="tl2-when">${esc(c.when)}</span><span class="tl2-node" aria-hidden="true"></span>${c.html}</div>`;
+    }).join("");
+    $("#tline").style.setProperty("--n", list.length);
+    wireFallbacks($("#tline"));
+    const row = $("#tline");
+    requestAnimationFrame(() => { row.scrollLeft = row.scrollWidth; }); // start at "what's next"
+  }
+
+  // updates page: vertical timeline, upcoming first then most recent
+  if (has("#tlineFull")) {
+    const upcoming = tlAll.filter((i) => i.status !== "recent");
+    const recent = tlAll.filter((i) => i.status === "recent").reverse();
+    const list = [...(upcoming.length ? upcoming : [tbaItem]), ...recent];
+    $("#tlineFull").innerHTML = list.map((it) => {
+      const c = tlCard(it, true);
+      return `<li class="tl3-item s-${it.status} reveal"><span class="tl3-when">${esc(c.when)}</span>${c.html}</li>`;
+    }).join("");
+    wireFallbacks($("#tlineFull"));
+  }
+
+  /* ---------- flagship events carousel (home) ----------
+     Continuous right→left drift; pauses on hover/focus; toggle button stops it. */
+  if (has("#flowTrack")) {
+    const eventCard = (ev) => `
+      <a class="flow-card flow-ev" href="updates.html#events">
+        ${media(ev.image, ev.icon || "bulb", ev.title, "flow-media")}
+        <div class="flow-ev-body">
+          <span class="badge">Flagship event</span>
+          <h3>${esc(ev.title)}</h3>
+          <p>${esc(ev.desc)}</p>
+        </div>
+      </a>`;
+    const set = C.events.map(eventCard).join("");
+    // repeat so one copy is always wider than the screen, then double for a seamless loop
+    const reps = Math.max(1, Math.ceil(8 / C.events.length));
+    const half = set.repeat(reps);
+    $("#flowTrack").innerHTML = half + half.replace(/<a class="flow-card/g, '<a tabindex="-1" aria-hidden="true" class="flow-card');
+    $("#flowTrack").style.setProperty("--flow-duration", `${C.events.length * reps * 7}s`);
+    wireFallbacks($("#flowTrack"));
+
+    const flow = $("#flow"), toggle = $("#flowToggle");
+    const setPaused = (p) => {
+      flow.classList.toggle("stopped", p);
+      toggle.setAttribute("aria-pressed", p);
+      toggle.setAttribute("aria-label", p ? "Play the moving cards" : "Pause the moving cards");
+    };
+    toggle.addEventListener("click", () => setPaused(!flow.classList.contains("stopped")));
+    if (reduceMotion) setPaused(true);
+  }
+
   /* ---------- explore tiles (home) ---------- */
   if (has("#exploreGrid")) {
     const resCount = C.resources.reduce((n, r) => n + r.items.length, 0);
@@ -81,7 +161,7 @@
     ];
     $("#exploreGrid").innerHTML = tiles
       .map(([href, title, meta, desc, icon, tone], i) => `
-        <a class="x-tile reveal x-${tone}${i === 0 ? " x-big" : ""}" href="${href}" data-tilt>
+        <a class="x-tile reveal x-${tone}${i === 0 ? " x-big" : ""}" href="${href}">
           <span class="x-ico">${ICONS[icon]}</span>
           <span class="x-meta">${esc(meta)}</span>
           <h3>${esc(title)}</h3>
@@ -109,7 +189,7 @@
       $("#projectGrid").innerHTML =
         shown
           .map((p, i) => `
-          <a class="p-card reveal c-${p.color || "purple"}${i === 0 && pFilter === "All" ? " feature" : ""}" href="project.html?id=${encodeURIComponent(p.id)}" data-tilt>
+          <a class="p-card reveal c-${p.color || "purple"}${i === 0 && pFilter === "All" ? " feature" : ""}" href="project.html?id=${encodeURIComponent(p.id)}">
             ${media(p.image, p.icon, p.title, "p-media")}
             <div class="p-body">
               <div class="p-meta">
@@ -143,20 +223,6 @@
     render();
   }
 
-  // 3D tilt on cards/tiles
-  if (finePointer && !reduceMotion) {
-    document.addEventListener("mousemove", (e) => {
-      const card = e.target.closest?.("[data-tilt]");
-      $$("[data-tilt].tilting").forEach((c) => c !== card && (c.classList.remove("tilting"), (c.style.transform = "")));
-      if (!card) return;
-      const r = card.getBoundingClientRect();
-      const px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
-      card.classList.add("tilting");
-      card.style.transform = `perspective(900px) rotateY(${px * 7}deg) rotateX(${-py * 7}deg) translateY(-4px)`;
-      card.style.setProperty("--mx", `${(px + 0.5) * 100}%`);
-      card.style.setProperty("--my", `${(py + 0.5) * 100}%`);
-    }, { passive: true });
-  }
 
   /* ---------- announcements ---------- */
   if (has("#annList")) {
@@ -180,7 +246,7 @@
       const rest = list.filter((a) => a !== pinned);
       $("#annPinned").innerHTML = pinned
         ? `<article class="ann-pinned reveal">
-            <div class="ann-top"><span class="badge live">${pinned.pinned ? "📌 Pinned" : esc(pinned.type)}</span>${isNew(pinned.date) ? '<span class="badge new">New</span>' : ""}<time>${fmt(pinned.date)}</time></div>
+            <div class="ann-top"><span class="badge live">${pinned.pinned ? "Pinned" : esc(pinned.type)}</span>${isNew(pinned.date) ? '<span class="badge new">New</span>' : ""}<time>${fmt(pinned.date)}</time></div>
             <h3>${esc(pinned.title)}</h3>
             <p>${esc(pinned.body)}</p>
             ${linkRow(pinned.links)}
@@ -215,7 +281,7 @@
     $("#eventsRow").innerHTML = C.events
       .map((ev) => `
         <article class="ev-card">
-          ${media(ev.image, "bulb", ev.title, "ev-media")}
+          ${media(ev.image, ev.icon || "bulb", ev.title, "ev-media")}
           <div class="ev-body"><h4>${esc(ev.title)}</h4><p>${esc(ev.desc)}</p></div>
         </article>`)
       .join("");
@@ -247,9 +313,9 @@
       .map((a) => `
         <li class="tl-item reveal">
           <div class="tl-year">${esc(a.year)}</div>
-          <div class="tl-card">
-            ${media(a.image, "trophy", a.event, "tl-media")}
-            <div class="tl-body">
+          <div class="ach-card">
+            ${media(a.image, "trophy", a.event, "ach-media")}
+            <div class="ach-body">
               <span class="badge ${tier(a.rank) ? "gold" : ""}">${medal(a.rank)}${esc(a.title)}</span>
               <h3>${esc(a.event)}</h3>
               <p>${esc(a.desc)}</p>
@@ -268,16 +334,6 @@
     const A = C.achievements;
     const achvLink = (a) => (a.project ? `project.html?id=${encodeURIComponent(a.project)}` : a.link || "competitions.html#hall-of-fame");
 
-    const tally = [
-      ["🥇", A.filter((a) => tier(a.rank) === "gold").length, "Gold"],
-      ["🥈", A.filter((a) => tier(a.rank) === "silver").length, "Silver"],
-      ["🌍", A.filter((a) => /international/i.test(a.event)).length, "International finals"],
-      ["✦", A.length, "Milestones"],
-    ].filter(([, n]) => n > 0);
-    $("#hofTally").innerHTML = tally
-      .map(([ico, n, label]) => `<div class="hof-t"><span class="hof-t-ico">${ico}</span><strong data-count="${n}" data-suffix="">${n}</strong><span>${label}</span></div>`)
-      .join("");
-
     $("#hofStage").innerHTML =
       A.map((a, i) => `
         <a class="hof-slide${i ? "" : " on"}" href="${achvLink(a)}" data-i="${i}" ${i ? 'aria-hidden="true" tabindex="-1"' : ""}>
@@ -285,12 +341,12 @@
           <div class="hof-copy">
             <div class="hof-top">
               <span class="hof-year">${esc(a.year)}</span>
-              <span class="hof-medal ${tier(a.rank)}">${medal(a.rank).trim() || "✦"}</span>
+              <span class="hof-medal ${tier(a.rank)}">${esc(a.rank || "")}</span>
             </div>
             <span class="badge ${tier(a.rank) ? "gold" : "live"}">${esc(a.event)}</span>
             <h3>${esc(a.title)}</h3>
             <p>${esc(a.desc)}</p>
-            <span class="text-link">${a.project ? "See the project" : "Explore"} ${ICONS.arrow}</span>
+            <span class="text-link">${a.project ? "View project" : "View details"} ${ICONS.arrow}</span>
           </div>
         </a>`).join("") + `<div class="hof-timer"><span></span></div>`;
     wireFallbacks($("#hofStage"));
@@ -354,59 +410,35 @@
     hof.addEventListener("mouseenter", () => { hovering = true; sync(); });
     hof.addEventListener("mouseleave", () => { hovering = false; sync(); });
     new IntersectionObserver(([e]) => { visible = e.isIntersecting; sync(); }, { threshold: 0.3 }).observe(hof);
-    $$("#hofTally [data-count]").forEach((el) => (el.textContent = "0"));
-    const tObs = new IntersectionObserver((es) => es.forEach((e) => {
-      if (!e.isIntersecting) return;
-      tObs.unobserve(e.target);
-      const el = e.target, end = +el.dataset.count;
-      let n = 0; const step = () => { el.textContent = ++n; if (n < end) setTimeout(step, 90); };
-      reduceMotion || end === 0 ? (el.textContent = end) : step();
-    }), { threshold: 0.6 });
-    $$("#hofTally [data-count]").forEach((el) => tObs.observe(el));
   }
 
-  /* ---------- team strip (home) ---------- */
-  if (has("#crewTrack")) {
-    const tones = ["purple", "pink", "yellow", "amber"];
-    const chip = (m, i, dup) => `
-      <a class="crew-m" href="team.html"${dup ? ' aria-hidden="true" tabindex="-1"' : ""}>
-        <span class="avatar t-${tones[i % tones.length]}">${m.image ? `<img src="${esc(m.image)}" alt="" loading="lazy" />` : `<span>${esc(initials(m.name))}</span>`}</span>
-        <span class="crew-txt"><b>${esc(m.name)}</b><small>${esc(m.role)}</small></span>
-      </a>`;
-    // rendered twice so the strip can loop seamlessly
-    $("#crewTrack").innerHTML = C.team.map((m, i) => chip(m, i, false)).join("") + C.team.map((m, i) => chip(m, i, true)).join("");
+  /* ---------- leadership grid (home) ---------- */
+  if (has("#leaders")) {
+    $("#leaders").innerHTML = C.team
+      .map((m, i) => `
+        <button class="leader reveal" type="button" data-member="${i}" aria-label="${esc(m.name)}, ${esc(m.role)}: get in touch">
+          <span class="face">${portrait(m, i)}<span class="gti">${ICONS.mail}<span>Get in touch</span></span></span>
+          <b>${esc(m.name)}</b>
+          <span class="leader-role">${esc(m.role)}</span>
+        </button>`)
+      .join("");
+    wireFallbacks($("#leaders"));
   }
 
-  /* ---------- team ---------- */
+  /* ---------- team page ---------- */
   if (has("#teamGrid")) {
-    const tones = ["purple", "pink", "yellow", "amber"];
     $("#teamGrid").innerHTML = C.team
       .map((m, i) => `
-        <article class="t-card reveal" tabindex="0" data-hover>
-          <div class="t-inner">
-            <div class="t-front">
-              <div class="avatar t-${tones[i % tones.length]}">
-                ${m.image ? `<img src="${esc(m.image)}" alt="${esc(m.name)}" loading="lazy" />` : `<span>${esc(initials(m.name))}</span>`}
-              </div>
-              <h3>${esc(m.name)}</h3>
-              <p>${esc(m.role)}</p>
-            </div>
-            <div class="t-back t-${tones[i % tones.length]}">
-              <p class="t-hi">Hi, I'm ${esc(m.name.split(" ").find((w) => w.length > 1) || m.name)}!</p>
-              <p class="t-role">${esc(m.role)}</p>
-              <div class="t-links">
-                ${m.email ? `<a href="mailto:${esc(m.email)}" aria-label="Email ${esc(m.name)}">${ICONS.mail}</a>` : ""}
-                ${m.linkedin ? `<a href="${esc(m.linkedin)}" target="_blank" rel="noopener">LinkedIn</a>` : ""}
-                ${!m.email && !m.linkedin ? `<a href="index.html#contact">Get in touch</a>` : ""}
-              </div>
-            </div>
+        <article class="member reveal">
+          <button class="face" type="button" data-member="${i}" aria-label="${esc(m.name)}: get in touch">${portrait(m, i)}<span class="gti">${ICONS.mail}<span>Get in touch</span></span></button>
+          <div class="member-body">
+            <h3>${esc(m.name)}</h3>
+            <p>${esc(m.role)}</p>
+            <button class="member-contact" type="button" data-member="${i}">Get in touch ${ICONS.arrow}</button>
           </div>
         </article>`)
       .join("");
-    $$("#teamGrid .t-card").forEach((c) => {
-      c.addEventListener("click", (e) => { if (!e.target.closest("a")) c.classList.toggle("flip"); });
-      c.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); c.classList.toggle("flip"); } });
-    });
+    wireFallbacks($("#teamGrid"));
   }
 
   /* ---------- gallery + lightbox ---------- */
@@ -502,7 +534,7 @@
       <li><i>${ICONS.mail}</i><a href="mailto:${esc(ct.email)}">${esc(ct.email)}</a></li>
       <li><i>${ICONS.pin}</i><span>${esc(ct.address)}</span></li>`;
     $("#socials").innerHTML = ct.socials
-      .map(([n, u]) => `<a class="btn btn-outline btn-sm" href="${esc(u)}" target="_blank" rel="noopener">${esc(n)} <i>${ICONS.arrow}</i></a>`)
+      .map(([n, u]) => `<a class="btn btn-outline btn-sm social s-${socialKey(n)}" href="${esc(u)}" target="_blank" rel="noopener"><i>${socialIcon(n)}</i>${esc(n)}</a>`)
       .join("");
     $("#contactForm").addEventListener("submit", (e) => {
       e.preventDefault();
@@ -592,14 +624,10 @@
     sparksG.appendChild(p);
     setTimeout(() => p.remove(), 900);
   }
-  let hops = 0;
   function hop(bot) {
     bot.g.classList.remove("hop"); void bot.g.getBBox(); bot.g.classList.add("hop");
     const cols = ["#fff", "var(--yellow)", "var(--pink)", "var(--purple)"];
     for (let k = 0; k < 5; k++) star(bot.x + (Math.random() - 0.5) * 180, 330 - 60 - Math.random() * 110, 0.4 + Math.random() * 0.6, cols[k % 4]);
-    hops++;
-    const hint = $(".factory-hint");
-    if (hint) hint.textContent = hops === 1 ? "wheee! ✦" : hops < 5 ? `${hops} happy bots` : hops < 10 ? `${hops} happy bots — keep going!` : `${hops} bots! you should join the club 🤖`;
   }
 
   function place(b) {
