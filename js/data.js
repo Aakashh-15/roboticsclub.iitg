@@ -310,7 +310,7 @@ window.CLUB = {
     { name: "Siddharth Gupta", role: "Project Manager", linkedin: "" },
     { name: "Ananya Dongsarwar", role: "Project Manager", linkedin: "" },
     { name: "Nidhi Maria Santosh", role: "Competition Manager", linkedin: "" },
-    { name: "Aakash Kumar Meena", role: "Events Head", linkedin: "" },
+    { name: "Aakash Kumar Meena", role: "Events Head", linkedin: "https://www.linkedin.com/in/aakash-kumar-meena-a06733314/" },
     { name: "Arya Kshirsagar", role: "Events Head", linkedin: "" },
     { name: "Sukant Agrawal", role: "Growth and Outreach", linkedin: "" },
     { name: "Jai Mishra", role: "Growth and Outreach", linkedin: "" },

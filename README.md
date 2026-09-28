@@ -82,8 +82,10 @@ placeholder entries still marked `sample: true`.
 
 ## 🌐 Deploying (GitHub Pages)
 
-The workflow in [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) checks the site
-and publishes it automatically on every push to `main`.
+The workflow in [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) checks the site on
+every push. **Publishing is currently manual:** it only deploys when started from
+**Actions → Check & deploy → Run workflow**. (To go back to deploying on every push, change the
+`deploy` job's `if:` to `github.event_name != 'pull_request' && github.ref == 'refs/heads/main'`.)
 
 1. Create an empty repository on GitHub (e.g. under the club org
    [`RCIITG`](https://github.com/RCIITG)). Don't add a README or license there.

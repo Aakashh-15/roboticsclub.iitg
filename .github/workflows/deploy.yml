@@ -29,8 +29,9 @@ jobs:
         run: node scripts/validate.mjs
 
   deploy:
-    # only publish from main, and only when the checks pass
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    # Deploying is paused: pushes only run the checks above.
+    # To publish, open Actions → "Check & deploy" → "Run workflow" (branch: main).
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
     needs: check
     runs-on: ubuntu-latest
     environment:
