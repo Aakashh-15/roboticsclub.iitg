@@ -36,8 +36,8 @@ function portrait(m, i = 0, cls = "") {
 
 /* ---------- member ID card (popup) ----------
    Opened from the leadership grid (home) and the Team page.
-   Shows whatever the member entry has: photo, role, department, year,
-   email, LinkedIn. Falls back to the club email when none is set. */
+   Shows photo, role, optional department / year / about, and a single
+   button to the member's LinkedIn profile. */
 let idcLastFocus = null;
 function openMemberCard(i) {
   const C = window.CLUB;
@@ -49,13 +49,11 @@ function openMemberCard(i) {
   const details = [
     ["Department", m.department],
     ["Year", m.year],
-    ["Email", m.email],
   ].filter(([, v]) => v);
-  const contact = m.email || C.contact.email;
-  const actions = `
-    <a class="btn btn-solid btn-sm" href="mailto:${esc(contact)}?subject=${encodeURIComponent("Hello " + m.name.split(" ").find((w) => w.length > 1))}">${ICONS.mail}<span>${m.email ? "Email" : "Email the club"}</span></a>
-    ${m.linkedin ? `<a class="btn btn-outline btn-sm" href="${esc(m.linkedin)}" target="_blank" rel="noopener">${ICONS.linkedin}<span>LinkedIn</span></a>` : ""}
-    <button class="btn btn-outline btn-sm idc-copy" type="button" data-copy="${esc(contact)}">${ICONS.copy}<span>Copy email</span></button>`;
+  // the card's only action: that member's LinkedIn profile
+  const action = m.linkedin
+    ? `<a class="btn btn-solid idc-li" href="${esc(m.linkedin)}" target="_blank" rel="noopener">${ICONS.linkedin}<span>View LinkedIn profile</span></a>`
+    : `<p class="idc-note">LinkedIn profile not added yet.</p>`;
 
   const wrap = document.createElement("div");
   wrap.className = "idc-backdrop";
@@ -76,8 +74,7 @@ function openMemberCard(i) {
         <span class="idc-role">${esc(m.role)}</span>
         ${m.about ? `<p class="idc-about">${esc(m.about)}</p>` : ""}
         ${details.length ? `<dl class="idc-details">${details.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>` : ""}
-        ${!m.email ? `<p class="idc-note">Personal contact not listed. Messages go to <b>${esc(C.contact.email)}</b>.</p>` : ""}
-        <div class="idc-actions">${actions}</div>
+        <div class="idc-actions">${action}</div>
       </div>
       <div class="idc-foot" aria-hidden="true">
         <span class="idc-code"></span>
@@ -87,17 +84,12 @@ function openMemberCard(i) {
   document.body.appendChild(wrap);
   document.body.classList.add("lb-open");
   wireFallbacks(wrap);
-  requestAnimationFrame(() => wrap.classList.add("open"));
+  void wrap.offsetWidth; // commit the closed state so the fade-in always runs
+  wrap.classList.add("open");
 
   const card = $(".idc", wrap);
   $(".idc-close", wrap).addEventListener("click", () => closeMemberCard());
   wrap.addEventListener("click", (e) => { if (e.target === wrap) closeMemberCard(); });
-  $(".idc-copy", wrap).addEventListener("click", async (e) => {
-    const btn = e.currentTarget, label = $("span", btn);
-    try { await navigator.clipboard.writeText(btn.dataset.copy); label.textContent = "Copied"; }
-    catch { label.textContent = btn.dataset.copy; }
-    setTimeout(() => (label.textContent = "Copy email"), 1800);
-  });
   wrap.addEventListener("keydown", (e) => {
     if (e.key === "Escape") return closeMemberCard();
     if (e.key !== "Tab") return;
@@ -106,7 +98,7 @@ function openMemberCard(i) {
     if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
     else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
   });
-  $(".idc-actions a, .idc-actions button", wrap).focus({ preventScroll: true });
+  ($(".idc-li", wrap) || $(".idc-close", wrap)).focus({ preventScroll: true });
 }
 function closeMemberCard(instant = false) {
   const wrap = $(".idc-backdrop");
@@ -136,7 +128,8 @@ function openPoster(src, title = "") {
   const close = () => { document.body.classList.remove("lb-open"); wrap.classList.remove("open"); setTimeout(() => wrap.remove(), 250); last?.focus?.({ preventScroll: true }); };
   document.body.appendChild(wrap);
   document.body.classList.add("lb-open");
-  requestAnimationFrame(() => wrap.classList.add("open"));
+  void wrap.offsetWidth; // commit the closed state so the fade-in always runs
+  wrap.classList.add("open");
   wrap.addEventListener("click", (e) => { if (e.target === wrap || e.target.closest(".pv-close")) close(); });
   wrap.addEventListener("keydown", (e) => { if (e.key === "Escape" || e.key === "Tab") { e.preventDefault(); if (e.key === "Escape") close(); } });
   $(".pv-close", wrap).focus();

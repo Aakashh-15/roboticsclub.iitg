@@ -15,7 +15,7 @@ dependencies**, so anyone in the club can edit it, and it runs on any static hos
 
 ## ✨ Features
 
-- **Animated hero**: the club's Mars rover crosses endless dunes and zaps approaching aliens (click to fire); live Mars sol date, odometer and score
+- **Animated hero**: the club's Mars rover crosses endless dunes and zaps approaching aliens (click to fire)
 - **Projects** with filters and a dedicated **deep-dive page** for every project
 - **Events & Updates**: a recent & upcoming timeline (auto Upcoming / Live / Recent, posters open full size) and a continuously moving carousel of flagship events
 - **Announcements** page with pinned posts, "New" badges and filters

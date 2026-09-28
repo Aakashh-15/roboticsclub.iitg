@@ -300,21 +300,21 @@ window.CLUB = {
 
   /* ---------- TEAM ----------
      Photos are picked up automatically from images/team/<name>.jpg.
-     Fill in email / linkedin to show them on each person's contact card
-     (empty = card offers the club email instead). Optional: department,
-     year, about (one line), image (custom photo path). */
+     Fill in linkedin (full https URL) for the button on each person's
+     contact card. Optional: department, year, about (one line),
+     image (custom photo path). */
   team: [
-    { name: "B Gautam Rao", role: "Secretary", email: "", linkedin: "" },
-    { name: "Akshat Agarwal", role: "Overall Coordinator", email: "", linkedin: "" },
-    { name: "Tirth Patel", role: "Yuvaan Lead", email: "", linkedin: "" },
-    { name: "Siddharth Gupta", role: "Project Manager", email: "", linkedin: "" },
-    { name: "Ananya Dongsarwar", role: "Project Manager", email: "", linkedin: "" },
-    { name: "Nidhi Maria Santosh", role: "Competition Manager", email: "", linkedin: "" },
-    { name: "Aakash Kumar Meena", role: "Events Head", email: "", linkedin: "" },
-    { name: "Arya Kshirsagar", role: "Events Head", email: "", linkedin: "" },
-    { name: "Sukant Agrawal", role: "Growth and Outreach", email: "", linkedin: "" },
-    { name: "Jai Mishra", role: "Growth and Outreach", email: "", linkedin: "" },
-    { name: "Ishan Boral", role: "Inventory Head", email: "", linkedin: "" },
+    { name: "B Gautam Rao", role: "Secretary", linkedin: "" },
+    { name: "Akshat Agarwal", role: "Overall Coordinator", linkedin: "" },
+    { name: "Tirth Patel", role: "Yuvaan Lead", linkedin: "" },
+    { name: "Siddharth Gupta", role: "Project Manager", linkedin: "" },
+    { name: "Ananya Dongsarwar", role: "Project Manager", linkedin: "" },
+    { name: "Nidhi Maria Santosh", role: "Competition Manager", linkedin: "" },
+    { name: "Aakash Kumar Meena", role: "Events Head", linkedin: "" },
+    { name: "Arya Kshirsagar", role: "Events Head", linkedin: "" },
+    { name: "Sukant Agrawal", role: "Growth and Outreach", linkedin: "" },
+    { name: "Jai Mishra", role: "Growth and Outreach", linkedin: "" },
+    { name: "Ishan Boral", role: "Inventory Head", linkedin: "" },
   ],
 
   // Gallery = event photos + extra shots. Add { image, caption, tag } freely.

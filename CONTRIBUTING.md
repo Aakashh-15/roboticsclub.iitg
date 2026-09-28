@@ -97,15 +97,13 @@ Add to the **top** of `achievements` (newest first). `rank` drives the medal:
 
 ### Update the team
 
-Edit `team`. Hovering a person's photo shows **Get in touch**, which opens their contact card
-with whatever is filled in below. Empty fields are simply hidden; with no `email`, the card offers
-the club email instead.
+Edit `team`. Hovering a person's photo shows **Connect**, which opens their ID card with a
+single **View LinkedIn profile** button. Optional fields are shown on the card when filled in.
 
 ```js
 {
   name: "Full Name", role: "Secretary",
-  email: "name@iitg.ac.in",                          // shown + Email / Copy buttons
-  linkedin: "https://www.linkedin.com/in/username",  // full https URL
+  linkedin: "https://www.linkedin.com/in/username",  // full https URL (the card's button)
   department: "Mechanical Engineering",              // optional
   year: "3rd year",                                  // optional
   about: "One line about their work in the club.",   // optional

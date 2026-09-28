@@ -167,13 +167,10 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
 .mars { position: relative; flex: 1 1 auto; min-height: max(230px, 19vw); max-height: 620px; margin-top: clamp(14px, 3vh, 48px); }
 .mars svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: crosshair; -webkit-tap-highlight-color: transparent; }
-.mars-hud, .mars-hint {
+.mars-hint {
   position: absolute; top: 0; z-index: 1; margin: 0; pointer-events: none;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11.5px; letter-spacing: 0.14em; color: var(--muted);
 }
-.mars-hud { left: var(--pad); display: flex; flex-wrap: wrap; gap: 6px 22px; }
-.mars-hud b { color: #fff; font-weight: 600; }
-.mars-hud span:first-child { color: var(--yellow); }
 .mars-hint { right: var(--pad); text-transform: uppercase; }
 .star { fill: #fff; animation: starTwinkle 3.6s ease-in-out infinite; }
 @keyframes starTwinkle { 50% { opacity: 0.25; } }
@@ -192,8 +189,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .shock { fill: none; stroke: #f7e34f; stroke-width: 4; transform-box: fill-box; transform-origin: center; animation: shock 0.5s ease-out forwards; }
 @keyframes shock { from { transform: scale(0.2); opacity: 1; } to { transform: scale(2.6); opacity: 0; } }
 @media (max-width: 720px) {
-  .mars-hud { font-size: 10.5px; gap: 4px 14px; }
-  .mars-hud span:nth-child(3), .mars-hint { display: none; }
+  .mars-hint { display: none; }
 }
 
 /* ---------- sections ---------- */
@@ -834,6 +830,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .idc-note b { color: #fff; }
 .idc-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 8px; }
 .idc-actions .btn svg { width: 15px; height: 15px; }
+.idc-li { width: 100%; background: #0a66c2; color: #fff; }
+.idc-li:hover { background: #fff; color: #0a66c2; }
 .idc-foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 24px 16px; border-top: 1px dashed var(--line); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; color: var(--muted); }
 .idc-code { flex: 1; height: 22px; opacity: 0.55; background: repeating-linear-gradient(90deg, #fff 0 2px, transparent 2px 4px, #fff 4px 5px, transparent 5px 8px, #fff 8px 11px, transparent 11px 13px); }
 

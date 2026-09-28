@@ -408,8 +408,8 @@
   if (has("#leaders")) {
     $("#leaders").innerHTML = C.team
       .map((m, i) => `
-        <button class="leader reveal" type="button" data-member="${i}" aria-label="${esc(m.name)}, ${esc(m.role)}: get in touch">
-          <span class="face">${portrait(m, i)}<span class="gti">${ICONS.mail}<span>Get in touch</span></span></span>
+        <button class="leader reveal" type="button" data-member="${i}" aria-label="${esc(m.name)}, ${esc(m.role)}: view LinkedIn">
+          <span class="face">${portrait(m, i)}<span class="gti">${ICONS.linkedin}<span>Connect</span></span></span>
           <b>${esc(m.name)}</b>
           <span class="leader-role">${esc(m.role)}</span>
         </button>`)
@@ -422,11 +422,11 @@
     $("#teamGrid").innerHTML = C.team
       .map((m, i) => `
         <article class="member reveal">
-          <button class="face" type="button" data-member="${i}" aria-label="${esc(m.name)}: get in touch">${portrait(m, i)}<span class="gti">${ICONS.mail}<span>Get in touch</span></span></button>
+          <button class="face" type="button" data-member="${i}" aria-label="${esc(m.name)}: view LinkedIn">${portrait(m, i)}<span class="gti">${ICONS.linkedin}<span>Connect</span></span></button>
           <div class="member-body">
             <h3>${esc(m.name)}</h3>
             <p>${esc(m.role)}</p>
-            <button class="member-contact" type="button" data-member="${i}">Get in touch ${ICONS.arrow}</button>
+            <button class="member-contact" type="button" data-member="${i}">Connect on LinkedIn ${ICONS.arrow}</button>
           </div>
         </article>`)
       .join("");
@@ -632,9 +632,6 @@
 
   const rover = $("#rover"), barrel = $("#barrel"), fx = $("#marsFx"), aliensG = $("#marsAliens");
   const legRocker = $("#legRocker"), legFront = $("#legFront");
-  const hud = { sol: $("#hudSol"), odo: $("#hudOdo"), kills: $("#hudKills") };
-  // real Mars Sol Date (NASA/GISS formula)
-  hud.sol.textContent = Math.floor((Date.now() / 864e5 + 2440587.5 - 2405522.0028779) / 1.0274912517).toLocaleString("en-IN");
 
   const WALKER = `<g class="a-body">
       <path class="a-legs" d="M-8 -8 L-13 0 M8 -8 L13 0" stroke="#2f9e6c" stroke-width="4" stroke-linecap="round"/>
@@ -679,12 +676,10 @@
         x: c.x, y: c.y, vx: (Math.random() - 0.5) * 340, vy: -60 - Math.random() * 260, g: 620, life: 0.9, max: 0.9,
       });
     }
-    kills++;
-    hud.kills.textContent = String(kills).padStart(2, "0");
   };
 
   // rover state
-  let scroll = 0, v = 0, state = "drive", timer = 0, spawnIn = 2.5, kills = 0, dustIn = 0, lastShot = 0, holdAim = 0;
+  let scroll = 0, v = 0, state = "drive", timer = 0, spawnIn = 2.5, dustIn = 0, lastShot = 0, holdAim = 0;
   let aim = -0.12, aimTarget = -0.12, target = null;
   let body = { y: 0, a: 0 };
   const V_MAX = 95;
@@ -798,7 +793,6 @@
       else { p.n.setAttribute("x", p.x.toFixed(1)); p.n.setAttribute("y", p.y.toFixed(1)); p.n.setAttribute("opacity", k.toFixed(2)); }
       return true;
     });
-    hud.odo.textContent = (scroll / 4000).toFixed(2);
   }
 
   // click / tap to fire at that point
