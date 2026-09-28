@@ -213,6 +213,7 @@ function renderChrome() {
   if (header) {
     header.outerHTML = `
       <div class="progress" id="progress"></div>
+      <div class="cursor" id="cursor" aria-hidden="true"></div>
       <header class="nav" id="nav">
         <a href="index.html" class="brand" aria-label="Robotics Club IIT Guwahati — home">${brand}</a>
         <nav class="nav-links" id="navLinks" aria-label="Primary">
@@ -299,6 +300,22 @@ function initChrome() {
       burger?.setAttribute("aria-expanded", "false");
     }
   });
+
+  // custom cursor ring (mouse / trackpad only)
+  const cursor = $("#cursor");
+  if (cursor && finePointer && !reduceMotion) {
+    let x = -100, y = -100, cx = x, cy = y;
+    addEventListener("mousemove", (e) => { x = e.clientX; y = e.clientY; cursor.classList.add("on"); }, { passive: true });
+    document.addEventListener("mouseleave", () => cursor.classList.remove("on"));
+    document.addEventListener("mouseover", (e) => {
+      cursor.classList.toggle("hover", !!e.target.closest("a, button, [data-member], [data-poster], input, select, textarea, label"));
+    });
+    (function loop() {
+      cx += (x - cx) * 0.22; cy += (y - cy) * 0.22;
+      cursor.style.transform = `translate(${cx}px, ${cy}px)`;
+      requestAnimationFrame(loop);
+    })();
+  }
 
   const y = $("#year");
   if (y) y.textContent = new Date().getFullYear();

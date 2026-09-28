@@ -96,6 +96,16 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .btn-outline:hover { border-color: #fff; background: #fff; color: #000; }
 .btn-sm { padding: 9px 18px; font-size: 14px; }
 
+/* ---------- cursor ring ---------- */
+.cursor {
+  position: fixed; left: -18px; top: -18px; width: 36px; height: 36px; z-index: 100;
+  border: 1.5px solid rgba(255, 255, 255, 0.8); border-radius: 50%;
+  pointer-events: none; opacity: 0; mix-blend-mode: difference;
+  transition: opacity 0.2s, width 0.25s var(--ease), height 0.25s var(--ease), left 0.25s var(--ease), top 0.25s var(--ease), background 0.25s;
+}
+.cursor.on { opacity: 1; }
+.cursor.hover { width: 60px; height: 60px; left: -30px; top: -30px; background: #fff; }
+
 /* ---------- progress bar ---------- */
 .progress {
   position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 60;
