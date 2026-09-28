@@ -279,6 +279,9 @@ function initChrome() {
   renderChrome();
   renderPageHero();
   const nav = $("#nav");
+  const setNavH = () => nav && document.documentElement.style.setProperty("--nav-h", `${nav.offsetHeight}px`);
+  setNavH();
+  addEventListener("resize", setNavH, { passive: true });
   const burger = $("#burger");
   const links = $("#navLinks");
   const progress = $("#progress");

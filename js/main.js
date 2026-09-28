@@ -571,17 +571,23 @@
   // The SVG is cropped to fit the screen ("slice"), so on narrow screens only the
   // middle of the 1440-wide scene is visible. Place the rover and the engagement
   // range relative to the visible part.
-  let RX = 520, VIEW_L = 0, VIEW_W = W;
+  let RX = 520, VIEW_L = 0, VIEW_W = W, VIEW_T = 0;
   const layout = () => {
     const r = svg.getBoundingClientRect();
     if (!r.width || !r.height) return;
     const scale = Math.max(r.width / W, r.height / H);
     VIEW_W = Math.min(W, r.width / scale);
     VIEW_L = (W - VIEW_W) / 2;
+    VIEW_T = H - Math.min(H, r.height / scale); // rows cropped off the top on wide screens
     RX = VIEW_L + Math.max(120, VIEW_W * 0.3);
+    // keep the sky (stars, planet, moon) anchored to the visible top edge
+    const sky = `translate(0 ${VIEW_T.toFixed(1)})`;
+    $("#marsStars").setAttribute("transform", sky);
+    $("#mars .planet").setAttribute("transform", sky);
   };
   layout();
   addEventListener("resize", layout, { passive: true });
+  if ("ResizeObserver" in window) new ResizeObserver(layout).observe(svg);
   const node = (tag, attrs, parent) => {
     const n = document.createElementNS(SVGNS, tag);
     for (const k in attrs) n.setAttribute(k, attrs[k]);
@@ -650,7 +656,7 @@
     const ufo = Math.random() < 0.35;
     const g = node("g", { class: "alien" + (ufo ? " ufo" : "") }, aliensG);
     g.innerHTML = ufo ? UFO : WALKER;
-    aliens.push({ g, ufo, x: VIEW_L + VIEW_W + 90, y: 0, base: 105 + Math.random() * 70, t: Math.random() * 6, alive: true });
+    aliens.push({ g, ufo, x: VIEW_L + VIEW_W + 90, y: 0, base: VIEW_T + 105 + Math.random() * 60, t: Math.random() * 6, alive: true });
   };
   const alienCenter = (a) => ({ x: a.x, y: a.ufo ? a.y - 4 : a.y - 30 });
 
