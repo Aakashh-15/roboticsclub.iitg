@@ -18,7 +18,6 @@
   const anns = [...C.announcements].sort((a, b) => b.date.localeCompare(a.date));
   const statusClass = (s = "") =>
     /position|1st|2nd|3rd/i.test(s) ? "gold" : /active|ongoing/i.test(s) ? "live" : "";
-  const medal = () => "";
   const tier = (r = "") => (/^1st/.test(r) ? "gold" : /^2nd/.test(r) ? "silver" : /^3rd/.test(r) ? "bronze" : "");
 
   function selectChip(container, btn) {
@@ -60,13 +59,6 @@
         requestAnimationFrame(tick);
       }), { threshold: 0.6 });
     $$("[data-count]").forEach((el) => countObs.observe(el));
-  }
-
-  /* ---------- announcement ticker ---------- */
-  if (has("#ticker")) {
-    $("#ticker").innerHTML = Array(2)
-      .fill(anns.map((a) => `<span>${esc(a.type)} <b>✦</b> ${esc(a.title)}</span>`).join(""))
-      .join("");
   }
 
   /* ---------- recent & upcoming timeline ---------- */
@@ -316,7 +308,7 @@
           <div class="ach-card">
             ${media(a.image, "trophy", a.event, "ach-media")}
             <div class="ach-body">
-              <span class="badge ${tier(a.rank) ? "gold" : ""}">${medal(a.rank)}${esc(a.title)}</span>
+              <span class="badge ${tier(a.rank) ? "gold" : ""}">${esc(a.title)}</span>
               <h3>${esc(a.event)}</h3>
               <p>${esc(a.desc)}</p>
               ${a.project ? `<a class="text-link" href="project.html?id=${encodeURIComponent(a.project)}">See the project ${ICONS.arrow}</a>` : ""}
