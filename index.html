@@ -37,56 +37,54 @@
         </div>
       </div>
 
-      <div class="factory" id="factory">
-        <svg viewBox="0 0 1440 440" preserveAspectRatio="xMidYMax slice" role="img" aria-label="Animated assembly line: robotic arms turn plain shells into finished robots">
-          <g class="decor" id="decor">
-            <circle cx="470" cy="95" r="13" fill="none" stroke="var(--pink)" stroke-width="6" />
-            <path d="M455 290 L505 235 Q520 220 530 235 Q538 250 520 262 L475 305" fill="none" stroke="var(--amber)" stroke-width="7" stroke-linecap="round" />
-            <path d="M870 130 L915 75" stroke="var(--yellow)" stroke-width="6" stroke-linecap="round" />
-            <path d="M890 185 L965 88" stroke="var(--yellow)" stroke-width="6" stroke-linecap="round" />
-            <path d="M1270 120 q14 -16 28 0 t28 0 t28 0" fill="none" stroke="var(--purple)" stroke-width="6" stroke-linecap="round" />
-            <path d="M1020 160 a18 18 0 1 1 6 30" fill="none" stroke="var(--purple)" stroke-width="7" stroke-linecap="round" />
-            <circle cx="1390" cy="210" r="9" fill="none" stroke="var(--yellow)" stroke-width="5" />
-            <circle cx="140" cy="140" r="7" fill="var(--purple)" />
-            <path d="M230 80 l20 20 M250 80 l-20 20" stroke="var(--pink)" stroke-width="5" stroke-linecap="round" />
+      <div class="mars" id="mars">
+        <div class="mars-hud" aria-hidden="true">
+          <span>YUVAAN</span>
+          <span>SOL <b id="hudSol">0</b></span>
+          <span>ODOMETER <b id="hudOdo">0.00</b> KM</span>
+          <span>THREATS NEUTRALISED <b id="hudKills">00</b></span>
+        </div>
+        <p class="mars-hint" aria-hidden="true">Click to fire</p>
+        <svg id="marsSvg" viewBox="0 0 1440 440" preserveAspectRatio="xMidYMax slice" role="img" aria-label="Animated scene: the club's Mars rover drives across dunes and fires at approaching aliens">
+          <g id="marsStars"></g>
+          <g class="planet">
+            <circle cx="1180" cy="92" r="46" fill="#7b5cfa" />
+            <circle cx="1166" cy="80" r="46" fill="#9d86ff" opacity=".35" />
+            <ellipse cx="1180" cy="96" rx="82" ry="14" fill="none" stroke="#f0a3d8" stroke-width="4" transform="rotate(-14 1180 96)" />
+            <circle cx="300" cy="70" r="12" fill="#e8e8f0" opacity=".85" />
           </g>
-
-          <!-- gripper arm -->
-          <g class="arm arm1">
-            <path d="M585 330 L585 45 L720 45 L790 95" fill="none" stroke="var(--purple)" stroke-width="50" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M585 330 L585 45" stroke="var(--purple-dark)" stroke-width="50" stroke-linecap="butt" opacity=".35" />
-            <g class="arm1-tool">
-              <path d="M790 70 L790 170" stroke="var(--purple)" stroke-width="42" stroke-linecap="round" />
-              <path d="M760 190 Q758 238 790 238 Q822 238 820 190" fill="none" stroke="var(--purple)" stroke-width="16" stroke-linecap="round" />
-              <circle cx="790" cy="185" r="26" fill="var(--purple)" />
-              <circle cx="790" cy="185" r="7" fill="#fff" />
-              <circle cx="790" cy="220" r="7" fill="var(--amber)" class="spark-dot" />
+          <path id="layerFar" fill="#1d1640" />
+          <path id="layerMid" fill="#2e2270" />
+          <g id="marsAliens"></g>
+          <path id="layerGround" fill="#f2be43" />
+          <path id="layerBand1" fill="#e2a834" />
+          <path id="layerBand2" fill="#c98f25" />
+          <path id="groundEdge" fill="none" stroke="#ffd96b" stroke-width="3" />
+          <g id="marsRocks"></g>
+          <g id="rover">
+            <g id="roverLegs" fill="none" stroke="#9d86ff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+              <path id="legRocker" /><path id="legFront" />
             </g>
-            <circle cx="585" cy="45" r="8" fill="#fff" />
-            <circle cx="720" cy="45" r="8" fill="#fff" />
-            <circle cx="790" cy="95" r="8" fill="#fff" />
-          </g>
-
-          <!-- dispenser arm -->
-          <g class="arm arm2">
-            <path d="M1255 -20 L1190 40 L1120 80" fill="none" stroke="var(--purple)" stroke-width="46" stroke-linecap="round" stroke-linejoin="round" />
-            <g class="arm2-tool">
-              <path d="M1120 70 L1120 150" stroke="var(--purple)" stroke-width="42" stroke-linecap="round" />
-              <path d="M1092 150 L1148 150 L1134 188 L1106 188 Z" fill="var(--purple)" />
-              <rect x="1112" y="186" width="16" height="12" rx="3" fill="var(--purple-dark)" />
-              <circle cx="1120" cy="205" r="7" fill="var(--pink)" class="drip" />
+            <path d="M-52 -30 V-80" stroke="#e8e8f0" stroke-width="6" />
+            <rect x="-68" y="-98" width="34" height="20" rx="5" fill="#f0a3d8" />
+            <circle cx="-40" cy="-88" r="4.5" fill="#15151b" />
+            <path d="M-74 -30 L-84 -66" stroke="#c6c6d0" stroke-width="2.5" />
+            <circle cx="-84" cy="-68" r="4" fill="#f7e34f" />
+            <rect x="-84" y="-32" width="168" height="36" rx="9" fill="#e8e8f0" />
+            <rect x="-84" y="-2" width="168" height="10" rx="5" fill="#4b33c7" />
+            <rect x="-6" y="-26" width="44" height="14" rx="3" fill="#1b1b24" />
+            <path d="M3 -26 V-12 M14 -26 V-12 M25 -26 V-12" stroke="#4b33c7" stroke-width="1.5" />
+            <text x="-72" y="-10" class="rover-name">YUVAAN</text>
+            <g id="turret" transform="translate(52 -32)">
+              <g id="barrel">
+                <rect x="0" y="-11" width="46" height="8" rx="3" fill="#c6c6d0" />
+                <rect x="40" y="-13" width="9" height="12" rx="2" fill="#f7e34f" />
+              </g>
+              <rect x="-16" y="-15" width="32" height="17" rx="7" fill="#7b5cfa" />
             </g>
-            <circle cx="1190" cy="40" r="8" fill="#fff" />
-            <circle cx="1120" cy="80" r="8" fill="#fff" />
           </g>
-
-          <g id="items"></g>
-
-          <!-- conveyor -->
-          <rect x="0" y="330" width="1440" height="96" fill="var(--yellow)" />
-          <rect x="0" y="330" width="1440" height="6" fill="#fff" opacity=".35" />
-          <g class="rings" id="rings"></g>
-          <g id="sparks"></g>
+          <g id="roverWheels"></g>
+          <g id="marsFx"></g>
         </svg>
       </div>
     </section>

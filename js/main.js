@@ -560,108 +560,270 @@
   observeReveals();
 
   /* =========================================================
-     HERO ASSEMBLY LINE (home only)
-     Bots ride the belt left→right; the gripper arm gives them
-     eyes, the dispenser arm frosts them. Click one to make it hop.
+     HERO: MARS TRAVERSE (home only)
+     The club's rover drives across endless dunes. When an alien
+     shows up it brakes, swings the turret onto it, fires, and
+     drives on. Click / tap the scene to fire manually.
      ========================================================= */
-  if (!has("#factory")) return;
-  const svg = $("#factory svg");
-  const itemsG = $("#items"), ringsG = $("#rings"), sparksG = $("#sparks");
-  const SPEED = 60, GAP = 215, N = 8, ARM1 = 790, ARM2 = 1120, RING = 110;
+  if (!has("#mars")) return;
+  const svg = $("#marsSvg");
+  const W = 1440, H = 440, WHEEL_R = 17, WHEELBASE = 124;
+  // The SVG is cropped to fit the screen ("slice"), so on narrow screens only the
+  // middle of the 1440-wide scene is visible. Place the rover and the engagement
+  // range relative to the visible part.
+  let RX = 520, VIEW_L = 0, VIEW_W = W;
+  const layout = () => {
+    const r = svg.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    const scale = Math.max(r.width / W, r.height / H);
+    VIEW_W = Math.min(W, r.width / scale);
+    VIEW_L = (W - VIEW_W) / 2;
+    RX = VIEW_L + Math.max(120, VIEW_W * 0.3);
+  };
+  layout();
+  addEventListener("resize", layout, { passive: true });
+  const node = (tag, attrs, parent) => {
+    const n = document.createElementNS(SVGNS, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  };
 
-  ringsG.innerHTML = Array.from({ length: 16 }, (_, i) =>
-    `<circle cx="${i * RING - 55}" cy="378" r="26" fill="var(--cream)"/><circle cx="${i * RING - 55}" cy="378" r="12" fill="none" stroke="var(--pink)" stroke-width="7"/>`
-  ).join("");
-  ringsG.style.animationDuration = `${RING / SPEED}s`;
+  // terrain height functions (world x -> svg y)
+  const ground = (x) => 352 + 16 * Math.sin(x * 0.0042) + 9 * Math.sin(x * 0.011 + 1.3) + 4 * Math.sin(x * 0.027 + 2.1);
+  const mid = (x) => 292 + 26 * Math.sin(x * 0.0031 + 0.5) + 12 * Math.sin(x * 0.0087 + 2);
+  const far = (x) => 236 + 44 * Math.sin(x * 0.0018) + 18 * Math.sin(x * 0.0051 + 1);
+  const pts = (fn, off, dy = 0) => {
+    let p = "";
+    for (let x = -20; x <= W + 20; x += 16) p += `${x} ${(fn(x + off) + dy).toFixed(1)} `;
+    return p;
+  };
+  const fill = (p) => `M-20 ${H} L${p}L${W + 20} ${H} Z`;
+  const L = { far: $("#layerFar"), mid: $("#layerMid"), ground: $("#layerGround"), b1: $("#layerBand1"), b2: $("#layerBand2"), edge: $("#groundEdge") };
 
-  const sprinkleColors = ["var(--yellow)", "var(--purple)", "#FF8A4C", "#fff", "var(--purple)"];
-  const sprinkles = [[-60, -66, 30], [-30, -80, -35], [0, -62, 60], [30, -78, 20], [58, -64, -40], [-10, -84, 80], [70, -54, 10]]
-    .map(([x, y, r], i) => `<rect x="${x - 8}" y="${y - 3}" width="16" height="6" rx="3" fill="${sprinkleColors[i % sprinkleColors.length]}" transform="rotate(${r} ${x} ${y})"/>`)
-    .join("");
+  // stars
+  for (let i = 0; i < 70; i++) {
+    node("circle", { cx: (Math.random() * W).toFixed(0), cy: (Math.random() * 210).toFixed(0), r: (Math.random() * 1.3 + 0.4).toFixed(2), class: "star", style: `animation-delay:${(Math.random() * 4).toFixed(2)}s` }, $("#marsStars"));
+  }
 
-  const bots = Array.from({ length: N }, (_, i) => {
-    const g = document.createElementNS(SVGNS, "g");
-    g.setAttribute("class", "bot");
-    g.innerHTML = `
-      <g class="bot-in">
-        <ellipse cx="0" cy="-45" rx="96" ry="45" fill="var(--amber)"/>
-        <ellipse cx="0" cy="-20" rx="92" ry="18" fill="#000" opacity=".08"/>
-        <g class="b-frost">
-          <path d="M-91 -50 C-91 -82 -50 -92 0 -92 C50 -92 91 -82 91 -50 C82 -40 70 -52 55 -43 C40 -34 28 -47 12 -39 C-6 -30 -20 -45 -38 -38 C-56 -31 -72 -44 -91 -50Z" fill="var(--pink)"/>
-          ${sprinkles}
-        </g>
-        <g class="b-eyes">
-          <line x1="0" y1="-90" x2="0" y2="-112" stroke="var(--purple)" stroke-width="5" stroke-linecap="round"/>
-          <circle cx="0" cy="-116" r="7" fill="var(--yellow)"/>
-          <circle cx="-30" cy="-68" r="8" fill="#111"/><circle cx="30" cy="-68" r="8" fill="#111"/>
-          <circle cx="-27" cy="-71" r="2.6" fill="#fff"/><circle cx="33" cy="-71" r="2.6" fill="#fff"/>
-        </g>
-        <path d="M-32 -56 Q0 -42 32 -56" stroke="#111" stroke-width="6" fill="none" stroke-linecap="round"/>
-      </g>`;
-    itemsG.appendChild(g);
-    const bot = { g, x: -110 + i * GAP, s: 0 };
-    g.addEventListener("click", () => hop(bot));
-    return bot;
+  // rocks and craters on the ground layer (recycled as they scroll off)
+  const rocksG = $("#marsRocks");
+  const rockShape = () => {
+    const w = 8 + Math.random() * 22, h = 5 + Math.random() * 12;
+    return Math.random() < 0.25
+      ? `M${-w * 1.3} 3 Q0 ${h * 0.7} ${w * 1.3} 3 Q0 ${-h * 0.25} ${-w * 1.3} 3 Z`
+      : `M${-w} 5 Q${-w * 0.8} ${-h} 0 ${-h} Q${w * 0.9} ${-h * 0.8} ${w} 5 Z`;
+  };
+  const rocks = Array.from({ length: 10 }, (_, i) => ({ n: node("path", { d: rockShape(), class: "rock" }, rocksG), wx: i * 170 + Math.random() * 120 }));
+
+  // wheels
+  const wheelsG = $("#roverWheels");
+  const wheels = [-WHEELBASE / 2, 0, WHEELBASE / 2].map((off) => {
+    const g = node("g", {}, wheelsG);
+    g.innerHTML = `<circle r="${WHEEL_R}" fill="#1d1a33" stroke="#9d86ff" stroke-width="4"/><path d="M-11 0H11M-5.5 -9.5L5.5 9.5M-5.5 9.5L5.5 -9.5" stroke="#9d86ff" stroke-width="2.5"/><circle r="4.5" fill="#f7e34f"/>`;
+    return { g, off, x: 0, y: 0 };
   });
 
-  const arm1Tool = $(".arm1-tool"), arm2Tool = $(".arm2-tool");
-  const pulse = (el, cls) => { el.classList.remove(cls); void el.getBBox(); el.classList.add(cls); };
+  const rover = $("#rover"), barrel = $("#barrel"), fx = $("#marsFx"), aliensG = $("#marsAliens");
+  const legRocker = $("#legRocker"), legFront = $("#legFront");
+  const hud = { sol: $("#hudSol"), odo: $("#hudOdo"), kills: $("#hudKills") };
+  // real Mars Sol Date (NASA/GISS formula)
+  hud.sol.textContent = Math.floor((Date.now() / 864e5 + 2440587.5 - 2405522.0028779) / 1.0274912517).toLocaleString("en-IN");
 
-  function star(x, y, s, color = "#fff") {
-    const p = document.createElementNS(SVGNS, "path");
-    p.setAttribute("d", "M0 -22 C3 -4 4 -3 22 0 C4 3 3 4 0 22 C-3 4 -4 3 -22 0 C-4 -3 -3 -4 0 -22Z");
-    p.setAttribute("fill", color);
-    p.setAttribute("class", "burst");
-    p.style.setProperty("--tx", `${x}px`); p.style.setProperty("--ty", `${y}px`); p.style.setProperty("--s", s);
-    sparksG.appendChild(p);
-    setTimeout(() => p.remove(), 900);
-  }
-  function hop(bot) {
-    bot.g.classList.remove("hop"); void bot.g.getBBox(); bot.g.classList.add("hop");
-    const cols = ["#fff", "var(--yellow)", "var(--pink)", "var(--purple)"];
-    for (let k = 0; k < 5; k++) star(bot.x + (Math.random() - 0.5) * 180, 330 - 60 - Math.random() * 110, 0.4 + Math.random() * 0.6, cols[k % 4]);
-  }
+  const WALKER = `<g class="a-body">
+      <path class="a-legs" d="M-8 -8 L-13 0 M8 -8 L13 0" stroke="#2f9e6c" stroke-width="4" stroke-linecap="round"/>
+      <ellipse cx="0" cy="-28" rx="20" ry="22" fill="#6fe3a1"/>
+      <path d="M-6 -48 L-12 -64 M6 -48 L12 -64" stroke="#6fe3a1" stroke-width="3"/>
+      <circle cx="-12" cy="-66" r="4" fill="#f0a3d8"/><circle cx="12" cy="-66" r="4" fill="#f0a3d8"/>
+      <circle cx="0" cy="-32" r="9" fill="#fff"/><circle cx="-3" cy="-32" r="4.2" fill="#111"/>
+      <path d="M-8 -16 Q0 -11 8 -16" stroke="#1f6b4a" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>`;
+  const UFO = `<g class="a-body">
+      <ellipse cx="0" cy="-8" rx="15" ry="14" fill="#6fe3a1"/>
+      <circle cx="-5" cy="-10" r="3.5" fill="#111"/><circle cx="5" cy="-10" r="3.5" fill="#111"/>
+      <path d="M-22 -2 A22 20 0 0 1 22 -2 Z" fill="#9d86ff" fill-opacity=".3" stroke="#9d86ff" stroke-width="2"/>
+      <ellipse cx="0" cy="3" rx="48" ry="12" fill="#c6c6d0"/>
+      <ellipse cx="0" cy="6" rx="32" ry="6" fill="#4b33c7"/>
+      <circle class="a-light" cx="-32" cy="4" r="3.5" fill="#f7e34f"/><circle class="a-light" cx="0" cy="10" r="3.5" fill="#f7e34f"/><circle class="a-light" cx="32" cy="4" r="3.5" fill="#f7e34f"/></g>`;
 
-  function place(b) {
-    b.g.setAttribute("transform", `translate(${b.x.toFixed(1)} 330)`);
-    const s = b.x > ARM2 ? 2 : b.x > ARM1 ? 1 : 0;
-    if (s !== b.s) {
-      if (s > b.s) {
-        if (s === 1) { pulse(arm1Tool, "stamp"); star(b.x + 40, 245, 0.7); }
-        if (s === 2) { pulse(arm2Tool, "squirt"); star(b.x + 50, 260, 0.9); }
-      }
-      b.s = s;
-      b.g.classList.toggle("s1", s >= 1);
-      b.g.classList.toggle("s2", s >= 2);
+  let aliens = [], particles = [];
+  const spawnAlien = () => {
+    const ufo = Math.random() < 0.35;
+    const g = node("g", { class: "alien" + (ufo ? " ufo" : "") }, aliensG);
+    g.innerHTML = ufo ? UFO : WALKER;
+    aliens.push({ g, ufo, x: VIEW_L + VIEW_W + 90, y: 0, base: 105 + Math.random() * 70, t: Math.random() * 6, alive: true });
+  };
+  const alienCenter = (a) => ({ x: a.x, y: a.ufo ? a.y - 4 : a.y - 30 });
+
+  const addParticle = (p) => {
+    if (particles.length > 90) { particles[0].n.remove(); particles.shift(); }
+    particles.push(p);
+  };
+  const boom = (a) => {
+    a.alive = false;
+    a.g.classList.add("hit");
+    setTimeout(() => a.g.remove(), 120);
+    const c = alienCenter(a);
+    const ring = node("circle", { cx: c.x, cy: c.y, r: 26, class: "shock" }, fx);
+    setTimeout(() => ring.remove(), 520);
+    const cols = ["#6fe3a1", "#6fe3a1", "#f0a3d8", "#f7e34f", "#ffffff"];
+    for (let i = 0; i < 16; i++) {
+      const s = 3 + Math.random() * 5;
+      addParticle({
+        n: node("rect", { width: s, height: s, fill: cols[i % cols.length] }, fx),
+        x: c.x, y: c.y, vx: (Math.random() - 0.5) * 340, vy: -60 - Math.random() * 260, g: 620, life: 0.9, max: 0.9,
+      });
     }
+    kills++;
+    hud.kills.textContent = String(kills).padStart(2, "0");
+  };
+
+  // rover state
+  let scroll = 0, v = 0, state = "drive", timer = 0, spawnIn = 2.5, kills = 0, dustIn = 0, lastShot = 0, holdAim = 0;
+  let aim = -0.12, aimTarget = -0.12, target = null;
+  let body = { y: 0, a: 0 };
+  const V_MAX = 95;
+
+  const toWorld = (lx, ly) => ({
+    x: RX + lx * Math.cos(body.a) - ly * Math.sin(body.a),
+    y: body.y + lx * Math.sin(body.a) + ly * Math.cos(body.a),
+  });
+  const pivot = () => toWorld(52, -39); // barrel axis on the turret
+  const aimAt = (p) => {
+    const o = pivot();
+    return Math.max(-1.45, Math.min(0.35, Math.atan2(p.y - o.y, p.x - o.x) - body.a));
+  };
+  const fire = (p) => {
+    const o = pivot(), ang = body.a + aim;
+    const m = { x: o.x + Math.cos(ang) * 50, y: o.y + Math.sin(ang) * 50 };
+    const beam = node("g", { class: "laser" }, fx);
+    node("line", { x1: m.x, y1: m.y, x2: p.x, y2: p.y, stroke: "#f0a3d8", "stroke-width": 7, "stroke-linecap": "round" }, beam);
+    node("line", { x1: m.x, y1: m.y, x2: p.x, y2: p.y, stroke: "#ffffff", "stroke-width": 2.5, "stroke-linecap": "round" }, beam);
+    node("circle", { cx: m.x, cy: m.y, r: 9, fill: "#f7e34f" }, beam);
+    setTimeout(() => beam.remove(), 300);
+    const hit = aliens.find((a) => { if (!a.alive) return false; const c = alienCenter(a); return Math.hypot(c.x - p.x, c.y - p.y) < 42; });
+    if (hit) boom(hit);
+    lastShot = performance.now();
+  };
+
+  function step(dt) {
+    // --- behaviour ---
+    if (state === "drive") {
+      v = Math.min(V_MAX, v + 110 * dt);
+      holdAim -= dt;
+      if (holdAim <= 0) aimTarget = -0.12; // keep pointing at a manual shot for a moment
+      spawnIn -= dt;
+      if (spawnIn <= 0 && !aliens.some((a) => a.alive)) { spawnAlien(); spawnIn = 4 + Math.random() * 3.5; }
+      const range = Math.min(VIEW_W * 0.55, 420);
+      target = aliens.find((a) => a.alive && a.x < RX + (a.ufo ? range + 50 : range) && a.x > RX + 60);
+      if (target) state = "aim";
+    } else if (state === "aim") {
+      v = Math.max(0, v - 230 * dt);
+      if (!target.alive) { state = "cool"; timer = 0.4; }
+      else {
+        aimTarget = aimAt(alienCenter(target));
+        if (v < 4 && Math.abs(aim - aimTarget) < 0.04) { fire(alienCenter(target)); state = "cool"; timer = 0.9; }
+      }
+    } else if (state === "cool") {
+      v = Math.max(0, v - 230 * dt);
+      timer -= dt;
+      if (timer <= 0) { state = "drive"; target = null; }
+    }
+    aim += (aimTarget - aim) * Math.min(1, dt * 7);
+    scroll += v * dt;
+
+    // --- terrain ---
+    const gp = pts(ground, scroll);
+    L.far.setAttribute("d", fill(pts(far, scroll * 0.15)));
+    L.mid.setAttribute("d", fill(pts(mid, scroll * 0.4)));
+    L.ground.setAttribute("d", fill(gp));
+    L.b1.setAttribute("d", fill(pts(ground, scroll, 34)));
+    L.b2.setAttribute("d", fill(pts(ground, scroll, 66)));
+    L.edge.setAttribute("d", "M" + gp);
+    rocks.forEach((r) => {
+      let sx = r.wx - scroll;
+      if (sx < -60) { r.wx += 1700 + Math.random() * 150; r.n.setAttribute("d", rockShape()); sx = r.wx - scroll; }
+      r.n.setAttribute("transform", `translate(${sx.toFixed(1)} ${(ground(r.wx) + 3).toFixed(1)})`);
+    });
+
+    // --- rover: wheels follow the ground, body tilts between front and back ---
+    const spin = ((scroll / WHEEL_R) * 180) / Math.PI;
+    wheels.forEach((w) => {
+      w.x = RX + w.off;
+      w.y = ground(w.x + scroll) - WHEEL_R;
+      w.g.setAttribute("transform", `translate(${w.x} ${w.y.toFixed(1)}) rotate(${spin.toFixed(1)})`);
+    });
+    const [back, midW, front] = wheels;
+    body.a = Math.atan2(front.y - back.y, front.x - back.x);
+    body.y = (back.y + front.y) / 2 - 42;
+    rover.setAttribute("transform", `translate(${RX} ${body.y.toFixed(1)}) rotate(${((body.a * 180) / Math.PI).toFixed(2)})`);
+    const local = (w) => {
+      const dx = w.x - RX, dy = w.y - body.y;
+      return { x: dx * Math.cos(body.a) + dy * Math.sin(body.a), y: -dx * Math.sin(body.a) + dy * Math.cos(body.a) };
+    };
+    const lb = local(back), lm = local(midW), lf = local(front);
+    const j = { x: (lb.x + lm.x) / 2, y: Math.min(lb.y, lm.y) - 16 };
+    legRocker.setAttribute("d", `M${lb.x.toFixed(1)} ${lb.y.toFixed(1)} L${j.x.toFixed(1)} ${j.y.toFixed(1)} L${lm.x.toFixed(1)} ${lm.y.toFixed(1)} M${j.x.toFixed(1)} ${j.y.toFixed(1)} L-26 4`);
+    legFront.setAttribute("d", `M${lf.x.toFixed(1)} ${lf.y.toFixed(1)} L${(lf.x - 14).toFixed(1)} ${(lf.y - 22).toFixed(1)} L34 4`);
+    barrel.setAttribute("transform", `rotate(${((aim * 180) / Math.PI).toFixed(1)} 0 -7)`);
+
+    // --- aliens ---
+    aliens.forEach((a) => {
+      if (!a.alive) return;
+      a.t += dt;
+      if (a.ufo) { a.x -= (v * 0.3 + 60) * dt; a.y = a.base + Math.sin(a.t * 2.2) * 9; }
+      else { a.x -= (v + 24) * dt; a.y = ground(a.x + scroll) + 2; }
+      a.g.setAttribute("transform", `translate(${a.x.toFixed(1)} ${a.y.toFixed(1)})`);
+      if (a.x < VIEW_L - 120) { a.alive = false; a.g.remove(); }
+    });
+    aliens = aliens.filter((a) => a.alive || a.g.isConnected);
+
+    // --- dust + particles ---
+    dustIn -= dt;
+    if (v > 25 && dustIn <= 0) {
+      dustIn = 0.06;
+      addParticle({ n: node("circle", { r: 3, fill: "#f2be43", opacity: 0.7 }, fx), x: back.x - 12, y: back.y + WHEEL_R - 2, vx: -v * 0.35 - Math.random() * 30, vy: -18 - Math.random() * 26, g: 0, life: 0.8, max: 0.8, grow: 9 });
+    }
+    particles = particles.filter((p) => {
+      p.life -= dt;
+      if (p.life <= 0) { p.n.remove(); return false; }
+      p.vy += p.g * dt; p.x += p.vx * dt; p.y += p.vy * dt;
+      const k = p.life / p.max;
+      if (p.grow) { p.n.setAttribute("cx", p.x.toFixed(1)); p.n.setAttribute("cy", p.y.toFixed(1)); p.n.setAttribute("r", (3 + p.grow * (1 - k)).toFixed(1)); p.n.setAttribute("opacity", (0.6 * k).toFixed(2)); }
+      else { p.n.setAttribute("x", p.x.toFixed(1)); p.n.setAttribute("y", p.y.toFixed(1)); p.n.setAttribute("opacity", k.toFixed(2)); }
+      return true;
+    });
+    hud.odo.textContent = (scroll / 4000).toFixed(2);
   }
 
-  let last = 0, running = false;
-  function frame(t) {
-    if (!running) return;
-    const dt = last ? Math.min(0.05, (t - last) / 1000) : 0;
-    last = t;
-    bots.forEach((b) => {
-      b.x += SPEED * dt;
-      if (b.x > 1440 + 120) { b.x -= N * GAP; b.s = 0; b.g.classList.remove("s1", "s2"); }
-      place(b);
-    });
-    requestAnimationFrame(frame);
-  }
-  bots.forEach(place);
-  if (!reduceMotion) {
+  // click / tap to fire at that point
+  svg.addEventListener("click", (e) => {
+    if (performance.now() - lastShot < 280) return;
+    const pt = svg.createSVGPoint();
+    pt.x = e.clientX; pt.y = e.clientY;
+    const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+    aim = aimTarget = aimAt(p);
+    holdAim = 0.6;
+    step(0);
+    fire(p);
+  });
+
+  step(0);
+  if (reduceMotion) {
+    // still scene: an alien standing ahead of the rover
+    spawnAlien(); aliens[0].ufo = false; aliens[0].g.innerHTML = WALKER; aliens[0].x = RX + VIEW_W * 0.4;
+    step(0);
+  } else {
+    let last = 0, running = false;
+    const frame = (t) => {
+      if (!running) return;
+      const dt = last ? Math.min(0.05, (t - last) / 1000) : 0;
+      last = t;
+      step(dt);
+      requestAnimationFrame(frame);
+    };
     new IntersectionObserver(([e]) => {
       running = e.isIntersecting;
-      svg.classList.toggle("paused", !running);
       if (running) { last = 0; requestAnimationFrame(frame); }
     }).observe(svg);
-
-    // parallax on decorative shapes
-    const decor = $("#decor");
-    $("#factory").addEventListener("mousemove", (e) => {
-      const r = svg.getBoundingClientRect();
-      const dx = (e.clientX - r.left) / r.width - 0.5, dy = (e.clientY - r.top) / r.height - 0.5;
-      decor.style.transform = `translate(${dx * -24}px, ${dy * -16}px)`;
-    });
-  } else svg.classList.add("paused");
+  }
 })();

@@ -157,40 +157,35 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .booted .hero-sub, .booted .hero-ctas { animation: fade 0.9s 0.3s var(--ease) both; }
 @keyframes fade { from { opacity: 0; transform: translateY(14px); } }
 
-.factory { position: relative; margin-top: clamp(28px, 6vh, 64px); height: clamp(250px, 31vw, 450px); }
-.factory svg { width: 100%; height: 100%; display: block; overflow: visible; }
-.rings { animation: belt linear infinite; }
-@keyframes belt { to { transform: translateX(110px); } }
-.paused .rings, .paused .drip, .paused .spark-dot { animation-play-state: paused; }
-.decor { transition: transform 0.6s var(--ease); }
-.bot { cursor: pointer; }
-.bot-in { transform-box: fill-box; transform-origin: 50% 100%; }
-.bot:hover .bot-in { animation: wobble 0.5s var(--ease); }
-.bot.hop .bot-in { animation: hop 0.65s var(--ease); }
-@keyframes hop { 0% { transform: none; } 20% { transform: scale(1.08, 0.86); } 50% { transform: translateY(-70px) scale(0.94, 1.08); } 80% { transform: translateY(0) scale(1.06, 0.92); } 100% { transform: none; } }
-@keyframes wobble { 30% { transform: scale(1.04, 0.96); } 60% { transform: scale(0.98, 1.03); } }
-.b-frost { transform-box: fill-box; transform-origin: 50% 0; transform: scale(0.2, 0); transition: transform 0.45s cubic-bezier(0.3, 1.6, 0.5, 1); }
-.bot.s2 .b-frost { transform: none; }
-.b-eyes { transform-box: fill-box; transform-origin: 50% 100%; transform: scale(0); transition: transform 0.4s cubic-bezier(0.3, 1.8, 0.5, 1); }
-.bot.s1 .b-eyes { transform: none; }
-.arm1-tool, .arm2-tool { transform-box: view-box; }
-.arm1-tool.stamp { animation: stamp 0.7s var(--ease); }
-@keyframes stamp { 40% { transform: translateY(26px); } 60% { transform: translateY(26px); } }
-.arm2-tool.squirt { animation: squirt 0.6s var(--ease); }
-@keyframes squirt { 35% { transform: translateY(14px); } }
-.drip { animation: drip 1.6s ease-in infinite; transform-box: fill-box; transform-origin: center; }
-@keyframes drip { 0%, 40% { transform: translateY(0) scale(0.6); opacity: 0; } 55% { opacity: 1; transform: translateY(0) scale(1); } 100% { transform: translateY(40px) scale(0.8); opacity: 0; } }
-.spark-dot { animation: twinkle 1.2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
-@keyframes twinkle { 50% { transform: scale(0.4); opacity: 0.4; } }
-.burst {
-  transform-box: fill-box; transform-origin: center;
-  transform: translate(var(--tx), var(--ty)) scale(0);
-  animation: burst 0.85s var(--ease) forwards;
-  pointer-events: none;
+.mars { position: relative; margin-top: clamp(24px, 5vh, 56px); height: clamp(270px, 32vw, 470px); }
+.mars svg { width: 100%; height: 100%; display: block; cursor: crosshair; -webkit-tap-highlight-color: transparent; }
+.mars-hud, .mars-hint {
+  position: absolute; top: 0; z-index: 1; margin: 0; pointer-events: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11.5px; letter-spacing: 0.14em; color: var(--muted);
 }
-@keyframes burst {
-  40% { transform: translate(var(--tx), var(--ty)) scale(var(--s)) rotate(45deg); opacity: 1; }
-  100% { transform: translate(var(--tx), calc(var(--ty) - 30px)) scale(0) rotate(90deg); opacity: 0; }
+.mars-hud { left: var(--pad); display: flex; flex-wrap: wrap; gap: 6px 22px; }
+.mars-hud b { color: #fff; font-weight: 600; }
+.mars-hud span:first-child { color: var(--yellow); }
+.mars-hint { right: var(--pad); text-transform: uppercase; }
+.star { fill: #fff; animation: starTwinkle 3.6s ease-in-out infinite; }
+@keyframes starTwinkle { 50% { opacity: 0.25; } }
+.rock { fill: #c98f25; }
+.rover-name { font-family: var(--display); font-weight: 800; font-size: 14px; letter-spacing: 0.16em; fill: #4b33c7; }
+.alien .a-body { animation: alienBob 0.45s ease-in-out infinite alternate; }
+.alien.ufo .a-body { animation: none; }
+.alien.hit { opacity: 0; transition: opacity 0.1s; }
+@keyframes alienBob { to { transform: translateY(-3px); } }
+.a-light { animation: ufoBlink 0.7s steps(2) infinite; }
+.a-light:nth-of-type(2) { animation-delay: 0.23s; }
+.a-light:nth-of-type(3) { animation-delay: 0.46s; }
+@keyframes ufoBlink { 50% { fill: #f0a3d8; } }
+.laser { animation: laserFade 0.3s ease-out forwards; }
+@keyframes laserFade { 0% { opacity: 1; } 100% { opacity: 0; } }
+.shock { fill: none; stroke: #f7e34f; stroke-width: 4; transform-box: fill-box; transform-origin: center; animation: shock 0.5s ease-out forwards; }
+@keyframes shock { from { transform: scale(0.2); opacity: 1; } to { transform: scale(2.6); opacity: 0; } }
+@media (max-width: 720px) {
+  .mars-hud { font-size: 10.5px; gap: 4px 14px; }
+  .mars-hud span:nth-child(3), .mars-hint { display: none; }
 }
 
 /* ---------- sections ---------- */
@@ -951,5 +946,5 @@ a.tl-card:hover, button.tl-card:hover { border-color: var(--st, var(--line-stron
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
   .reveal { opacity: 1; transform: none; }
-  .marquee-track, .flow-track { animation: none; }
+  .marquee-track, .flow-track, .star, .alien .a-body, .a-light { animation: none; }
 }

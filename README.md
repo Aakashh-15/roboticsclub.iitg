@@ -15,7 +15,7 @@ dependencies**, so anyone in the club can edit it, and it runs on any static hos
 
 ## ✨ Features
 
-- **Animated hero**: an assembly line of bots built by robotic arms
+- **Animated hero**: the club's Mars rover crosses endless dunes and zaps approaching aliens (click to fire); live Mars sol date, odometer and score
 - **Projects** with filters and a dedicated **deep-dive page** for every project
 - **Events & Updates**: a recent & upcoming timeline (auto Upcoming / Live / Recent, posters open full size) and a continuously moving carousel of flagship events
 - **Announcements** page with pinned posts, "New" badges and filters
@@ -43,7 +43,7 @@ dependencies**, so anyone in the club can edit it, and it runs on any static hos
 ├── js/
 │   ├── data.js           ← ALL SITE CONTENT LIVES HERE
 │   ├── common.js         Shared header/footer (nav links in PAGES), helpers
-│   ├── main.js           Renders each page's sections + hero animation
+│   ├── main.js           Renders each page's sections + Mars hero scene
 │   ├── project.js        Project deep-dive page
 │   └── icons.js          SVG icon set
 ├── css/style.css         Theme and layout
