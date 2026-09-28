@@ -830,7 +830,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .idc-note b { color: #fff; }
 .idc-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 8px; }
 .idc-actions .btn svg { width: 15px; height: 15px; }
-.idc-li { width: 100%; background: #0a66c2; color: #fff; }
+.idc-li { padding: 9px 18px; gap: 8px; font-size: 13.5px; background: #0a66c2; color: #fff; }
+.idc-li svg { width: 14px; height: 14px; }
 .idc-li:hover { background: #fff; color: #0a66c2; }
 .idc-foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 24px 16px; border-top: 1px dashed var(--line); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; color: var(--muted); }
 .idc-code { flex: 1; height: 22px; opacity: 0.55; background: repeating-linear-gradient(90deg, #fff 0 2px, transparent 2px 4px, #fff 4px 5px, transparent 5px 8px, #fff 8px 11px, transparent 11px 13px); }
