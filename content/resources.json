@@ -1,0 +1,216 @@
+{
+  "tabs": [
+    {
+      "tab": "Getting started",
+      "items": [
+        {
+          "title": "Ubuntu 22.04 + ROS 2 Humble setup",
+          "desc": "Club installation guide.",
+          "url": "materials/ros2-humble-install-guide.pdf",
+          "kind": "PDF"
+        },
+        {
+          "title": "Ubuntu 24.04 + ROS 2 Jazzy setup",
+          "desc": "Club installation guide.",
+          "url": "materials/ros2-jazzy-install-guide.pdf",
+          "kind": "PDF"
+        },
+        {
+          "title": "Selection Task: The Clue Chain Hunt",
+          "desc": "Freshers' selection problem statement.",
+          "url": "materials/selection-task-clue-chain-hunt.pdf",
+          "kind": "PDF"
+        },
+        {
+          "title": "ROS 2 Humble documentation",
+          "desc": "Official tutorials: nodes, topics, services, launch files.",
+          "url": "https://docs.ros.org/en/humble/",
+          "kind": "Docs"
+        },
+        {
+          "title": "ROS 2 Jazzy documentation",
+          "desc": "Docs for the latest LTS release.",
+          "url": "https://docs.ros.org/en/jazzy/",
+          "kind": "Docs"
+        },
+        {
+          "title": "Gazebo simulator",
+          "desc": "Robot simulation tutorials and API.",
+          "url": "https://gazebosim.org/docs",
+          "kind": "Docs"
+        }
+      ]
+    },
+    {
+      "tab": "Club archive",
+      "items": [
+        {
+          "title": "Arduino",
+          "desc": "Open-source electronic prototyping platform for building interactive objects.",
+          "url": "https://drive.google.com/drive/u/0/folders/0B32MLT2oE3VuLXJWODJaQUZidjg",
+          "kind": "Drive"
+        },
+        {
+          "title": "Induino",
+          "desc": "Simple Labs' prototyping board built on the Arduino framework.",
+          "url": "https://drive.google.com/drive/u/0/folders/0B32MLT2oE3VuTFdGRmNaYTFBTEU",
+          "kind": "Drive"
+        },
+        {
+          "title": "PID Line Following",
+          "desc": "Proportional, integral and derivative control for smoother robot motion.",
+          "url": "https://drive.google.com/drive/u/0/folders/0B32MLT2oE3VuT3FnVDhIbXN2OTg",
+          "kind": "Drive"
+        },
+        {
+          "title": "Datasheets",
+          "desc": "Specifications and performance data for common components.",
+          "url": "https://drive.google.com/drive/u/0/folders/0B32MLT2oE3VuRHpOUTJVOXA3U0E",
+          "kind": "Drive"
+        },
+        {
+          "title": "GPS",
+          "desc": "Satellite navigation: receivers and algorithms for location, velocity and time.",
+          "url": "https://drive.google.com/drive/u/0/folders/0B32MLT2oE3VuUVhOVjZTWWJPMk0",
+          "kind": "Drive"
+        },
+        {
+          "title": "Image Processing",
+          "desc": "Enhance images and extract useful information from visual data.",
+          "url": "https://drive.google.com/drive/u/0/folders/0B32MLT2oE3VuX05kWkFNd2xzLUE",
+          "kind": "Drive"
+        },
+        {
+          "title": "Control Systems",
+          "desc": "Monitoring and managing the behaviour of machines and processes.",
+          "url": "https://drive.google.com/drive/u/0/folders/0B32MLT2oE3VuaU4yUlJsbHNZa1E",
+          "kind": "Drive"
+        },
+        {
+          "title": "Voice Recognition",
+          "desc": "Identifying and authenticating individual speakers.",
+          "url": "https://drive.google.com/drive/u/0/folders/0B32MLT2oE3VuZTRaSGxLRUg5OFU",
+          "kind": "Drive"
+        },
+        {
+          "title": "CAD",
+          "desc": "2D drawings and 3D models of robot parts.",
+          "url": "https://drive.google.com/drive/folders/1TbcODJbZZ2YfUsC8Yg04ioVb9QXqbyen",
+          "kind": "Drive"
+        },
+        {
+          "title": "Unity",
+          "desc": "Custom simulations and robot design environments.",
+          "url": "https://drive.google.com/drive/folders/1DvcLHC8-vApKrBOiyb5cz1mRwPoDIiKM",
+          "kind": "Drive"
+        }
+      ]
+    },
+    {
+      "tab": "Electronics",
+      "items": [
+        {
+          "title": "Arduino documentation",
+          "desc": "Boards, libraries and getting-started guides.",
+          "url": "https://docs.arduino.cc/",
+          "kind": "Docs"
+        },
+        {
+          "title": "SparkFun tutorials",
+          "desc": "Sensors, motors, soldering and communication protocols.",
+          "url": "https://learn.sparkfun.com/tutorials",
+          "kind": "Tutorials"
+        },
+        {
+          "title": "KiCad documentation",
+          "desc": "Design your own PCBs.",
+          "url": "https://docs.kicad.org/",
+          "kind": "Docs"
+        },
+        {
+          "title": "OpenCV tutorials",
+          "desc": "Computer vision from the basics to calibration.",
+          "url": "https://docs.opencv.org/4.x/d9/df8/tutorial_root.html",
+          "kind": "Docs"
+        }
+      ]
+    },
+    {
+      "tab": "Mechanical",
+      "items": [
+        {
+          "title": "Onshape Learning Center",
+          "desc": "Free browser-based CAD courses.",
+          "url": "https://learn.onshape.com/",
+          "kind": "Course"
+        },
+        {
+          "title": "Modern Robotics (Lynch & Park)",
+          "desc": "Free textbook and lectures on kinematics, dynamics and control.",
+          "url": "https://hades.mech.northwestern.edu/index.php/Modern_Robotics",
+          "kind": "Book"
+        },
+        {
+          "title": "MoveIt 2",
+          "desc": "Motion planning for robotic arms.",
+          "url": "https://moveit.picknik.ai/",
+          "kind": "Docs"
+        }
+      ]
+    },
+    {
+      "tab": "Inventory",
+      "inventory": true,
+      "items": [
+        {
+          "title": "Arduino Uno / Nano",
+          "desc": "Microcontroller boards",
+          "qty": "Available",
+          "sample": true
+        },
+        {
+          "title": "ESP32 DevKit",
+          "desc": "Wi-Fi + BLE microcontroller",
+          "qty": "Available",
+          "sample": true
+        },
+        {
+          "title": "Raspberry Pi",
+          "desc": "Single-board computer",
+          "qty": "Limited",
+          "sample": true
+        },
+        {
+          "title": "Motor drivers (L298N / TB6612)",
+          "desc": "DC motor drivers",
+          "qty": "Available",
+          "sample": true
+        },
+        {
+          "title": "Servo motors",
+          "desc": "SG90 / MG996R",
+          "qty": "Available",
+          "sample": true
+        },
+        {
+          "title": "Ultrasonic & IR sensors",
+          "desc": "Distance and line sensing",
+          "qty": "Available",
+          "sample": true
+        },
+        {
+          "title": "IMU (MPU-6050)",
+          "desc": "Accelerometer + gyroscope",
+          "qty": "Limited",
+          "sample": true
+        },
+        {
+          "title": "LiPo batteries & chargers",
+          "desc": "Issued with a safety briefing",
+          "qty": "On request",
+          "sample": true
+        }
+      ]
+    }
+  ]
+}

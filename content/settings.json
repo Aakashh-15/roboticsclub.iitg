@@ -1,0 +1,65 @@
+{
+  "name": "Robotics Club",
+  "institute": "IIT Guwahati",
+  "tagline": "The robotics community of IIT Guwahati — uniting students to design, build and compete with machines across mechanical, electronic and software design.",
+  "about": {
+    "heading": "We build robots that think, move and compete.",
+    "body": [
+      "The Robotics Club of IIT Guwahati unites students in an educational environment where they can pursue their interest in mechanical, electronic and software design by building real robots — from autonomous bots and humanoids to swarm robotics, robotic arms and aerial vehicles.",
+      "Experience is not a prerequisite. As our members like to say, none of us had any idea of robotics when we first stepped into the club room. Freshers learn through workshops and mentored projects, showcase their work at Techevince, and represent IIT Guwahati at the Inter IIT Tech Meet."
+    ],
+    "pillars": [
+      "Autonomous bots",
+      "Humanoids",
+      "Swarm robotics",
+      "Robotic arms",
+      "Aerial vehicles",
+      "Open to every branch"
+    ]
+  },
+  "stats": [
+    {
+      "key": "projects",
+      "suffix": "+",
+      "label": "Projects built"
+    },
+    {
+      "key": "podiums",
+      "label": "Inter IIT podiums"
+    },
+    {
+      "key": "events",
+      "label": "Flagship events"
+    },
+    {
+      "key": "team",
+      "label": "Core team members"
+    }
+  ],
+  "contact": {
+    "email": "roboclub@iitg.ac.in",
+    "address": "Robotics Club, Student Activity Centre, IIT Guwahati, Assam 781039",
+    "socials": [
+      {
+        "name": "GitHub",
+        "url": "https://github.com/RCIITG"
+      },
+      {
+        "name": "Instagram",
+        "url": "https://www.instagram.com/roboclubiitg/"
+      },
+      {
+        "name": "LinkedIn",
+        "url": "https://www.linkedin.com/company/robotics-club-iitg/"
+      },
+      {
+        "name": "YouTube",
+        "url": "https://www.youtube.com/user/RCIITG"
+      },
+      {
+        "name": "Facebook",
+        "url": "https://www.facebook.com/robotics.iitg"
+      }
+    ]
+  }
+}

@@ -1,5 +1,6 @@
 /* Project deep-dive page: project.html?id=<project id> */
-(() => {
+// wait for content/*.json (see js/data.js)
+window.CLUB_READY.then(() => {
   const C = window.CLUB;
   initChrome();
 
@@ -133,4 +134,4 @@
     if (e.key === "ArrowLeft") location.href = `project.html?id=${encodeURIComponent(prev.id)}`;
     if (e.key === "ArrowRight") location.href = `project.html?id=${encodeURIComponent(next.id)}`;
   });
-})();
+});

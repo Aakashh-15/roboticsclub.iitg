@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 /*
- * Sanity-checks js/data.js before it goes live.
+ * Sanity-checks the site content (content/*.json) before it goes live.
  * Run:  node scripts/validate.mjs     (also runs in CI on every push / PR)
  *
- * Catches the mistakes that are easy to make when editing content by hand:
- * syntax errors, duplicate project ids, achievements pointing at projects
+ * Catches the mistakes that are easy to make when editing content:
+ * broken JSON, duplicate project ids, achievements pointing at projects
  * that don't exist, malformed dates, missing local files, etc.
  */
 import { readFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import vm from "node:vm";
+import { createRequire } from "node:module";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const errors = [];
@@ -18,16 +18,20 @@ const warnings = [];
 const err = (m) => errors.push(m);
 const warn = (m) => warnings.push(m);
 
-// ---- load data.js exactly like the browser does ----
+// ---- load content/*.json exactly like the browser does (js/data.js) ----
 let C;
 try {
-  const sandbox = { window: {} };
-  vm.createContext(sandbox);
-  vm.runInContext(readFileSync(join(root, "js/data.js"), "utf8"), sandbox, { filename: "js/data.js" });
-  C = sandbox.window.CLUB;
-  if (!C) throw new Error("js/data.js did not define window.CLUB");
+  const { buildClub, CONTENT_FILES } = createRequire(import.meta.url)(join(root, "js/data.js"));
+  const files = {};
+  for (const name of CONTENT_FILES) {
+    const file = `content/${name}.json`;
+    try { files[name] = JSON.parse(readFileSync(join(root, file), "utf8")); }
+    catch (e) { throw new Error(`${file}: ${e.message}`); }
+  }
+  C = buildClub(files);
 } catch (e) {
-  console.error(`✖ js/data.js failed to load:\n  ${e.message}`);
+  console.error(`✖ site content failed to load:
+  ${e.message}`);
   process.exit(1);
 }
 
@@ -40,7 +44,7 @@ const checkLocal = (u, where) => {
 const isoDate = /^\d{4}-\d{2}-\d{2}$/;
 
 // ---- required top-level sections ----
-for (const key of ["about", "projects", "announcements", "events", "competitions", "achievements", "team", "gallery", "resources", "contact"]) {
+for (const key of ["about", "projects", "announcements", "events", "achievements", "team", "gallery", "resources", "contact"]) {
   if (C[key] == null) err(`missing top-level section: ${key}`);
 }
 
@@ -56,12 +60,6 @@ const ids = new Set();
   if (!p.summary) err(`${at}: missing summary`);
   if (!p.group) err(`${at}: missing group (used for the filter chips)`);
   checkLocal(p.image, at);
-});
-
-// ---- notices (news bar) ----
-(C.notices || []).forEach((n, i) => {
-  if (!n.text) err(`notices[${i}]: missing text`);
-  checkLocal(n.link, `notices[${i}]`);
 });
 
 // ---- announcements ----
@@ -130,7 +128,7 @@ if (!/^[^@\s]+@[^@\s]+$/.test(C.contact?.email || "")) err("contact.email looks 
 // ---- placeholders still in the data ----
 const countSamples = (arr = []) => arr.filter((x) => x && x.sample).length;
 const samples =
-  countSamples(C.projects) + countSamples(C.announcements) + countSamples(C.competitions) +
+  countSamples(C.projects) + countSamples(C.announcements) +
   countSamples(C.achievements) + (C.resources || []).reduce((n, r) => n + countSamples(r.items), 0);
 if (samples) warn(`${samples} entries are still marked sample: true (placeholders to replace)`);
 
@@ -141,4 +139,4 @@ if (errors.length) {
   console.error(`\n${errors.length} problem(s) found in js/data.js`);
   process.exit(1);
 }
-console.log(`✔ data.js OK: ${C.projects.length} projects, ${C.announcements.length} announcements, ${C.achievements.length} achievements, ${C.team.length} team members`);
+console.log(`✔ content OK: ${C.projects.length} projects, ${C.announcements.length} announcements, ${C.achievements.length} achievements, ${C.team.length} team members`);

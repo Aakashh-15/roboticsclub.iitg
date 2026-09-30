@@ -1,0 +1,477 @@
+{
+  "items": [
+    {
+      "id": "yuvaan",
+      "title": "Yuvaan",
+      "subtitle": "Mars rover programme",
+      "group": "Flagship",
+      "status": "Active",
+      "icon": "rover",
+      "color": "purple",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/Yuvaan.jpg",
+      "lead": "Tirth Patel",
+      "summary": "Ever wondered what goes inside the core of a hyped space expedition programme? Yuvaan is the club's Mars-rover team.",
+      "overview": "Yuvaan explores what it takes to land on another planet and operate there — through the design and development of a planetary rover. The team works across chassis and suspension, power, communication, manipulation and autonomy."
+    },
+    {
+      "id": "ar-glasses",
+      "title": "Artificial-reality Glasses",
+      "group": "2021",
+      "status": "Ongoing",
+      "icon": "bulb",
+      "color": "pink",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/21. ar_glasses.png",
+      "mentors": [
+        "Devesh Gupta"
+      ],
+      "summary": "A pair of glasses that does more than just correct your vision."
+    },
+    {
+      "id": "drivezee",
+      "title": "Drivezee",
+      "group": "2021",
+      "status": "Ongoing",
+      "icon": "rover",
+      "color": "yellow",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/21. drivezee.jpeg",
+      "mentors": [
+        "Yash Joshi"
+      ],
+      "summary": "A small-scale bot driven by an IC engine.",
+      "overview": "Drivezee is built in two phases. Phase one focuses on the design of an RC-operated, engine-powered car. Phase two addresses the transmission and transfer of power to the wheels."
+    },
+    {
+      "id": "exoskeleton",
+      "title": "Exoskeleton",
+      "group": "2021",
+      "status": "Ongoing",
+      "icon": "arm",
+      "color": "purple",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/21. exoskeleton.jpg",
+      "mentors": [
+        "Saranyaa Thiagarajan"
+      ],
+      "summary": "A shoulder-assistive wearable exoskeleton.",
+      "overview": "An exoskeleton is a wearable electromechanical structure intended to resemble, and allow movement similar to, the human skeletal system. This project builds a shoulder-assistive exoskeleton."
+    },
+    {
+      "id": "fido",
+      "title": "FiDo",
+      "group": "2021",
+      "status": "Ongoing",
+      "icon": "bot",
+      "color": "pink",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/21. fido.png",
+      "mentors": [
+        "Sree Rakhi Kudipudi"
+      ],
+      "summary": "An all-terrain, joystick-controlled bot that can roll on any surface.",
+      "overview": "Thanks to its wheel-like shape, FiDo can roll over any surface and go anywhere within its wireless range, controlled by a joystick. Applications include security and surveillance."
+    },
+    {
+      "id": "marjanator",
+      "title": "Marjanator",
+      "group": "2021",
+      "status": "Ongoing",
+      "icon": "swarm",
+      "color": "yellow",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/21. awwc.jpg",
+      "mentors": [
+        "Nahush Bhamre"
+      ],
+      "summary": "An autonomous vessel that collects floating waste from water bodies."
+    },
+    {
+      "id": "pipe-bot",
+      "title": "Pipe Traversing Bot",
+      "group": "2021",
+      "status": "Ongoing",
+      "icon": "rover",
+      "color": "purple",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/21. pipe.png",
+      "mentors": [
+        "Shreya Singh"
+      ],
+      "summary": "A bot for gas-pipeline inspection and maintenance.",
+      "overview": "The bot travels through pipelines to identify and report damage without manual intervention."
+    },
+    {
+      "id": "robotic-arm-2021",
+      "title": "Robotic Arm",
+      "group": "2021",
+      "status": "Ongoing",
+      "icon": "arm",
+      "color": "pink",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/21. rob_arm.jpg",
+      "mentors": [
+        "Ritesh Ranjan",
+        "Sanjana Reddy Kalsani"
+      ],
+      "summary": "A 6-DOF robotic arm that can fold into a small space.",
+      "overview": "A robotic arm with six degrees of freedom and the ability to fold into a compact space, targeting industrial automation and medical applications."
+    },
+    {
+      "id": "talking-bot",
+      "title": "Talking Bot",
+      "group": "2021",
+      "status": "Ongoing",
+      "icon": "bot",
+      "color": "yellow",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/21. talk.jpeg",
+      "mentors": [
+        "Rahul Aggarwal"
+      ],
+      "summary": "A voice-recognition chatbot built with sequence models and NLP, inspired by Alexa and Siri."
+    },
+    {
+      "id": "wall-plotter",
+      "title": "Wall Plotter",
+      "group": "2021",
+      "status": "Ongoing",
+      "icon": "arm",
+      "color": "purple",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/21. wall_plotter.jpeg",
+      "mentors": [
+        "Varshith Kancharla"
+      ],
+      "summary": "Give it an image and it controls a pen to draw it on a wall, automatically."
+    },
+    {
+      "id": "agrobot",
+      "title": "RuTag's Agrobot",
+      "group": "Inter IIT",
+      "event": "Inter IIT Tech Meet 9.0",
+      "status": "1st Position",
+      "icon": "rover",
+      "color": "yellow",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/20. agrobot.png",
+      "summary": "The agricultural robot that won first place at Inter IIT Tech Meet 9.0.",
+      "overview": "The Agrobot uses a rocker-bogie mechanism to navigate farm terrain. A vacuum pump picks up seeds, a tree-spade system handles transplanting, and a camera identifies weeds."
+    },
+    {
+      "id": "terrace-farming",
+      "title": "DIC's Terrace Farming Robot",
+      "group": "Inter IIT",
+      "event": "Inter IIT Tech Meet 8.0",
+      "status": "2nd Position",
+      "icon": "rover",
+      "color": "pink",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/19. dic.jpeg",
+      "summary": "A lightweight autonomous farming bot that climbs terrace steps. Second place at Inter IIT Tech Meet 8.0.",
+      "overview": "The robot climbs steep terrace steps and navigates reliably across uneven terrain to plough, seed, water and harvest."
+    },
+    {
+      "id": "soldier-support",
+      "title": "Technology for Soldier Support",
+      "group": "Inter IIT",
+      "event": "Inter IIT Tech Meet 7.0",
+      "status": "Inter IIT",
+      "icon": "chip",
+      "color": "purple",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/18. soldier.png",
+      "summary": "A wearable suit with sensors for motion detection and real-time tracking.",
+      "overview": "After a training period, the suit detects the wearer's motion and transmits real-time tracking information to a base station."
+    },
+    {
+      "id": "fishing-safety",
+      "title": "Safety Devices for Fishing Vessels",
+      "group": "Inter IIT",
+      "event": "Inter IIT Tech Meet 7.0",
+      "status": "Inter IIT",
+      "icon": "chip",
+      "color": "yellow",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/18. fishing.png",
+      "summary": "Ship-proximity alerts for fishing vessels using AIS signals and solar-powered buoys.",
+      "overview": "Ship distance is estimated from AIS signal power, a directional antenna estimates the direction of approach, and alerts are relayed over RF through a network of solar-powered buoys."
+    },
+    {
+      "id": "biped",
+      "title": "Biped",
+      "group": "Techevince",
+      "event": "Techevince 7.0",
+      "status": "Completed",
+      "icon": "bot",
+      "color": "purple",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/biped.jpg",
+      "summary": "A 10-DOF two-legged robot that walks on flat surfaces."
+    },
+    {
+      "id": "planar-manipulator",
+      "title": "Planar Manipulator",
+      "group": "Techevince",
+      "event": "Techevince 7.0",
+      "status": "Completed",
+      "icon": "arm",
+      "color": "pink",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/20. planar_man.png",
+      "summary": "A planar arm modelled on the human hand, capable of pattern-based writing, path traversal and object manipulation."
+    },
+    {
+      "id": "replication-bot",
+      "title": "Replication Bot",
+      "group": "Techevince",
+      "event": "Techevince 7.0",
+      "status": "Completed",
+      "icon": "arm",
+      "color": "yellow",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/20. replication_bot.jpg",
+      "summary": "A microcontroller-based arm that mirrors the motion of a synchronised replica."
+    },
+    {
+      "id": "drawing-machine",
+      "title": "Robotic Drawing Machine",
+      "group": "Techevince",
+      "event": "Techevince 7.0",
+      "status": "Completed",
+      "icon": "arm",
+      "color": "purple",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/20. drawing-arm.png",
+      "summary": "A two-axis pen-drawing machine for those short on drawing skill or time."
+    },
+    {
+      "id": "shape-shifter",
+      "title": "Shape Shifter",
+      "group": "Techevince",
+      "event": "Techevince 7.0",
+      "status": "Completed",
+      "icon": "gear",
+      "color": "pink",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/20. shapeshift.png",
+      "summary": "A terrain-adaptive wheel inspired by DARPA's shape-shifting wheel for all-terrain vehicles."
+    },
+    {
+      "id": "wall-follower",
+      "title": "Wall Follower",
+      "group": "Techevince",
+      "event": "Techevince 7.0",
+      "status": "Completed",
+      "icon": "bot",
+      "color": "yellow",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/20. wall_follow.png",
+      "summary": "An Arduino robot that follows a wall while holding a fixed distance from it."
+    },
+    {
+      "id": "warehouse",
+      "title": "Warehouse Management",
+      "group": "Techevince",
+      "event": "Techevince 7.0",
+      "status": "Completed",
+      "icon": "rover",
+      "color": "purple",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/20. warehouse.jpg",
+      "summary": "A fully autonomous bot that avoids obstacles to locate, lift and transport inventory."
+    },
+    {
+      "id": "augmata",
+      "title": "Augmata",
+      "group": "Techevince",
+      "event": "Techevince 6.0",
+      "status": "Completed",
+      "icon": "bulb",
+      "color": "pink",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/19. augmata.png",
+      "summary": "Augmented reality that enhances the real world with sounds, images and interactive virtual objects."
+    },
+    {
+      "id": "ballet-of-bots",
+      "title": "Ballet of Bots",
+      "group": "Techevince",
+      "event": "Techevince 6.0",
+      "status": "Completed",
+      "icon": "gear",
+      "color": "yellow",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/19. ballet_of_bot.png",
+      "summary": "PID control of a weighted ball on a flat surface, moving it precisely to set-points."
+    },
+    {
+      "id": "cyrus",
+      "title": "Cyrus",
+      "group": "Techevince",
+      "event": "Techevince 6.0",
+      "status": "Completed",
+      "icon": "rover",
+      "color": "purple",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/19. cyrus.jpg",
+      "summary": "A vehicle that tracks a sound source and drives autonomously towards it, using low-cost sensors and voice recognition."
+    },
+    {
+      "id": "lazy-fill",
+      "title": "Lazy Fill",
+      "group": "Techevince",
+      "event": "Techevince 6.0",
+      "status": "Completed",
+      "icon": "gear",
+      "color": "pink",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/19. lazy_fill.jpg",
+      "summary": "Automated water-bottle filling that removes the manual steps."
+    },
+    {
+      "id": "rearranging-arm",
+      "title": "Rearranging Robotic Arm",
+      "group": "Techevince",
+      "event": "Techevince 6.0",
+      "status": "Completed",
+      "icon": "arm",
+      "color": "yellow",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/19. rearrange_robotic_arm.png",
+      "summary": "A 4R arm with vision and control for sorting, rearranging, obstacle avoidance and trajectory planning."
+    },
+    {
+      "id": "rubiks-2019",
+      "title": "Rubik's Cube Solver",
+      "group": "Techevince",
+      "event": "Techevince 6.0",
+      "status": "Completed",
+      "icon": "chip",
+      "color": "purple",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/19. rubiks.jpeg",
+      "summary": "Scans a cube and solves it with stepper motors on an acrylic, pillar-mounted frame."
+    },
+    {
+      "id": "stair-climber",
+      "title": "Stair Climbing Robot",
+      "group": "Techevince",
+      "event": "Techevince 6.0",
+      "status": "Completed",
+      "icon": "rover",
+      "color": "pink",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/19. stair_climber.jpg",
+      "summary": "A six-wheeled NodeMCU bot with a self-adjusting gimbal plate that climbs stairs.",
+      "overview": "The robot uses high-torque DC motors, a self-adjusting gimbal plate, a flexible front elbow joint and rigid rear arms to climb stairs, all controlled through a NodeMCU."
+    },
+    {
+      "id": "atv",
+      "title": "All Terrain Vehicle",
+      "group": "Techevince",
+      "event": "Techevince 5.0",
+      "status": "Completed",
+      "icon": "rover",
+      "color": "yellow",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/18. all_ter.png",
+      "summary": "A rocker-bogie vehicle, the Mars-rover mechanism for crossing rough terrain while staying stable."
+    },
+    {
+      "id": "attendance-bot",
+      "title": "Attendance Taking Bot",
+      "group": "Techevince",
+      "event": "Techevince 5.0",
+      "status": "Completed",
+      "icon": "bot",
+      "color": "purple",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/18. attendance.png",
+      "summary": "Automated attendance recording using face recognition."
+    },
+    {
+      "id": "cycle-lock",
+      "title": "Cycle Lock",
+      "group": "Techevince",
+      "event": "Techevince 5.0",
+      "status": "Completed",
+      "icon": "chip",
+      "color": "pink",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/18. cycle_lock.png",
+      "summary": "A Bluetooth lock that turns the key with a servo, driven by an Arduino Micro."
+    },
+    {
+      "id": "ball-collector",
+      "title": "Automated Ball Collector",
+      "group": "Techevince",
+      "event": "Techevince 4.0",
+      "status": "Completed",
+      "icon": "rover",
+      "color": "yellow",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/17. abc.png",
+      "summary": "The true tennis buddy: place it on the court and it collects the balls for you."
+    },
+    {
+      "id": "biped-ros",
+      "title": "Bi-pedal Robot",
+      "group": "Techevince",
+      "event": "Techevince 4.0",
+      "status": "Completed",
+      "icon": "bot",
+      "color": "purple",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/17. biped.png",
+      "summary": "A ROS-controlled biped robot driven by a joystick."
+    },
+    {
+      "id": "ball-arm",
+      "title": "The Robotic Arm",
+      "group": "Techevince",
+      "event": "Techevince 4.0",
+      "status": "Completed",
+      "icon": "arm",
+      "color": "pink",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/17. arm.png",
+      "summary": "An arm that finds coloured balls in 3D space and grasps them automatically."
+    },
+    {
+      "id": "deltabot",
+      "title": "Deltabot",
+      "group": "Techevince",
+      "event": "Techevince 4.0",
+      "status": "Completed",
+      "icon": "arm",
+      "color": "yellow",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/17. delta.png",
+      "summary": "A parallel delta robot whose parallelogram arms keep the end-effector's orientation fixed.",
+      "overview": "A delta robot has three arms connected to universal joints at the base. Its parallelogram arms keep the end-effector's orientation constant, the design used in industrial picking and packaging at up to 300 picks per minute."
+    },
+    {
+      "id": "hive",
+      "title": "Hive v2.0",
+      "group": "Techevince",
+      "event": "Techevince 4.0",
+      "status": "Completed",
+      "icon": "swarm",
+      "color": "purple",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/17. hive.png",
+      "summary": "The club's first prototype of an autonomous, intelligent multi-robot swarm system, built to be expanded."
+    },
+    {
+      "id": "mobile-printer",
+      "title": "Mobile Printer",
+      "group": "Techevince",
+      "event": "Techevince 4.0",
+      "status": "Completed",
+      "icon": "rover",
+      "color": "pink",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/17. mobile.png",
+      "summary": "A mobile robot that writes letters and words by driving around."
+    },
+    {
+      "id": "rubiks-2017",
+      "title": "Rubik's Cube Solver (v1)",
+      "group": "Techevince",
+      "event": "Techevince 4.0",
+      "status": "Completed",
+      "icon": "chip",
+      "color": "yellow",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/17. rubik.png",
+      "summary": "Image processing detects the scrambled state, computes a solution and drives grippers to execute it."
+    },
+    {
+      "id": "transformer",
+      "title": "Transformer",
+      "group": "Techevince",
+      "event": "Techevince 4.0",
+      "status": "Completed",
+      "icon": "bot",
+      "color": "purple",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/17. transform.png",
+      "summary": "A modular robot in the spirit of the Transformers films, part of an evolving robot ecosystem."
+    },
+    {
+      "id": "vein-finder",
+      "title": "Vein Finder",
+      "group": "Techevince",
+      "event": "Techevince 4.0",
+      "status": "Completed",
+      "icon": "bulb",
+      "color": "pink",
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/17. vein.png",
+      "summary": "Near-infrared LEDs and a filtered camera make veins visible beneath the skin.",
+      "overview": "A U-shaped arrangement of LEDs projects near-infrared light. Blood absorbs it while tissue reflects it, so veins stand out when viewed through an infrared-filtered camera."
+    }
+  ]
+}

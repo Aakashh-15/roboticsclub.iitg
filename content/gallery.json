@@ -1,0 +1,54 @@
+{
+  "items": [
+    {
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/walle_hi.jpg",
+      "caption": "Say hi to the club",
+      "tag": "Club"
+    },
+    {
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/2020.jpg",
+      "caption": "Inter IIT Tech Meet 9.0",
+      "tag": "Competition"
+    },
+    {
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/2019.jpg",
+      "caption": "Inter IIT Tech Meet 8.0",
+      "tag": "Competition"
+    },
+    {
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/orientation.jpg",
+      "caption": "Introductory session",
+      "tag": "Events"
+    },
+    {
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/arduino_workshop.jpg",
+      "caption": "Arduino workshop",
+      "tag": "Workshop"
+    },
+    {
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/opencv_workshop.jpg",
+      "caption": "OpenCV workshop",
+      "tag": "Workshop"
+    },
+    {
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/ai_workshop.jpg",
+      "caption": "AI workshop",
+      "tag": "Workshop"
+    },
+    {
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/10_hr_chalenge.jpg",
+      "caption": "10 Hours Robot Challenge",
+      "tag": "Events"
+    },
+    {
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/Robothon.JPG",
+      "caption": "Robothon",
+      "tag": "Events"
+    },
+    {
+      "image": "https://www.iitg.ac.in/sa/roboclub/img/2018.JPG",
+      "caption": "Inter IIT Tech Meet 7.0",
+      "tag": "Competition"
+    }
+  ]
+}

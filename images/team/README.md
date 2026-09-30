@@ -25,4 +25,4 @@ The website picks it up automatically; until then it shows the person's initials
 - Lower-case file names with dashes, `.jpg` extension
 
 To use a different file name or format, set `image: "images/team/whatever.png"` on that
-member in `js/data.js`. Run `node scripts/validate.mjs` to see which photos are still missing.
+member in the site editor (Team) or `content/team.json`. Run `node scripts/validate.mjs` to see which photos are still missing.

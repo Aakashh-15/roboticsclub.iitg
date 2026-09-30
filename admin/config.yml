@@ -1,0 +1,293 @@
+# Site editor configuration (Sveltia CMS, Decap-compatible).
+# Each collection below is one area of the website; each field is one box in the editor form.
+# Saving in the editor commits the change to GitHub; the website reads content/*.json.
+
+backend:
+  name: github
+  repo: Aakashh-15/roboticsclub.iitg
+  branch: main
+  # "Sign in with GitHub" needs a small free auth helper (see EDITORS.md → one-time setup).
+  # Paste its address here, e.g. https://roboclub-cms-auth.<your-account>.workers.dev
+  # Until then, editors can use "Sign in with access token" instead.
+  # base_url: https://roboclub-cms-auth.example.workers.dev
+  commit_messages:
+    update: "Update {{collection}}: {{slug}} (via site editor)"
+    uploadMedia: "Upload {{path}} (via site editor)"
+
+media_folder: images/uploads
+public_folder: images/uploads
+
+site_url: https://aakashh-15.github.io/roboticsclub.iitg/
+display_url: https://aakashh-15.github.io/roboticsclub.iitg/
+logo_url: ../images/logo.svg
+
+collections:
+  # ------------------------------------------------------------------ EVENTS
+  - name: events
+    label: Events
+    description: Everything shown in "Events & Updates" on the home page.
+    icon: event
+    files:
+      - name: timeline
+        label: Dated events (strip + calendar)
+        file: content/timeline.json
+        fields:
+          - name: items
+            label: Events
+            label_singular: Event
+            widget: list
+            summary: "{{fields.start}} · {{fields.title}}"
+            hint: The 3 latest appear on the home strip; all appear in the calendar. Order does not matter.
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: subtitle, label: Subtitle, widget: string, required: false }
+              - { name: start, label: Start date, widget: datetime, format: YYYY-MM-DD, time_format: false }
+              - { name: end, label: End date, widget: datetime, format: YYYY-MM-DD, time_format: false, required: false, hint: Leave empty for one-day events }
+              - { name: type, label: Type, widget: string, required: false, hint: "e.g. Competition, Workshop, Orientation" }
+              - { name: time, label: Time, widget: string, required: false, hint: "e.g. 7:30 PM" }
+              - { name: venue, label: Venue, widget: string, required: false, hint: "e.g. Core 5" }
+              - { name: host, label: Organised by, widget: string, required: false }
+              - { name: desc, label: Description, widget: text, required: false }
+              - { name: highlights, label: Highlights, widget: list, required: false, field: { name: highlight, label: Highlight, widget: string } }
+              - { name: image, label: Poster, widget: image, required: false, hint: "WebP or JPG, under ~300 KB" }
+              - name: links
+                label: Links
+                widget: list
+                required: false
+                fields:
+                  - { name: label, label: Button text, widget: string }
+                  - { name: url, label: Link, widget: string }
+
+      - name: announcements
+        label: Announcements
+        file: content/announcements.json
+        fields:
+          - name: items
+            label: Announcements
+            label_singular: Announcement
+            widget: list
+            summary: "{{fields.date}} · {{fields.title}}"
+            hint: Every announcement appears in the calendar on its date.
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: date, label: Date, widget: datetime, format: YYYY-MM-DD, time_format: false }
+              - { name: type, label: Type, widget: string, hint: "e.g. Recruitment, Workshop" }
+              - { name: body, label: Text, widget: text }
+              - name: links
+                label: Links / downloads
+                widget: list
+                required: false
+                fields:
+                  - { name: label, label: Button text, widget: string }
+                  - { name: url, label: Link, widget: string, hint: "Full https:// link, or a file path such as materials/guide.pdf" }
+              - { name: timeline, label: Also show on the home strip, widget: boolean, default: false, required: false }
+              - { name: pinned, label: Pinned, widget: boolean, default: false, required: false }
+              - { name: sample, label: Placeholder (not real yet), widget: boolean, default: false, required: false }
+
+      - name: flagship
+        label: Flagship events (yearly)
+        file: content/events.json
+        fields:
+          - name: items
+            label: Flagship events
+            label_singular: Flagship event
+            widget: list
+            summary: "{{fields.title}}"
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: desc, label: Short description, widget: string }
+              - { name: image, label: Photo, widget: image, required: false }
+              - { name: icon, label: Icon (when no photo), widget: select, required: false, options: [rover, arm, swarm, gear, bulb, trophy, bot, chip] }
+
+  # ------------------------------------------------------------ ACHIEVEMENTS
+  - name: achievements
+    label: Achievements
+    icon: trophy
+    files:
+      - name: achievements
+        label: Hall of fame
+        file: content/achievements.json
+        fields:
+          - name: items
+            label: Achievements
+            label_singular: Achievement
+            widget: list
+            summary: "{{fields.year}} · {{fields.rank}} · {{fields.event}}"
+            hint: Keep the newest at the top. The first gold becomes the big tile on the Achievements page.
+            fields:
+              - { name: event, label: Competition / event, widget: string }
+              - { name: year, label: Year, widget: string, hint: "e.g. 2026 or 2017–20" }
+              - { name: rank, label: Result (short), widget: string, hint: "1st / 2nd / 3rd get gold, silver, bronze; anything else e.g. 17th, Finalist" }
+              - { name: title, label: Result (full), widget: string, hint: "e.g. 1st Position, 17th of 36 teams" }
+              - { name: desc, label: Description, widget: text }
+              - { name: image, label: Photo, widget: image, required: false }
+              - { name: project, label: Linked project id, widget: string, required: false, hint: "The project's id from Projects, e.g. agrobot" }
+              - { name: link, label: Other link, widget: string, required: false }
+
+  # ---------------------------------------------------------------- PROJECTS
+  - name: projects
+    label: Projects
+    icon: precision_manufacturing
+    files:
+      - name: projects
+        label: All projects
+        file: content/projects.json
+        fields:
+          - name: items
+            label: Projects
+            label_singular: Project
+            widget: list
+            summary: "{{fields.title}} · {{fields.group}}"
+            hint: The first project is the large featured card.
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: id, label: Page id, widget: string, pattern: ["^[a-z0-9-]+$", "Lowercase letters, numbers and dashes only"], hint: "Used in the page address, e.g. line-follower-v2. Must be unique." }
+              - { name: subtitle, label: Subtitle, widget: string, required: false }
+              - { name: group, label: Group (filter), widget: string, hint: "e.g. Flagship, 2026, Inter IIT, Techevince" }
+              - { name: event, label: Shown at, widget: string, required: false, hint: "e.g. Techevince 7.0" }
+              - { name: status, label: Status, widget: string, hint: "e.g. Active, Ongoing, Completed, 1st Position" }
+              - { name: summary, label: Card text, widget: text }
+              - { name: overview, label: Full overview, widget: text, required: false }
+              - { name: image, label: Photo, widget: image, required: false }
+              - { name: icon, label: Icon (when no photo), widget: select, options: [rover, arm, swarm, gear, bulb, trophy, bot, chip] }
+              - { name: color, label: Accent colour, widget: select, options: [purple, pink, yellow] }
+              - { name: lead, label: Project lead, widget: string, required: false }
+              - { name: mentors, label: Mentors, widget: list, required: false, field: { name: mentor, label: Name, widget: string } }
+              - { name: highlights, label: Highlights, widget: list, required: false, field: { name: highlight, label: Highlight, widget: string } }
+              - name: specs
+                label: Fact sheet
+                widget: list
+                required: false
+                fields:
+                  - { name: label, label: Item, widget: string }
+                  - { name: value, label: Value, widget: string }
+              - { name: stack, label: Tech stack, widget: list, required: false, field: { name: tech, label: Technology, widget: string } }
+              - name: timeline
+                label: Roadmap
+                widget: list
+                required: false
+                fields:
+                  - { name: phase, label: Phase, widget: string }
+                  - { name: detail, label: Detail, widget: string }
+              - name: links
+                label: Links
+                widget: list
+                required: false
+                fields:
+                  - { name: label, label: Button text, widget: string }
+                  - { name: url, label: Link, widget: string }
+
+  # -------------------------------------------------------------------- TEAM
+  - name: team
+    label: Team
+    icon: groups
+    files:
+      - name: team
+        label: Core team
+        file: content/team.json
+        fields:
+          - name: items
+            label: Members
+            label_singular: Member
+            widget: list
+            summary: "{{fields.name}} · {{fields.role}}"
+            hint: "Photos can also be dropped into images/team/<full-name>.jpg"
+            fields:
+              - { name: name, label: Full name, widget: string }
+              - { name: role, label: Role, widget: string }
+              - { name: linkedin, label: LinkedIn profile, widget: string, required: false, hint: "Full https://www.linkedin.com/in/… link" }
+              - { name: image, label: Photo, widget: image, required: false, hint: "Portrait 4:5, e.g. 800×1000" }
+              - { name: department, label: Department, widget: string, required: false }
+              - { name: year, label: Year, widget: string, required: false }
+              - { name: about, label: One line about them, widget: string, required: false }
+
+  # ----------------------------------------------------------------- GALLERY
+  - name: gallery
+    label: Gallery
+    icon: photo_library
+    files:
+      - name: gallery
+        label: Photos
+        file: content/gallery.json
+        fields:
+          - name: items
+            label: Photos
+            label_singular: Photo
+            widget: list
+            summary: "{{fields.tag}} · {{fields.caption}}"
+            fields:
+              - { name: image, label: Photo, widget: image }
+              - { name: caption, label: Caption, widget: string }
+              - { name: tag, label: Tag, widget: string, hint: "e.g. Workshop, Competition, Events" }
+
+  # --------------------------------------------------------------- RESOURCES
+  - name: resources
+    label: Resources
+    icon: menu_book
+    files:
+      - name: resources
+        label: Learning resources and inventory
+        file: content/resources.json
+        fields:
+          - name: tabs
+            label: Tabs
+            label_singular: Tab
+            widget: list
+            summary: "{{fields.tab}}"
+            fields:
+              - { name: tab, label: Tab name, widget: string }
+              - { name: inventory, label: This tab is the inventory list, widget: boolean, default: false, required: false }
+              - name: items
+                label: Items
+                label_singular: Item
+                widget: list
+                summary: "{{fields.title}}"
+                fields:
+                  - { name: title, label: Title, widget: string }
+                  - { name: desc, label: Description, widget: string }
+                  - { name: url, label: Link or file, widget: string, required: false, hint: "Not needed for inventory items" }
+                  - { name: kind, label: Kind, widget: string, required: false, hint: "e.g. PDF, Docs, Course, Drive" }
+                  - { name: qty, label: Availability (inventory), widget: select, required: false, options: [Available, Limited, On request] }
+                  - { name: sample, label: Placeholder (not real yet), widget: boolean, default: false, required: false }
+
+  # ---------------------------------------------------------------- SETTINGS
+  - name: settings
+    label: Site settings
+    icon: settings
+    files:
+      - name: settings
+        label: About, contact and social links
+        file: content/settings.json
+        fields:
+          - { name: name, label: Club name, widget: string }
+          - { name: institute, label: Institute, widget: string }
+          - { name: tagline, label: Tagline (home banner), widget: text }
+          - name: about
+            label: About section
+            widget: object
+            fields:
+              - { name: heading, label: Heading, widget: string }
+              - { name: body, label: Paragraphs, widget: list, field: { name: paragraph, label: Paragraph, widget: text } }
+              - { name: pillars, label: Focus areas (pills), widget: list, field: { name: pill, label: Pill, widget: string } }
+          - name: stats
+            label: About counters
+            widget: list
+            summary: "{{fields.label}}"
+            fields:
+              - { name: key, label: Counts automatically, widget: select, options: [projects, podiums, events, team] }
+              - { name: label, label: Label, widget: string }
+              - { name: suffix, label: Suffix, widget: string, required: false, hint: "e.g. +" }
+              - { name: value, label: Fixed number (optional), widget: number, required: false, hint: Leave empty to count automatically }
+          - name: contact
+            label: Contact
+            widget: object
+            fields:
+              - { name: email, label: Email, widget: string }
+              - { name: address, label: Address, widget: string }
+              - name: socials
+                label: Social links
+                widget: list
+                summary: "{{fields.name}}"
+                fields:
+                  - { name: name, label: Network, widget: select, options: [GitHub, Instagram, LinkedIn, YouTube, Facebook] }
+                  - { name: url, label: Link, widget: string }

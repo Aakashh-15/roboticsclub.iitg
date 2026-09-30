@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Robotics Club · IIT Guwahati</title>
-  <meta name="description" content="The Robotics Club of IIT Guwahati — projects, competitions, team, announcements and learning resources." />
+  <meta name="description" content="The Robotics Club of IIT Guwahati — projects, achievements, team, events and learning resources." />
   <meta name="theme-color" content="#000000" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Robotics Club IIT Guwahati" />
   <meta property="og:title" content="Robotics Club · IIT Guwahati" />
-  <meta property="og:description" content="The Robotics Club of IIT Guwahati — projects, competitions, team, announcements and learning resources." />
+  <meta property="og:description" content="The Robotics Club of IIT Guwahati — projects, achievements, team, events and learning resources." />
   <meta property="og:image" content="images/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" href="images/logo.svg" type="image/svg+xml" />
@@ -33,7 +33,7 @@
         <p class="hero-sub" data-bind="tagline"></p>
         <div class="hero-ctas">
           <a href="projects.html" class="btn btn-solid">Explore Projects</a>
-          <a href="updates.html" class="btn btn-outline">Join the Club</a>
+          <a href="index.html#happening" class="btn btn-outline">Join the Club</a>
         </div>
       </div>
 
@@ -81,11 +81,6 @@
           <g id="marsFx"></g>
         </svg>
       </div>
-
-      <div class="newsbar" role="region" aria-label="Latest announcements and important notices">
-        <span class="newsbar-label"><span class="newsbar-dot" aria-hidden="true"></span>Latest</span>
-        <div class="newsbar-view"><div class="newsbar-track" id="newsTrack"></div></div>
-      </div>
     </section>
 
     <!-- ============ ABOUT ============ -->
@@ -111,7 +106,6 @@
             <span class="eyebrow">What's happening</span>
             <h2 class="h2">Events &amp; <span class="outline">Updates</span></h2>
           </div>
-          <a class="btn btn-outline" href="updates.html">All events &amp; updates</a>
         </div>
 
         <div class="hp-sub reveal">
@@ -119,6 +113,12 @@
           <div class="tl2-legend" aria-hidden="true"><span class="s-upcoming">Upcoming</span><span class="s-live">Live now</span><span class="s-recent">Recent</span></div>
         </div>
         <div class="tl2" id="tline"></div>
+
+        <div class="hp-sub reveal">
+          <h3 class="h3">Event calendar</h3>
+          <p class="muted hp-note">Every event, including older ones. Select an event for details.</p>
+        </div>
+        <div class="cal reveal" id="eventCal"></div>
 
         <div class="hp-sub reveal">
           <h3 class="h3">Flagship events</h3>
@@ -139,7 +139,7 @@
             <span class="eyebrow">Explore</span>
             <h2 class="h2">Explore <span class="outline">the Club</span></h2>
           </div>
-          <p class="sec-note">Detailed information on our projects, announcements, competitions, team and learning resources.</p>
+          <p class="sec-note">Detailed information on our projects, achievements, team, gallery and learning resources.</p>
         </div>
         <div class="explore-grid" id="exploreGrid"></div>
       </div>

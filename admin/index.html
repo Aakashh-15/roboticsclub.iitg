@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#000000" />
+  <title>Members area · Robotics Club IIT Guwahati</title>
+  <link rel="icon" href="../images/logo.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link id="siteFonts" href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@500;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link id="siteCss" rel="stylesheet" href="../css/style.css" />
+  <style id="gateCss">
+    /* Entrance page for the site editor. Removed when the editor starts. */
+    body { min-height: 100vh; display: flex; flex-direction: column; }
+    .gate { position: relative; flex: 1; display: grid; place-items: center; padding: 48px var(--pad) 72px; overflow: hidden; }
+    .gate-sky { position: absolute; inset: 0; pointer-events: none; }
+    .gate-sky i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff; animation: starTwinkle 3.6s ease-in-out infinite; }
+    .gate-planet { position: absolute; right: 8%; top: 12%; width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #9d86ff, #7b5cfa 60%, #4b33c7); opacity: .9; }
+    .gate-planet::after { content: ""; position: absolute; left: -40px; right: -40px; top: 50%; height: 26px; margin-top: -13px; border: 4px solid var(--pink); border-radius: 50%; transform: rotate(-14deg); }
+    .gate-ground { position: absolute; left: 0; right: 0; bottom: 0; height: 90px; background: radial-gradient(120% 90px at 50% 100%, #f2be43 60%, transparent 61%); opacity: .95; }
+    .gate-ground::before { content: ""; position: absolute; left: 0; right: 0; bottom: 40px; height: 70px; background: radial-gradient(140% 70px at 30% 100%, #2e2270 60%, transparent 61%); z-index: -1; }
+    .gate-card {
+      position: relative; z-index: 1; width: min(540px, 100%); padding: clamp(28px, 4vw, 44px);
+      border-radius: 26px; border: 1px solid rgba(157, 134, 255, .45);
+      background: rgba(10, 10, 16, .78); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 40px 100px -40px rgba(123, 92, 250, .8);
+      transition: transform .25s var(--ease);
+    }
+    .gate-card .eyebrow { margin-bottom: 10px; }
+    .gate-card h1 { margin: 0; font-family: var(--display); font-weight: 800; font-size: clamp(44px, 7vw, 72px); line-height: .92; text-transform: uppercase; }
+    .gate-card p { color: #c8c8d2; margin: 16px 0 0; }
+    .gate-steps { list-style: none; margin: 22px 0 26px; padding: 0; display: grid; gap: 10px; }
+    .gate-steps li { display: flex; gap: 12px; align-items: flex-start; font-size: 14.5px; color: #d6d6de; }
+    .gate-steps b { flex: none; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--surface-3); color: var(--yellow); font-size: 12px; }
+    .gate-btn { width: 100%; gap: 10px; font-size: 16px; }
+    .gate-btn svg { width: 18px; height: 18px; }
+    .gate-note { margin: 14px 0 0 !important; font-size: 13px; color: var(--muted) !important; text-align: center; }
+    .gate-note a { color: #fff; border-bottom: 1px solid var(--yellow); }
+    .gate-console { display: none; margin-top: 22px; padding: 16px 18px; border-radius: 14px; background: #050608; border: 1px solid #2b2b35; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; color: #6fe3a1; min-height: 96px; }
+    .gate.booting .gate-console { display: block; }
+    .gate.booting .gate-btn { opacity: .5; pointer-events: none; }
+    .gate-console div::before { content: "> "; color: #3f7d5c; }
+    .gate-console .caret { display: inline-block; width: 8px; height: 15px; background: #6fe3a1; vertical-align: -2px; animation: newsBlink .9s steps(2) infinite; }
+    @keyframes newsBlink { 50% { opacity: 0; } }
+    .gate-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px var(--pad); border-bottom: 1px solid var(--line); }
+    .gate-foot { padding: 20px var(--pad); border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px; text-align: center; }
+  </style>
+</head>
+<body class="booted">
+  <div id="gate-wrap">
+    <div class="cursor" id="cursor" aria-hidden="true"></div>
+    <header class="gate-top">
+      <a href="../index.html" class="brand" aria-label="Robotics Club IIT Guwahati — website">
+        <img src="../images/logo.svg" alt="" />
+        <span class="brand-text">ROBOTICS CLUB.<small>IIT GUWAHATI</small></span>
+      </a>
+      <a href="../index.html" class="btn btn-outline btn-sm">← Back to website</a>
+    </header>
+
+    <main class="gate" id="gate">
+      <div class="gate-sky" id="sky" aria-hidden="true"></div>
+      <div class="gate-planet" aria-hidden="true"></div>
+      <div class="gate-ground" aria-hidden="true"></div>
+
+      <section class="gate-card" id="gateCard" aria-labelledby="gate-title">
+        <span class="eyebrow">Members only</span>
+        <h1 id="gate-title">Members <span class="outline">area</span></h1>
+        <p>Update the club website without writing any code: events, announcements, achievements, projects, team, gallery and resources.</p>
+        <ul class="gate-steps">
+          <li><b>1</b><span>Sign in with the GitHub account the admin added as an editor.</span></li>
+          <li><b>2</b><span>Pick a section, edit the form, drag in pictures.</span></li>
+          <li><b>3</b><span>Press <strong>Save</strong>. The website updates automatically.</span></li>
+        </ul>
+        <button class="btn btn-solid gate-btn" id="launch" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+          Sign in to the editor
+        </button>
+        <div class="gate-console" id="console" aria-live="polite"></div>
+        <p class="gate-note">Not an editor? Ask the Secretary to add your GitHub account. <a href="https://github.com/Aakashh-15/roboticsclub.iitg/blob/main/EDITORS.md" target="_blank" rel="noopener">Editor guide</a></p>
+      </section>
+    </main>
+
+    <footer class="gate-foot">Access is limited to club editors. Every change is recorded under the editor's name.</footer>
+  </div>
+
+  <script>
+    (() => {
+      const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      // star field
+      const sky = document.getElementById("sky");
+      for (let i = 0; i < 90; i++) {
+        const s = document.createElement("i");
+        s.style.left = Math.random() * 100 + "%";
+        s.style.top = Math.random() * 78 + "%";
+        s.style.opacity = (0.3 + Math.random() * 0.7).toFixed(2);
+        s.style.animationDelay = (Math.random() * 4).toFixed(2) + "s";
+        sky.appendChild(s);
+      }
+
+      // cursor ring + gentle card tilt (mouse only)
+      const cursor = document.getElementById("cursor"), card = document.getElementById("gateCard");
+      if (matchMedia("(pointer: fine)").matches && !reduce) {
+        let x = -100, y = -100, cx = x, cy = y, alive = true;
+        addEventListener("mousemove", (e) => {
+          x = e.clientX; y = e.clientY; cursor.classList.add("on");
+          const r = card.getBoundingClientRect();
+          const px = (x - r.left) / r.width - 0.5, py = (y - r.top) / r.height - 0.5;
+          card.style.transform = Math.abs(px) < 0.8 && Math.abs(py) < 0.8 ? `perspective(900px) rotateY(${px * 4}deg) rotateX(${-py * 4}deg)` : "";
+        }, { passive: true });
+        document.addEventListener("mouseover", (e) => cursor.classList.toggle("hover", !!e.target.closest("a, button")));
+        (function loop() { if (!alive) return; cx += (x - cx) * 0.22; cy += (y - cy) * 0.22; cursor.style.transform = `translate(${cx}px, ${cy}px)`; requestAnimationFrame(loop); })();
+        window.__stopGateCursor = () => (alive = false);
+      }
+
+      // start the editor: short boot sequence, then hand the page over to Sveltia CMS
+      const gate = document.getElementById("gate"), out = document.getElementById("console");
+      const lines = ["Loading site editor…", "Reading admin/config.yml…", "Connecting to GitHub…"];
+      document.getElementById("launch").addEventListener("click", () => {
+        gate.classList.add("booting");
+        let i = 0;
+        const step = () => {
+          out.innerHTML = lines.slice(0, i + 1).map((l, k) => `<div>${l}${k === i ? ' <span class="caret"></span>' : ""}</div>`).join("");
+          if (++i < lines.length) return setTimeout(step, reduce ? 0 : 420);
+          const s = document.createElement("script");
+          s.src = "https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js";
+          s.onload = () => {
+            // the site styles would interfere with the editor's own layout
+            window.__stopGateCursor?.();
+            ["gate-wrap", "siteCss", "gateCss", "siteFonts"].forEach((id) => document.getElementById(id)?.remove());
+            document.body.className = "";
+          };
+          s.onerror = () => { out.innerHTML += "<div style='color:#ff8a8a'>Could not load the editor. Check your internet connection and try again.</div>"; gate.classList.remove("booting"); };
+          document.body.appendChild(s);
+        };
+        step();
+      });
+    })();
+  </script>
+</body>
+</html>

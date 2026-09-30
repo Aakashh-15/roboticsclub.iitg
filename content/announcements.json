@@ -1,0 +1,40 @@
+{
+  "items": [
+    {
+      "date": "2026-09-26",
+      "type": "Recruitment",
+      "title": "Selection Task released: The Clue Chain Hunt",
+      "body": "Our freshers' selection task is live. Program a robot in ROS 2 to follow a chain of clues through a simulated arena. Download the problem statement and set up your environment with our installation guides.",
+      "links": [
+        {
+          "label": "Problem statement",
+          "url": "materials/selection-task-clue-chain-hunt.pdf"
+        },
+        {
+          "label": "Install guide · Humble",
+          "url": "materials/ros2-humble-install-guide.pdf"
+        },
+        {
+          "label": "Install guide · Jazzy",
+          "url": "materials/ros2-jazzy-install-guide.pdf"
+        }
+      ],
+      "pinned": true,
+      "timeline": true
+    },
+    {
+      "date": "2026-09-20",
+      "type": "Workshop",
+      "title": "ROS 2 bootcamp for freshers",
+      "sample": true,
+      "body": "A hands-on session on nodes, topics, launch files and Gazebo simulation. Bring a laptop with Ubuntu and ROS 2 installed."
+    },
+    {
+      "date": "2026-08-28",
+      "type": "Competition",
+      "title": "Inter IIT Tech Meet: register your interest",
+      "sample": true,
+      "body": "Want to represent IIT Guwahati? Reach out to the Competition Manager to join the prep teams."
+    }
+  ]
+}

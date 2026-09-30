@@ -1,12 +1,14 @@
 # Contributing
 
 Thanks for helping keep the club website up to date! Most changes are **content edits in
-[`js/data.js`](js/data.js)** and need no HTML or CSS knowledge.
+the site editor at `/admin`** (see [EDITORS.md](EDITORS.md)) and need no code at all.
+The editor saves to `content/*.json`; the examples below show those files' fields, written the way
+the site uses them. When editing JSON by hand, link lists are written as `{ "label": …, "url": … }` objects.
 
 ## Workflow
 
 1. Create a branch: `git checkout -b add-inter-iit-2026-result`
-2. Edit `js/data.js` (and add any images to `images/`).
+2. Edit `content/*.json` (and add any images to `images/`), or use the editor at `/admin`.
 3. Preview locally: `python -m http.server 5173` → <http://localhost:5173>
 4. Check your edits: `node scripts/validate.mjs`
 5. Commit, push and open a pull request. CI runs the same checks, and merging to `main` deploys.
@@ -15,7 +17,7 @@ Thanks for helping keep the club website up to date! Most changes are **content 
 
 ### Add a project
 
-Append to `projects` in `js/data.js`. The `id` becomes the page URL (`project.html?id=line-follower-v2`)
+Append to `content/projects.json`. The `id` becomes the page URL (`project.html?id=line-follower-v2`)
 and must be unique, lowercase and use dashes.
 
 ```js
@@ -44,8 +46,9 @@ The first project in the list is shown as the large featured card.
 
 ### Post an announcement
 
-Add to `announcements`. Dates are `YYYY-MM-DD`. Posts from the last 21 days get a **New** badge;
-`pinned: true` makes one the big featured card on the Updates page.
+Add to `announcements`. Dates are `YYYY-MM-DD`. Every announcement appears in the home page's
+**event calendar** on its date, and opens in the details pop-up (with its `links` as buttons).
+Add `timeline: true` to also show it on the home strip.
 
 ```js
 {
@@ -58,20 +61,10 @@ Add to `announcements`. Dates are `YYYY-MM-DD`. Posts from the last 21 days get 
 },
 ```
 
-### Put an important message in the news bar
-
-The bar at the bottom of the home page's first screen scrolls important notices first, then the
-announcements (pinned first, recent ones marked **New**). Add a notice to `notices` in `js/data.js`
-and delete it once it's no longer relevant:
-
-```js
-{ text: "ROBO101 registrations close on 10 October", tag: "Important", link: "updates.html" },
-```
-
 ### Add an event to the timeline (recent & upcoming)
 
-Dated events go in `timeline` in `js/data.js`. They appear on the home page timeline and on the
-Updates page. The status is automatic: future dates show **Upcoming**, today falls in **Live now**,
+Dated events go in `content/timeline.json`. They appear on the home page strip and in the
+event calendar. The status is automatic: future dates show **Upcoming**, today falls in **Live now**,
 and past dates show **Recent**. Put the poster in `images/events/` (WebP or JPG, under ~300 KB).
 
 ```js
@@ -86,8 +79,11 @@ and past dates show **Recent**. Put the poster in `images/events/` (WebP or JPG,
 },
 ```
 
-Add `timeline: true` to an announcement to also show it on the timeline. When nothing upcoming is
-listed, the timeline ends with a "Next event to be announced" card linking to Instagram.
+On the home page the strip shows the **3 latest** entries plus a "Next event to be announced" card;
+older ones drop off the strip but stay in the **event calendar** below it, which holds every entry
+(events and announcements). Clicking any of them opens a pop-up with all its details: poster,
+dates, time, venue, organiser, description, highlights, links, and "Add to Google Calendar" for
+upcoming events.
 
 **Flagship events** (`events`) are the recurring, undated ones shown in the moving carousel.
 

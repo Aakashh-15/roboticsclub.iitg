@@ -1,0 +1,42 @@
+{
+  "items": [
+    {
+      "start": "2026-06-29",
+      "end": "2026-07-05",
+      "title": "Minecraft Championship",
+      "subtitle": "The Engineer's Gauntlet",
+      "type": "Competition",
+      "host": "Funniche Week '26 × Robotics Club, IIT Guwahati",
+      "desc": "A week-long Minecraft championship, The Engineer's Gauntlet, held as part of Funniche Week '26.",
+      "highlights": [
+        "Prize pool worth 20K",
+        "29 June – 5 July 2026"
+      ],
+      "image": "images/events/minecraft-championship-2026.webp"
+    },
+    {
+      "start": "2026-06-01",
+      "title": "ROBO101 course launch",
+      "type": "Course",
+      "host": "Robotics Club, IIT Guwahati",
+      "desc": "The 2026 edition of ROBO101, the club's robotics course, went live on 1 June 2026.",
+      "highlights": [
+        "ROS 2",
+        "TensorFlow",
+        "Fusion 360",
+        "ANSYS",
+        "Electronics"
+      ]
+    },
+    {
+      "start": "2026-09-04",
+      "title": "Freshers' Orientation",
+      "type": "Orientation",
+      "time": "7:30 PM",
+      "venue": "Core 5",
+      "host": "Robotics Club, IIT Guwahati",
+      "desc": "The club's introductory session for the incoming batch: who we are, what we build, and how freshers can get involved.",
+      "image": "images/events/freshers-orientation-2026.webp"
+    }
+  ]
+}

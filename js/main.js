@@ -1,6 +1,7 @@
 /* Page rendering + interactions.
    Shared by every page: each block only runs if its container exists. */
-(() => {
+// wait for content/*.json (see js/data.js)
+window.CLUB_READY.then(() => {
   const C = window.CLUB;
   const SVGNS = "http://www.w3.org/2000/svg";
   const has = (sel) => !!$(sel);
@@ -13,9 +14,6 @@
     if (v) el.textContent = v;
   });
 
-  const today = new Date();
-  const toDate = (d) => new Date(d + "T00:00:00");
-  const anns = [...C.announcements].sort((a, b) => b.date.localeCompare(a.date));
   const statusClass = (s = "") =>
     /position|1st|2nd|3rd/i.test(s) ? "gold" : /active|ongoing/i.test(s) ? "live" : "";
   const tier = (r = "") => (/^1st/.test(r) ? "gold" : /^2nd/.test(r) ? "silver" : /^3rd/.test(r) ? "bronze" : "");
@@ -61,29 +59,11 @@
     $$("[data-count]").forEach((el) => countObs.observe(el));
   }
 
-  /* ---------- news bar (home): important notices + announcements, looping ---------- */
-  if (has("#newsTrack")) {
-    const fresh = (d) => (today - toDate(d)) / 864e5 <= 21;
-    const items = [
-      ...(C.notices || []).map((n) => ({ tag: n.tag || "Important", text: n.text, href: n.link || "updates.html#announcements", important: true })),
-      ...[...anns].sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0)).map((a) => ({ tag: a.type, text: a.title, href: "updates.html#announcements", isNew: fresh(a.date) })),
-    ];
-    const one = items.map((it) => `
-      <a class="news-item${it.important ? " important" : ""}" href="${esc(it.href)}">
-        <b>${esc(it.tag)}</b>${esc(it.text)}${it.isNew ? '<span class="news-new">New</span>' : ""}
-      </a><span class="news-sep" aria-hidden="true">✦</span>`).join("");
-    const track = $("#newsTrack");
-    // two copies make the loop seamless; the second is hidden from screen readers and tabbing
-    track.innerHTML = one + one.replace(/<a class="news-item/g, '<a tabindex="-1" aria-hidden="true" class="news-item');
-    // constant reading speed (~70 px/s) whatever the amount of text
-    requestAnimationFrame(() => track.style.setProperty("--news-dur", `${Math.max(20, track.scrollWidth / 2 / 70)}s`));
-  }
-
   /* ---------- recent & upcoming timeline ---------- */
   const igLink = (C.contact.socials.find(([n]) => /instagram/i.test(n)) || [])[1] || "#";
   const tbaItem = { kind: "tba", status: "upcoming", title: "Next event to be announced", desc: "Follow our Instagram for dates, registrations and posters as soon as they are out." };
-  const tlAll = timelineItems();
-  const tlCard = (it, big = false) => {
+  const tlAll = allEvents(); // shared list, so data-event indexes match the pop-up
+  const tlCard = (it) => {
     const when = it.kind === "tba" ? "Coming soon" : fmtRange(it.start, it.end);
     const head = `<div class="tl-head"><span class="tl-status s-${it.status}">${STATUS_LABEL[it.status]}</span>${it.type ? `<span class="tl-type">${esc(it.type)}</span>` : ""}</div>`;
     const body = `
@@ -91,22 +71,18 @@
       <h4>${esc(it.title)}</h4>
       ${it.subtitle ? `<p class="tl-sub">${esc(it.subtitle)}</p>` : ""}
       ${it.time || it.venue ? `<p class="tl-meta">${[it.time, it.venue].filter(Boolean).map(esc).join(" · ")}</p>` : ""}
-      ${big && it.host ? `<p class="tl-host">${esc(it.host)}</p>` : ""}
-      <p class="tl-desc">${esc(it.desc || "")}</p>
-      ${big && it.highlights?.length ? `<div class="tl-chips">${it.highlights.map((h) => `<span>${esc(h)}</span>`).join("")}</div>` : ""}`;
+      <p class="tl-desc">${esc(it.desc || "")}</p>`;
     if (it.kind === "tba") return { when, html: `<a class="tl-card tl-tba" href="${esc(igLink)}" target="_blank" rel="noopener"><div class="tl-body">${body}<span class="tl-more">Follow on Instagram ${ICONS.arrow}</span></div></a>` };
-    if (it.image) return { when, html: `<button class="tl-card has-poster" type="button" data-poster="${esc(it.image)}" data-title="${esc(it.title + (it.subtitle ? " — " + it.subtitle : ""))}">${media(it.image, "trophy", it.title, "tl-poster")}<div class="tl-body">${body}<span class="tl-more">View poster ${ICONS.arrow}</span></div></button>` };
-    const links = big && it.links?.length ? `<div class="ann-links">${it.links.map(([l, u]) => `<a class="btn btn-sm btn-outline" href="${esc(u)}">${esc(l)}</a>`).join("")}</div>` : "";
-    return { when, html: big ? `<div class="tl-card"><div class="tl-body">${body}${links}</div></div>` : `<a class="tl-card" href="${esc(it.href || "updates.html")}"><div class="tl-body">${body}<span class="tl-more">Details ${ICONS.arrow}</span></div></a>` };
+    const idx = tlAll.indexOf(it);
+    const poster = it.image ? media(it.image, "trophy", it.title, "tl-poster") : "";
+    const more = `<span class="tl-more">View details ${ICONS.arrow}</span>`;
+    return { when, html: `<button class="tl-card${it.image ? " has-poster" : ""}" type="button" data-event="${idx}">${poster}<div class="tl-body">${body}${more}</div></button>` };
   };
 
   // home: horizontal timeline, oldest → newest, ending with what's next
   if (has("#tline")) {
-    const upcoming = tlAll.filter((i) => i.status !== "recent");
-    // four columns fit the page width: latest recent items + what's next
-    const next = upcoming.length ? upcoming.slice(0, 2) : [tbaItem];
-    const recent = tlAll.filter((i) => i.status === "recent").slice(-(4 - next.length));
-    const list = [...recent, ...next];
+    // always the 3 latest events + "coming soon"; older ones stay in the calendar below
+    const list = [...tlAll.filter((it) => it.onStrip).slice(-3), tbaItem];
     $("#tline").innerHTML = list.map((it) => {
       const c = tlCard(it);
       return `<div class="tl2-item s-${it.status} reveal"><span class="tl2-when">${esc(c.when)}</span><span class="tl2-node" aria-hidden="true"></span>${c.html}</div>`;
@@ -117,35 +93,83 @@
     requestAnimationFrame(() => { row.scrollLeft = row.scrollWidth; }); // start at "what's next"
   }
 
-  // updates page: vertical timeline, upcoming first then most recent
-  if (has("#tlineFull")) {
-    const upcoming = tlAll.filter((i) => i.status !== "recent");
-    const recent = tlAll.filter((i) => i.status === "recent").reverse();
-    const list = [...(upcoming.length ? upcoming : [tbaItem]), ...recent];
-    $("#tlineFull").innerHTML = list.map((it) => {
-      const c = tlCard(it, true);
-      return `<li class="tl3-item s-${it.status} reveal"><span class="tl3-when">${esc(c.when)}</span>${c.html}</li>`;
-    }).join("");
-    wireFallbacks($("#tlineFull"));
+  /* ---------- event calendar (home): every event, month by month ---------- */
+  if (has("#eventCal")) {
+    const cal = $("#eventCal");
+    const now = new Date();
+    let view = new Date(now.getFullYear(), now.getMonth(), 1);
+    const monthName = (d) => d.toLocaleDateString("en-IN", { month: "long", year: "numeric" });
+    const onDay = (iso) => tlAll.filter((it) => it.start <= iso && iso <= (it.end || it.start));
+    const chip = (it) => `<button class="cal-chip s-${it.status}" type="button" data-event="${tlAll.indexOf(it)}" title="${esc(it.title)}">${esc(it.title)}</button>`;
+    const render = () => {
+      const y = view.getFullYear(), m = view.getMonth();
+      const first = new Date(y, m, 1), days = new Date(y, m + 1, 0).getDate();
+      const lead = (first.getDay() + 6) % 7; // weeks start on Monday
+      const monthStart = isoOf(first), monthEnd = isoOf(new Date(y, m, days));
+      const inMonth = tlAll.filter((it) => it.start <= monthEnd && (it.end || it.start) >= monthStart);
+      let cells = "";
+      for (let i = 0; i < lead; i++) cells += `<div class="cal-cell blank" aria-hidden="true"></div>`;
+      for (let d = 1; d <= days; d++) {
+        const iso = isoOf(new Date(y, m, d));
+        const evs = onDay(iso);
+        cells += `<div class="cal-cell${iso === todayISO ? " today" : ""}${evs.length ? " has-ev" : ""}">
+          <span class="cal-day">${d}</span>
+          ${evs.slice(0, 2).map(chip).join("")}${evs.length > 2 ? `<span class="cal-more">+${evs.length - 2} more</span>` : ""}
+          ${evs.map((it) => `<span class="cal-dot s-${it.status}" aria-hidden="true"></span>`).join("")}
+        </div>`;
+      }
+      // nearest event outside this month, to jump to when the month is empty
+      const later = tlAll.find((it) => it.start > monthEnd), earlier = [...tlAll].reverse().find((it) => (it.end || it.start) < monthStart);
+      const jump = (it, label) => it ? `<button class="cal-jump" type="button" data-month="${it.start.slice(0, 7)}">${label}: ${esc(it.title)} (${fmtRange(it.start, it.end)})</button>` : "";
+      cal.innerHTML = `
+        <div class="cal-main">
+          <div class="cal-bar">
+            <button class="icon-btn cal-nav" type="button" data-step="-1" aria-label="Previous month">‹</button>
+            <h4 class="cal-title" aria-live="polite">${monthName(view)}</h4>
+            <button class="icon-btn cal-nav" type="button" data-step="1" aria-label="Next month">›</button>
+            <button class="btn btn-outline btn-sm cal-today" type="button">Today</button>
+          </div>
+          <div class="cal-grid">
+            ${["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((w) => `<div class="cal-wd">${w}</div>`).join("")}
+            ${cells}
+          </div>
+        </div>
+        <aside class="cal-side">
+          <h4>In ${view.toLocaleDateString("en-IN", { month: "long" })}</h4>
+          ${inMonth.length
+            ? `<ul class="cal-list">${inMonth.map((it) => `<li><button type="button" data-event="${tlAll.indexOf(it)}"><span class="cal-list-date">${fmtRange(it.start, it.end)}</span><span class="cal-list-title">${esc(it.title)}</span><span class="tl-status s-${it.status}">${STATUS_LABEL[it.status]}</span></button></li>`).join("")}</ul>`
+            : `<p class="muted cal-empty">No events this month.</p>${jump(later, "Next")}${jump(earlier, "Previous")}`}
+        </aside>`;
+    };
+    cal.addEventListener("click", (e) => {
+      const nav = e.target.closest(".cal-nav"), today = e.target.closest(".cal-today"), jump = e.target.closest("[data-month]");
+      if (nav) view = new Date(view.getFullYear(), view.getMonth() + +nav.dataset.step, 1);
+      else if (today) view = new Date(now.getFullYear(), now.getMonth(), 1);
+      else if (jump) { const [yy, mm] = jump.dataset.month.split("-").map(Number); view = new Date(yy, mm - 1, 1); }
+      else return;
+      render();
+    });
+    render();
   }
+
 
   /* ---------- flagship events carousel (home) ----------
      Continuous right→left drift; pauses on hover/focus; toggle button stops it. */
   if (has("#flowTrack")) {
     const eventCard = (ev) => `
-      <a class="flow-card flow-ev" href="updates.html#events">
+      <article class="flow-card flow-ev">
         ${media(ev.image, ev.icon || "bulb", ev.title, "flow-media")}
         <div class="flow-ev-body">
           <span class="badge">Flagship event</span>
           <h3>${esc(ev.title)}</h3>
           <p>${esc(ev.desc)}</p>
         </div>
-      </a>`;
+      </article>`;
     const set = C.events.map(eventCard).join("");
     // repeat so one copy is always wider than the screen, then double for a seamless loop
     const reps = Math.max(1, Math.ceil(8 / C.events.length));
     const half = set.repeat(reps);
-    $("#flowTrack").innerHTML = half + half.replace(/<a class="flow-card/g, '<a tabindex="-1" aria-hidden="true" class="flow-card');
+    $("#flowTrack").innerHTML = half + half.replace(/<article class="flow-card/g, '<article aria-hidden="true" class="flow-card');
     $("#flowTrack").style.setProperty("--flow-duration", `${C.events.length * reps * 7}s`);
     wireFallbacks($("#flowTrack"));
 
@@ -164,8 +188,8 @@
     const resCount = C.resources.reduce((n, r) => n + r.items.length, 0);
     const tiles = [
       ["projects.html", "Projects", `${C.projects.length} builds`, "From Mars rovers to Rubik's cube solvers. Deep-dive into every robot we've built.", "rover", "purple"],
-      ["updates.html", "Updates", anns[0] ? "Latest" : "News", anns[0] ? anns[0].title : "Announcements and events.", "bulb", "yellow"],
-      ["competitions.html", "Competitions", "Inter IIT & more", "Where our teams compete, and the podiums they've brought home.", "trophy", "pink"],
+      ["gallery.html", "Gallery", `${C.gallery.length} photos`, "Workshops, competitions and club events in pictures.", "bulb", "yellow"],
+      ["achievements.html", "Achievements", `${C.achievements.length} milestones`, "Podiums, international finals and milestones from the club's teams.", "trophy", "pink"],
       ["team.html", "Team", `${C.team.length} core members`, "Meet the people who keep the lab, the projects and the events running.", "bot", "amber"],
       ["resources.html", "Resources", `${resCount} materials`, "Setup guides, tutorials, the club archive and the components you can borrow.", "chip", "purple"],
     ];
@@ -234,107 +258,106 @@
   }
 
 
-  /* ---------- announcements ---------- */
-  if (has("#annList")) {
-    const fmt = (d) => toDate(d).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
-    const isNew = (d) => (today - toDate(d)) / 864e5 <= 21;
-    const types = ["All", ...new Set(anns.map((a) => a.type))];
-    let aFilter = "All";
+  /* ---------- achievements collage (achievements page) ----------
+     A photo mosaic of every achievement. Clicking one sends a ripple through
+     the other tiles (nearest first), then the photo grows out of its tile
+     into a large view. Closing shrinks it back into place. */
+  if (has("#achCollage")) {
+    const A = C.achievements;
+    const grid = $("#achCollage");
+    const tierOf = (r = "") => tier(r) || "other";
+    // size pattern: the first gold is the hero tile, photos get bigger tiles than text-only ones
+    const heroIdx = Math.max(0, A.findIndex((a) => tier(a.rank) === "gold"));
+    grid.innerHTML = A.map((a, i) => {
+      const size = i === heroIdx ? "big" : a.image ? (i % 3 === 0 ? "tall" : "wide") : "";
+      return `
+        <button class="col-tile ${size} t-${tierOf(a.rank)} reveal" type="button" data-ach="${i}" aria-label="${esc(a.rank)} — ${esc(a.event)}, ${esc(a.year)}">
+          ${media(a.image, "trophy", a.event, "col-media")}
+          <span class="col-info">
+            <span class="col-rank">${esc(a.rank)}</span>
+            <b>${esc(a.event)}</b>
+            <small>${esc(a.year)} · ${esc(a.title)}</small>
+          </span>
+        </button>`;
+    }).join("");
+    wireFallbacks(grid);
 
-    $("#annFilters").innerHTML = types
-      .map((t, i) => `<button class="chip${i ? "" : " on"}" role="tab" aria-selected="${!i}" data-t="${esc(t)}">${esc(t)}</button>`)
-      .join("");
-
-    const linkRow = (links = []) =>
-      links.length
-        ? `<div class="ann-links">${links.map(([l, u]) => `<a class="btn btn-sm ${/\.pdf$/i.test(u) ? "btn-solid" : "btn-outline"}" href="${esc(u)}" ${/^https?:/.test(u) ? 'target="_blank" rel="noopener"' : "download"}>${/\.pdf$/i.test(u) ? `<i>${ICONS.download}</i>` : ""}${esc(l)}</a>`).join("")}</div>`
-        : "";
-
-    const render = () => {
-      const list = anns.filter((a) => aFilter === "All" || a.type === aFilter);
-      const pinned = list.find((a) => a.pinned) || list[0];
-      const rest = list.filter((a) => a !== pinned);
-      $("#annPinned").innerHTML = pinned
-        ? `<article class="ann-pinned reveal">
-            <div class="ann-top"><span class="badge live">${pinned.pinned ? "Pinned" : esc(pinned.type)}</span>${isNew(pinned.date) ? '<span class="badge new">New</span>' : ""}<time>${fmt(pinned.date)}</time></div>
-            <h3>${esc(pinned.title)}</h3>
-            <p>${esc(pinned.body)}</p>
-            ${linkRow(pinned.links)}
-          </article>`
-        : `<p class="muted">No announcements yet.</p>`;
-      $("#annList").innerHTML = rest
-        .map((a) => `
-          <li class="ann-item reveal">
-            <div class="ann-date"><strong>${toDate(a.date).getDate()}</strong><span>${toDate(a.date).toLocaleDateString("en-IN", { month: "short" })}</span></div>
-            <div>
-              <div class="ann-top"><span class="badge">${esc(a.type)}</span>${isNew(a.date) ? '<span class="badge new">New</span>' : ""}</div>
-              <h4>${esc(a.title)}</h4>
-              <p>${esc(a.body)}</p>
-              ${linkRow(a.links)}
-            </div>
-          </li>`)
-        .join("");
-      observeReveals($("#annPinned").parentElement);
+    const tiles = $$(".col-tile", grid);
+    let open = null;
+    const wave = (from) => {
+      if (reduceMotion) return;
+      const r0 = from.getBoundingClientRect(), cx = r0.left + r0.width / 2, cy = r0.top + r0.height / 2;
+      tiles.forEach((t) => {
+        if (t === from) return;
+        const r = t.getBoundingClientRect();
+        const dist = Math.hypot(r.left + r.width / 2 - cx, r.top + r.height / 2 - cy);
+        t.animate(
+          [{ transform: "scale(1)" }, { transform: "scale(0.9) translateY(10px)", filter: "brightness(0.6)" }, { transform: "scale(1.02)" }, { transform: "scale(1)" }],
+          { duration: 700, delay: dist * 0.45, easing: "cubic-bezier(.3,.7,.3,1)" }
+        );
+      });
     };
-    $("#annFilters").addEventListener("click", (e) => {
-      const b = e.target.closest(".chip");
-      if (!b) return;
-      selectChip($("#annFilters"), b);
-      aFilter = b.dataset.t;
-      render();
-    });
-    render();
-  }
-
-  /* ---------- events ---------- */
-  if (has("#eventsRow")) {
-    $("#eventsRow").innerHTML = C.events
-      .map((ev) => `
-        <article class="ev-card">
-          ${media(ev.image, ev.icon || "bulb", ev.title, "ev-media")}
-          <div class="ev-body"><h4>${esc(ev.title)}</h4><p>${esc(ev.desc)}</p></div>
-        </article>`)
-      .join("");
-    wireFallbacks($("#eventsRow"));
-    $$("[data-scroll]").forEach((b) =>
-      b.addEventListener("click", () => $("#eventsRow").scrollBy({ left: +b.dataset.scroll * 340, behavior: "smooth" }))
-    );
-  }
-
-  /* ---------- competitions ---------- */
-  if (has("#compGrid")) {
-    $("#compMarquee").innerHTML = Array(2)
-      .fill(C.competitions.map((c) => `<span>${esc(c.name)}</span><b>✦</b>`).join(""))
-      .join("");
-    $("#compGrid").innerHTML = C.competitions
-      .map((c, i) => `
-        <article class="comp-card reveal">
-          <span class="comp-num">${String(i + 1).padStart(2, "0")}</span>
-          <span class="badge">${esc(c.scope)}</span>
-          <h3>${esc(c.name)}</h3>
-          <p>${esc(c.desc)}</p>
-        </article>`)
-      .join("");
-  }
-
-  /* ---------- achievements: full timeline ---------- */
-  if (has("#timeline")) {
-    $("#timeline").innerHTML = C.achievements
-      .map((a) => `
-        <li class="tl-item reveal">
-          <div class="tl-year">${esc(a.year)}</div>
-          <div class="ach-card">
-            ${media(a.image, "trophy", a.event, "ach-media")}
-            <div class="ach-body">
-              <span class="badge ${tier(a.rank) ? "gold" : ""}">${esc(a.title)}</span>
-              <h3>${esc(a.event)}</h3>
-              <p>${esc(a.desc)}</p>
-              ${a.project ? `<a class="text-link" href="project.html?id=${encodeURIComponent(a.project)}">See the project ${ICONS.arrow}</a>` : ""}
-            </div>
+    const show = (i, tile, ev) => {
+      const a = A[i];
+      const proj = a.project && C.projects.find((p) => p.id === a.project);
+      const view = document.createElement("div");
+      view.className = "col-view";
+      view.innerHTML = `
+        <div class="col-card t-${tierOf(a.rank)}" role="dialog" aria-modal="true" aria-label="${esc(a.event)}">
+          <button class="idc-close" type="button" aria-label="Close">×</button>
+          ${media(a.image, "trophy", a.event, "col-view-media")}
+          <div class="col-view-body">
+            <span class="col-rank">${esc(a.rank)}</span>
+            <h3>${esc(a.event)}</h3>
+            <p class="col-meta">${esc(a.year)} · ${esc(a.title)}</p>
+            <p>${esc(a.desc || "")}</p>
+            ${proj ? `<a class="btn btn-sm btn-solid" href="project.html?id=${encodeURIComponent(proj.id)}">View project: ${esc(proj.title)} ${ICONS.arrow}</a>` : a.link ? `<a class="btn btn-sm btn-solid" href="${esc(a.link)}">Explore ${ICONS.arrow}</a>` : ""}
           </div>
-        </li>`)
-      .join("");
-    wireFallbacks($("#timeline"));
+        </div>`;
+      document.body.appendChild(view);
+      document.body.classList.add("lb-open");
+      wireFallbacks(view);
+      const card = $(".col-card", view);
+      const last = document.activeElement;
+      // grow out of the clicked tile (FLIP) while a circular wave reveals the backdrop
+      const from = tile.getBoundingClientRect(), to = card.getBoundingClientRect();
+      const x = ev?.clientX ?? from.left + from.width / 2, y = ev?.clientY ?? from.top + from.height / 2;
+      const flip = [
+        { transform: `translate(${from.left - to.left}px, ${from.top - to.top}px) scale(${from.width / to.width}, ${from.height / to.height})`, borderRadius: "18px", opacity: 0.6 },
+        { transform: "none", borderRadius: "22px", opacity: 1 },
+      ];
+      if (!reduceMotion) {
+        view.animate([{ clipPath: `circle(0px at ${x}px ${y}px)` }, { clipPath: `circle(150vmax at ${x}px ${y}px)` }], { duration: 650, easing: "cubic-bezier(.2,.8,.2,1)" });
+        card.style.transformOrigin = "top left";
+        card.animate(flip, { duration: 620, easing: "cubic-bezier(.2,.9,.25,1.05)" });
+      }
+      let closing = false;
+      const close = () => {
+        if (closing) return;
+        closing = true;
+        const done = () => { view.remove(); document.body.classList.remove("lb-open"); last?.focus?.({ preventScroll: true }); open = null; };
+        if (reduceMotion) return done();
+        const now = tile.getBoundingClientRect(), cur = card.getBoundingClientRect();
+        card.animate([{ transform: "none", opacity: 1 }, { transform: `translate(${now.left - cur.left}px, ${now.top - cur.top}px) scale(${now.width / cur.width}, ${now.height / cur.height})`, opacity: 0.4 }], { duration: 420, easing: "cubic-bezier(.4,0,.6,1)", fill: "forwards" });
+        view.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 420, fill: "forwards" });
+        setTimeout(done, 420); // a timer, not onfinish: animations can stall in background tabs
+      };
+      $(".idc-close", view).addEventListener("click", close);
+      view.addEventListener("click", (e) => { if (e.target === view) close(); });
+      const onKey = (e) => { if (e.key === "Escape") { removeEventListener("keydown", onKey); close(); } };
+      addEventListener("keydown", onKey);
+      view.addEventListener("keydown", (e) => {
+        if (e.key === "Tab") { const f = $$("a, button", card); if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); } else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); } }
+      });
+      $(".idc-close", view).focus({ preventScroll: true });
+      open = close;
+    };
+    grid.addEventListener("click", (e) => {
+      const tile = e.target.closest(".col-tile");
+      if (!tile || open) return;
+      wave(tile);
+      setTimeout(() => show(+tile.dataset.ach, tile, e), reduceMotion ? 0 : 160);
+    });
   }
 
   /* ---------- hall of fame showcase (home) ----------
@@ -342,7 +365,7 @@
      Hover/click a row to feature it; auto-rotates until someone interacts. */
   if (has("#hof")) {
     const A = C.achievements;
-    const achvLink = (a) => (a.project ? `project.html?id=${encodeURIComponent(a.project)}` : a.link || "competitions.html#hall-of-fame");
+    const achvLink = (a) => (a.project ? `project.html?id=${encodeURIComponent(a.project)}` : a.link || "achievements.html");
 
     $("#hofStage").innerHTML =
       A.map((a, i) => `
@@ -367,7 +390,7 @@
           <span class="hof-rank ${tier(a.rank)}">${esc(a.rank || "✦")}</span>
           <span class="hof-row-text"><b>${esc(a.event)}</b><small>${esc(a.title)}</small></span>
         </button>`).join("") +
-      `<a class="hof-row hof-more" href="competitions.html#hall-of-fame"><span>Full hall of fame</span>${ICONS.arrow}</a>`;
+      `<a class="hof-row hof-more" href="achievements.html"><span>All achievements</span>${ICONS.arrow}</a>`;
 
     let cur = 0, timer = null, stopped = reduceMotion;
     const DWELL = 5000;
@@ -564,18 +587,34 @@
     });
   }
 
-  /* ---------- home nav: highlight About while it's on screen ---------- */
-  if (has("#about") && has(".hero")) {
+  /* ---------- home nav: highlight About / Team while their section is on screen ---------- */
+  if (has(".hero")) {
     const links = $$("#navLinks a");
     const homeLink = links.find((a) => a.getAttribute("href") === "index.html");
-    const aboutLink = links.find((a) => a.getAttribute("href") === "index.html#about");
-    new IntersectionObserver(([e]) => {
-      aboutLink?.classList.toggle("active", e.isIntersecting);
-      homeLink?.classList.toggle("active", !e.isIntersecting);
-    }, { rootMargin: "-45% 0px -50% 0px" }).observe($("#about"));
+    const spied = ["about", "team"]
+      .map((id) => ({ sec: document.getElementById(id), link: links.find((a) => a.getAttribute("href") === `index.html#${id}`) }))
+      .filter((x) => x.sec && x.link);
+    const inView = new Set();
+    const paint = () => {
+      const cur = spied.find((x) => inView.has(x.sec));
+      spied.forEach((x) => x.link.classList.toggle("active", x === cur));
+      homeLink?.classList.toggle("active", !cur);
+    };
+    const io = new IntersectionObserver((es) => {
+      es.forEach((e) => (e.isIntersecting ? inView.add(e.target) : inView.delete(e.target)));
+      paint();
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    spied.forEach((x) => io.observe(x.sec));
   }
 
   observeReveals();
+
+  // Arriving with #section (e.g. Team from another page): the browser jumped before the
+  // sections above were built, so jump again now that the page has its real length.
+  if (location.hash.length > 1) {
+    const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (target) target.scrollIntoView({ block: "start", behavior: "instant" });
+  }
 
   /* =========================================================
      HERO: MARS TRAVERSE (home only)
@@ -844,4 +883,4 @@
       if (running) { last = 0; requestAnimationFrame(frame); }
     }).observe(svg);
   }
-})();
+});

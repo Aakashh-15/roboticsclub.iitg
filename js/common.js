@@ -108,6 +108,21 @@ function closeMemberCard(instant = false) {
   else { wrap.classList.remove("open"); setTimeout(() => wrap.remove(), 250); }
   idcLastFocus?.focus?.({ preventScroll: true });
 }
+/* On the home page, "index.html#section" links (About, Team, Contact…) just scroll —
+   without this the browser reloads when the page was opened as "/" instead of "/index.html". */
+document.addEventListener("click", (e) => {
+  const a = e.target.closest('a[href^="index.html#"]');
+  if (!a || document.body.dataset.page !== "home" || e.ctrlKey || e.metaKey || e.shiftKey || e.button) return;
+  const id = a.getAttribute("href").split("#")[1];
+  const target = id && document.getElementById(id);
+  if (!target) return;
+  e.preventDefault();
+  target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+  history.replaceState(null, "", "#" + id);
+  document.body.classList.remove("menu-open"); // close the mobile menu if open
+  $("#burger")?.setAttribute("aria-expanded", "false");
+});
+
 /* Any element with data-member="<index>" opens that member's card. */
 document.addEventListener("click", (e) => {
   const t = e.target.closest("[data-member]");
@@ -139,7 +154,7 @@ document.addEventListener("click", (e) => {
   if (t) { e.preventDefault(); openPoster(t.dataset.poster, t.dataset.title || ""); }
 });
 
-/* ---------- timeline helpers (home + updates page) ---------- */
+/* ---------- timeline helpers (home strip + calendar + pop-up) ---------- */
 const pad2 = (n) => String(n).padStart(2, "0");
 const todayISO = (() => { const t = new Date(); return `${t.getFullYear()}-${pad2(t.getMonth() + 1)}-${pad2(t.getDate())}`; })();
 const dOf = (iso) => new Date(iso + "T00:00:00");
@@ -151,13 +166,15 @@ function fmtRange(start, end) {
   if (a.getMonth() === b.getMonth()) return `${day(a)}–${day(b)} ${mon(a)} ${a.getFullYear()}`;
   return `${day(a)} ${mon(a)} – ${day(b)} ${mon(b)} ${b.getFullYear()}`;
 }
-/* Timeline entries + announcements flagged timeline: true, oldest first, with a status. */
+/* Every dated item (timeline events + all announcements), oldest first, with a status.
+   onStrip marks what the home strip may show: events, and announcements with timeline: true.
+   The calendar shows everything. */
 function timelineItems() {
   const C = window.CLUB;
   const items = [
-    ...(C.timeline || []).map((t) => ({ ...t, kind: "event" })),
-    ...C.announcements.filter((a) => a.timeline).map((a) => ({
-      kind: "update", start: a.date, title: a.title, type: a.type, desc: a.body, links: a.links, href: "updates.html#announcements",
+    ...(C.timeline || []).map((t) => ({ ...t, kind: "event", onStrip: true })),
+    ...C.announcements.map((a) => ({
+      kind: "update", start: a.date, title: a.title, type: a.type, desc: a.body, links: a.links, onStrip: !!a.timeline,
     })),
   ];
   items.forEach((it) => {
@@ -167,6 +184,88 @@ function timelineItems() {
   return items.sort((x, y) => x.start.localeCompare(y.start));
 }
 const STATUS_LABEL = { upcoming: "Upcoming", live: "Live now", recent: "Recent" };
+
+/* ---------- event pop-up ----------
+   Any element with data-event="<index into timelineItems()>" opens a large
+   card with everything known about that event. Used by the home strip
+   and the event calendar. */
+let evmLastFocus = null;
+const allEvents = () => (window.__timelineItems ||= timelineItems());
+const isoOf = (d) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+function gcalLink(it) {
+  const s = it.start.replace(/-/g, "");
+  const endDay = dOf(it.end || it.start); endDay.setDate(endDay.getDate() + 1);
+  const e = isoOf(endDay).replace(/-/g, "");
+  const q = new URLSearchParams({ action: "TEMPLATE", text: it.title + (it.subtitle ? " — " + it.subtitle : ""), dates: `${s}/${e}`, details: [it.desc, it.time && `Time: ${it.time}`].filter(Boolean).join("\n"), location: it.venue ? `${it.venue}, IIT Guwahati` : "IIT Guwahati" });
+  return "https://calendar.google.com/calendar/render?" + q.toString();
+}
+function openEventModal(i) {
+  const it = allEvents()[i];
+  if (!it) return;
+  closeEventModal(true);
+  evmLastFocus = document.activeElement;
+  const facts = [
+    ["Date", fmtRange(it.start, it.end)],
+    ["Time", it.time],
+    ["Venue", it.venue],
+    ["Organised by", it.host],
+    ["Type", it.type],
+  ].filter(([, v]) => v);
+  const links = [
+    ...(it.links || []).map(([l, u]) => `<a class="btn btn-sm btn-outline" href="${esc(u)}" ${/^https?:/.test(u) ? 'target="_blank" rel="noopener"' : ""}>${/\.pdf$/i.test(u) ? ICONS.download : ""}<span>${esc(l)}</span></a>`),
+    it.status !== "recent" ? `<a class="btn btn-sm btn-solid" href="${esc(gcalLink(it))}" target="_blank" rel="noopener">Add to Google Calendar</a>` : "",
+  ].join("");
+  const wrap = document.createElement("div");
+  wrap.className = "evm-backdrop";
+  wrap.innerHTML = `
+    <div class="evm${it.image ? " has-poster" : ""}" role="dialog" aria-modal="true" aria-labelledby="evm-title">
+      <div class="evm-head">
+        <div class="idc-brand"><img src="images/logo.svg" alt="" /><span>ROBOTICS CLUB<small>IIT GUWAHATI</small></span></div>
+        <span class="evm-tag">${it.kind === "update" ? "Update" : "Event"}</span>
+        <button class="idc-close" type="button" aria-label="Close">×</button>
+      </div>
+      <div class="evm-main">
+        ${it.image ? `<button class="evm-poster" type="button" data-poster="${esc(it.image)}" data-title="${esc(it.title)}" aria-label="Enlarge poster">${media(it.image, "trophy", it.title, "evm-media")}<span class="evm-zoom">Enlarge poster</span></button>` : ""}
+        <div class="evm-body">
+          <div class="evm-status"><span class="tl-status s-${it.status}">${STATUS_LABEL[it.status]}</span></div>
+          <h3 id="evm-title">${esc(it.title)}</h3>
+          ${it.subtitle ? `<p class="tl-sub">${esc(it.subtitle)}</p>` : ""}
+          <dl class="evm-facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>
+          ${it.desc ? `<p class="evm-desc">${esc(it.desc)}</p>` : ""}
+          ${it.highlights?.length ? `<div class="tl-chips">${it.highlights.map((h) => `<span>${esc(h)}</span>`).join("")}</div>` : ""}
+          ${links ? `<div class="evm-actions">${links}</div>` : ""}
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(wrap);
+  document.body.classList.add("lb-open");
+  wireFallbacks(wrap);
+  void wrap.offsetWidth;
+  wrap.classList.add("open");
+  const card = $(".evm", wrap);
+  $(".idc-close", wrap).addEventListener("click", () => closeEventModal());
+  wrap.addEventListener("click", (e) => { if (e.target === wrap) closeEventModal(); });
+  wrap.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") return closeEventModal();
+    if (e.key !== "Tab") return;
+    const f = $$("a, button", card);
+    if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+  });
+  $(".idc-close", wrap).focus({ preventScroll: true });
+}
+function closeEventModal(instant = false) {
+  const wrap = $(".evm-backdrop");
+  if (!wrap) return;
+  if (!$(".idc-backdrop, .pv-backdrop")) document.body.classList.remove("lb-open");
+  if (instant) wrap.remove();
+  else { wrap.classList.remove("open"); setTimeout(() => wrap.remove(), 250); }
+  evmLastFocus?.focus?.({ preventScroll: true });
+}
+document.addEventListener("click", (e) => {
+  const t = e.target.closest("[data-event]");
+  if (t) { e.preventDefault(); openEventModal(+t.dataset.event); }
+});
 
 /* Scroll-reveal */
 const revealObs = new IntersectionObserver(
@@ -197,9 +296,8 @@ const PAGES = [
   ["home", "Home", "index.html"],
   ["about", "About", "index.html#about"],
   ["projects", "Projects", "projects.html"],
-  ["updates", "Updates", "updates.html"],
-  ["competitions", "Competitions", "competitions.html"],
-  ["team", "Team", "team.html"],
+  ["achievements", "Achievements", "achievements.html"],
+  ["team", "Team", "index.html#team"], // scrolls to Club Leadership on the home page
   ["gallery", "Gallery", "gallery.html"],
   ["resources", "Resources", "resources.html"],
 ];
@@ -219,8 +317,12 @@ function renderChrome() {
         <nav class="nav-links" id="navLinks" aria-label="Primary">
           ${PAGES.map(([id, label, href]) => `<a href="${href}"${id === page ? ' class="active" aria-current="page"' : ""}>${label}</a>`).join("")}
           <a href="index.html#contact" class="nav-cta-mobile">Contact Us</a>
+          <a href="admin/" class="nav-cta-mobile nav-admin-mobile">${ICONS.lock} Admin</a>
         </nav>
-        <a href="index.html#contact" class="btn btn-outline nav-cta">Contact Us</a>
+        <div class="nav-actions">
+          <a href="admin/" class="nav-admin" title="Members area: edit the website">${ICONS.lock}<span>Admin</span></a>
+          <a href="index.html#contact" class="btn btn-outline nav-cta">Contact Us</a>
+        </div>
         <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
       </header>`;
   }
