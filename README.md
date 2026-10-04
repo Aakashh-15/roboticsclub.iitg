@@ -59,7 +59,7 @@ dependencies**, so anyone in the club can edit it, and it runs on any static hos
 Any static server works. The simplest, with Python:
 
 ```bash
-python -m http.server 5173
+c
 ```
 
 Then open <http://localhost:5173>.

@@ -9,134 +9,157 @@
   <link rel="icon" href="../images/logo.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link id="siteFonts" href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@500;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link id="siteCss" rel="stylesheet" href="../css/style.css" />
-  <style id="gateCss">
-    /* Entrance page for the site editor. Removed when the editor starts. */
-    body { min-height: 100vh; display: flex; flex-direction: column; }
-    .gate { position: relative; flex: 1; display: grid; place-items: center; padding: 48px var(--pad) 72px; overflow: hidden; }
-    .gate-sky { position: absolute; inset: 0; pointer-events: none; }
-    .gate-sky i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff; animation: starTwinkle 3.6s ease-in-out infinite; }
-    .gate-planet { position: absolute; right: 8%; top: 12%; width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #9d86ff, #7b5cfa 60%, #4b33c7); opacity: .9; }
-    .gate-planet::after { content: ""; position: absolute; left: -40px; right: -40px; top: 50%; height: 26px; margin-top: -13px; border: 4px solid var(--pink); border-radius: 50%; transform: rotate(-14deg); }
-    .gate-ground { position: absolute; left: 0; right: 0; bottom: 0; height: 90px; background: radial-gradient(120% 90px at 50% 100%, #f2be43 60%, transparent 61%); opacity: .95; }
-    .gate-ground::before { content: ""; position: absolute; left: 0; right: 0; bottom: 40px; height: 70px; background: radial-gradient(140% 70px at 30% 100%, #2e2270 60%, transparent 61%); z-index: -1; }
-    .gate-card {
-      position: relative; z-index: 1; width: min(540px, 100%); padding: clamp(28px, 4vw, 44px);
-      border-radius: 26px; border: 1px solid rgba(157, 134, 255, .45);
-      background: rgba(10, 10, 16, .78); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 40px 100px -40px rgba(123, 92, 250, .8);
-      transition: transform .25s var(--ease);
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans+Extra+Condensed:wght@500;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- editor colours/fonts to match the website -->
+  <link rel="stylesheet" href="theme.css" />
+  <style>
+    /* ---- Members area entrance: self-contained so it never clashes with the editor underneath ---- */
+    #gate {
+      --yellow: #f7e34f; --purple: #7b5cfa; --purple-2: #9d86ff; --pink: #f0a3d8; --muted: #a4a4b0; --line: rgba(255,255,255,.14);
+      position: fixed; inset: 0; z-index: 2147483000; display: flex; flex-direction: column;
+      background: #000; color: #fff; font-family: "Manrope", system-ui, sans-serif; overflow: hidden;
+      transition: opacity .45s ease, visibility .45s;
     }
-    .gate-card .eyebrow { margin-bottom: 10px; }
-    .gate-card h1 { margin: 0; font-family: var(--display); font-weight: 800; font-size: clamp(44px, 7vw, 72px); line-height: .92; text-transform: uppercase; }
-    .gate-card p { color: #c8c8d2; margin: 16px 0 0; }
-    .gate-steps { list-style: none; margin: 22px 0 26px; padding: 0; display: grid; gap: 10px; }
-    .gate-steps li { display: flex; gap: 12px; align-items: flex-start; font-size: 14.5px; color: #d6d6de; }
-    .gate-steps b { flex: none; display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--surface-3); color: var(--yellow); font-size: 12px; }
-    .gate-btn { width: 100%; gap: 10px; font-size: 16px; }
-    .gate-btn svg { width: 18px; height: 18px; }
-    .gate-note { margin: 14px 0 0 !important; font-size: 13px; color: var(--muted) !important; text-align: center; }
-    .gate-note a { color: #fff; border-bottom: 1px solid var(--yellow); }
-    .gate-console { display: none; margin-top: 22px; padding: 16px 18px; border-radius: 14px; background: #050608; border: 1px solid #2b2b35; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; color: #6fe3a1; min-height: 96px; }
-    .gate.booting .gate-console { display: block; }
-    .gate.booting .gate-btn { opacity: .5; pointer-events: none; }
-    .gate-console div::before { content: "> "; color: #3f7d5c; }
-    .gate-console .caret { display: inline-block; width: 8px; height: 15px; background: #6fe3a1; vertical-align: -2px; animation: newsBlink .9s steps(2) infinite; }
-    @keyframes newsBlink { 50% { opacity: 0; } }
-    .gate-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px var(--pad); border-bottom: 1px solid var(--line); }
-    .gate-foot { padding: 20px var(--pad); border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px; text-align: center; }
+    #gate.gone { opacity: 0; visibility: hidden; pointer-events: none; }
+    #gate *, #gate *::before, #gate *::after { box-sizing: border-box; }
+    #gate a { color: inherit; text-decoration: none; }
+    .g-top { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px clamp(16px, 4vw, 48px); border-bottom: 1px solid var(--line); }
+    .g-brand { display: flex; align-items: center; gap: 10px; }
+    .g-brand img { width: 36px; height: 36px; border-radius: 10%; box-shadow: 0 0 0 1px rgba(255,255,255,.28); }
+    .g-brand span { display: grid; gap: 3px; font-weight: 800; font-size: 18px; letter-spacing: .04em; line-height: 1; }
+    .g-brand small { font-size: 10px; letter-spacing: .24em; color: var(--muted); font-weight: 600; }
+    .g-pill { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 999px; border: 1.5px solid rgba(255,255,255,.55); font-weight: 700; font-size: 14px; transition: background .2s, color .2s; }
+    .g-pill:hover { background: #fff; color: #000; }
+    .g-main { position: relative; flex: 1; display: grid; place-items: center; padding: 32px 16px 110px; }
+    .g-sky { position: absolute; inset: 0; pointer-events: none; }
+    .g-sky i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: #fff; animation: gTw 3.6s ease-in-out infinite; }
+    @keyframes gTw { 50% { opacity: .2; } }
+    .g-planet { position: absolute; right: 8%; top: 10%; width: 110px; height: 110px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #9d86ff, #7b5cfa 60%, #4b33c7); }
+    .g-planet::after { content: ""; position: absolute; left: -38px; right: -38px; top: 50%; height: 24px; margin-top: -12px; border: 4px solid var(--pink); border-radius: 50%; transform: rotate(-14deg); }
+    .g-ground { position: absolute; left: 0; right: 0; bottom: 0; height: 80px; background: radial-gradient(120% 80px at 50% 100%, #f2be43 60%, transparent 61%); }
+    .g-ground::before { content: ""; position: absolute; left: 0; right: 0; bottom: 36px; height: 64px; background: radial-gradient(140% 64px at 30% 100%, #2e2270 60%, transparent 61%); z-index: -1; }
+    .g-card { position: relative; z-index: 1; width: min(460px, 100%); padding: clamp(26px, 4vw, 40px); border-radius: 26px; border: 1px solid rgba(157,134,255,.45); background: rgba(10,10,16,.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 40px 100px -40px rgba(123,92,250,.8); text-align: center; }
+    .g-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+    .g-eyebrow::before, .g-eyebrow::after { content: ""; width: 22px; height: 2px; background: var(--yellow); border-radius: 2px; }
+    .g-card h1 { margin: 12px 0 0; font-family: "Fira Sans Extra Condensed", sans-serif; font-weight: 800; font-size: clamp(46px, 8vw, 70px); line-height: .92; text-transform: uppercase; }
+    .g-card h1 em { font-style: normal; font-weight: 500; color: transparent; -webkit-text-stroke: 1.6px #fff; }
+    .g-card p { margin: 14px 0 0; color: #c8c8d2; line-height: 1.6; }
+    .g-btn { width: 100%; margin-top: 26px; display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 16px 24px; border-radius: 999px; border: 0; background: #fff; color: #000; font: 800 16px/1 "Manrope", sans-serif; cursor: pointer; transition: background .2s, transform .2s; }
+    .g-btn:hover { background: var(--yellow); }
+    .g-btn:active { transform: scale(.98); }
+    .g-btn svg { width: 20px; height: 20px; }
+    .g-btn[disabled] { opacity: .6; cursor: progress; }
+    .g-how { margin: 16px 0 0 !important; font-size: 13px; color: var(--muted) !important; }
+    .g-alt { margin-top: 18px; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 16px; font-size: 13px; }
+    .g-alt button, .g-alt a { border: 0; background: none; padding: 0; color: #d6d6de; font: inherit; cursor: pointer; border-bottom: 1px solid var(--yellow); }
+    .g-status { min-height: 20px; margin-top: 14px; font-size: 14px; font-weight: 600; color: #6fe3a1; }
+    .g-status.warn { color: #ffcf6e; }
+    .g-foot { position: relative; z-index: 2; padding: 16px; text-align: center; font-size: 12.5px; color: var(--muted); }
+    @media (prefers-reduced-motion: reduce) { .g-sky i { animation: none; } #gate { transition: none; } }
   </style>
 </head>
-<body class="booted">
-  <div id="gate-wrap">
-    <div class="cursor" id="cursor" aria-hidden="true"></div>
-    <header class="gate-top">
-      <a href="../index.html" class="brand" aria-label="Robotics Club IIT Guwahati — website">
+<body>
+  <!-- Members area entrance. The editor (Sveltia CMS) loads underneath and takes over after sign-in. -->
+  <div id="gate" role="dialog" aria-modal="true" aria-labelledby="g-title">
+    <header class="g-top">
+      <a href="../index.html" class="g-brand" aria-label="Back to the website">
         <img src="../images/logo.svg" alt="" />
-        <span class="brand-text">ROBOTICS CLUB.<small>IIT GUWAHATI</small></span>
+        <span>ROBOTICS CLUB.<small>IIT GUWAHATI</small></span>
       </a>
-      <a href="../index.html" class="btn btn-outline btn-sm">← Back to website</a>
+      <a href="../index.html" class="g-pill">← Website</a>
     </header>
 
-    <main class="gate" id="gate">
-      <div class="gate-sky" id="sky" aria-hidden="true"></div>
-      <div class="gate-planet" aria-hidden="true"></div>
-      <div class="gate-ground" aria-hidden="true"></div>
+    <main class="g-main">
+      <div class="g-sky" id="gSky" aria-hidden="true"></div>
+      <div class="g-planet" aria-hidden="true"></div>
+      <div class="g-ground" aria-hidden="true"></div>
 
-      <section class="gate-card" id="gateCard" aria-labelledby="gate-title">
-        <span class="eyebrow">Members only</span>
-        <h1 id="gate-title">Members <span class="outline">area</span></h1>
-        <p>Update the club website without writing any code: events, announcements, achievements, projects, team, gallery and resources.</p>
-        <ul class="gate-steps">
-          <li><b>1</b><span>Sign in with the GitHub account the admin added as an editor.</span></li>
-          <li><b>2</b><span>Pick a section, edit the form, drag in pictures.</span></li>
-          <li><b>3</b><span>Press <strong>Save</strong>. The website updates automatically.</span></li>
-        </ul>
-        <button class="btn btn-solid gate-btn" id="launch" type="button">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-          Sign in to the editor
+      <section class="g-card">
+        <span class="g-eyebrow">Members only</span>
+        <h1 id="g-title">Members <em>area</em></h1>
+        <p>Sign in to update the club website: events, achievements, projects, team, gallery and resources.</p>
+
+        <button class="g-btn" id="gGo" type="button">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22v3.29c0 .32.21.7.82.58A12 12 0 0 0 12 .3"/></svg>
+          <span id="gGoLabel">Continue with GitHub</span>
         </button>
-        <div class="gate-console" id="console" aria-live="polite"></div>
-        <p class="gate-note">Not an editor? Ask the Secretary to add your GitHub account. <a href="https://github.com/Aakashh-15/roboticsclub.iitg/blob/main/EDITORS.md" target="_blank" rel="noopener">Editor guide</a></p>
+        <p class="g-how">GitHub's sign-in page opens: enter your GitHub <b>username and password</b> there.</p>
+        <div class="g-status" id="gStatus" aria-live="polite"></div>
+
+        <div class="g-alt">
+          <button type="button" id="gToken">Use an access token instead</button>
+          <button type="button" id="gLocal" hidden>Edit files on this computer</button>
+          <a href="https://github.com/Aakashh-15/roboticsclub.iitg/blob/main/EDITORS.md" target="_blank" rel="noopener">Editor guide</a>
+        </div>
       </section>
     </main>
 
-    <footer class="gate-foot">Access is limited to club editors. Every change is recorded under the editor's name.</footer>
+    <footer class="g-foot">Only club editors can make changes. Every change is recorded under the editor's name.</footer>
   </div>
 
+  <!-- the editor loads right away (hidden behind the entrance) so sign-in is a single click.
+       Version is pinned so updates can't change the editor unexpectedly; to upgrade, change 0.224.0 and test. -->
+  <script src="https://cdn.jsdelivr.net/npm/@sveltia/cms@0.224.0/dist/sveltia-cms.js"></script>
+  <!-- live website preview while editing (edit page mapping in admin/preview.js) -->
+  <script src="preview.js"></script>
+  <!-- "? Help" button + step-by-step instructions (edit the text in admin/help.js) -->
+  <script src="help.js"></script>
   <script>
     (() => {
-      const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const gate = document.getElementById("gate");
+      const status = document.getElementById("gStatus");
+      const say = (t, warn = false) => { status.textContent = t; status.classList.toggle("warn", warn); };
+      const reveal = () => { gate.classList.add("gone"); setTimeout(() => gate.remove(), 500); };
 
-      // star field
-      const sky = document.getElementById("sky");
-      for (let i = 0; i < 90; i++) {
+      // stars
+      const sky = document.getElementById("gSky");
+      for (let i = 0; i < 80; i++) {
         const s = document.createElement("i");
-        s.style.left = Math.random() * 100 + "%";
-        s.style.top = Math.random() * 78 + "%";
-        s.style.opacity = (0.3 + Math.random() * 0.7).toFixed(2);
-        s.style.animationDelay = (Math.random() * 4).toFixed(2) + "s";
+        s.style.cssText = `left:${Math.random() * 100}%;top:${Math.random() * 78}%;opacity:${(0.3 + Math.random() * 0.7).toFixed(2)};animation-delay:${(Math.random() * 4).toFixed(2)}s`;
         sky.appendChild(s);
       }
 
-      // cursor ring + gentle card tilt (mouse only)
-      const cursor = document.getElementById("cursor"), card = document.getElementById("gateCard");
-      if (matchMedia("(pointer: fine)").matches && !reduce) {
-        let x = -100, y = -100, cx = x, cy = y, alive = true;
-        addEventListener("mousemove", (e) => {
-          x = e.clientX; y = e.clientY; cursor.classList.add("on");
-          const r = card.getBoundingClientRect();
-          const px = (x - r.left) / r.width - 0.5, py = (y - r.top) / r.height - 0.5;
-          card.style.transform = Math.abs(px) < 0.8 && Math.abs(py) < 0.8 ? `perspective(900px) rotateY(${px * 4}deg) rotateX(${-py * 4}deg)` : "";
-        }, { passive: true });
-        document.addEventListener("mouseover", (e) => cursor.classList.toggle("hover", !!e.target.closest("a, button")));
-        (function loop() { if (!alive) return; cx += (x - cx) * 0.22; cy += (y - cy) * 0.22; cursor.style.transform = `translate(${cx}px, ${cy}px)`; requestAnimationFrame(loop); })();
-        window.__stopGateCursor = () => (alive = false);
-      }
+      // keep the editor in its dark theme (matches the site)
+      const forceDark = () => document.querySelectorAll('[data-theme="light"]').forEach((el) => el.setAttribute("data-theme", "dark"));
+      new MutationObserver(forceDark).observe(document.documentElement, { subtree: true, attributes: true, attributeFilter: ["data-theme"] });
 
-      // start the editor: short boot sequence, then hand the page over to Sveltia CMS
-      const gate = document.getElementById("gate"), out = document.getElementById("console");
-      const lines = ["Loading site editor…", "Reading admin/config.yml…", "Connecting to GitHub…"];
-      document.getElementById("launch").addEventListener("click", () => {
-        gate.classList.add("booting");
-        let i = 0;
-        const step = () => {
-          out.innerHTML = lines.slice(0, i + 1).map((l, k) => `<div>${l}${k === i ? ' <span class="caret"></span>' : ""}</div>`).join("");
-          if (++i < lines.length) return setTimeout(step, reduce ? 0 : 420);
-          const s = document.createElement("script");
-          s.src = "https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js";
-          s.onload = () => {
-            // the site styles would interfere with the editor's own layout
-            window.__stopGateCursor?.();
-            ["gate-wrap", "siteCss", "gateCss", "siteFonts"].forEach((id) => document.getElementById(id)?.remove());
-            document.body.className = "";
-          };
-          s.onerror = () => { out.innerHTML += "<div style='color:#ff8a8a'>Could not load the editor. Check your internet connection and try again.</div>"; gate.classList.remove("booting"); };
-          document.body.appendChild(s);
-        };
-        step();
+      // find the editor's own sign-in buttons (rendered underneath the entrance)
+      const findButton = (re) => [...document.querySelectorAll("button")].find((b) => !gate.contains(b) && re.test(b.textContent));
+      const editorText = () => document.body.innerText.length - gate.innerText.length; // text shown by the editor itself
+      const isLocal = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+      if (isLocal) document.getElementById("gLocal").hidden = false;
+
+      // is "Sign in with GitHub" set up? (base_url in config.yml, see EDITORS.md)
+      let oauthReady = null;
+      fetch("config.yml", { cache: "no-cache" }).then((r) => r.text()).then((t) => (oauthReady = /^\s*base_url:\s*\S+/m.test(t))).catch(() => (oauthReady = false));
+
+      // already signed in? then the editor is showing underneath and there is no sign-in button
+      let checks = 0;
+      const watch = setInterval(() => {
+        if (findButton(/sign in with/i)) { clearInterval(watch); return; }
+        if (++checks > 12 && editorText() > 400) {
+          clearInterval(watch);
+          document.getElementById("gGoLabel").textContent = "Open the editor";
+          say("You're already signed in.");
+        }
+      }, 400);
+
+      document.getElementById("gGo").addEventListener("click", () => {
+        const signIn = findButton(/sign in with/i);
+        if (!signIn) {
+          if (editorText() > 400) return reveal(); // signed in already
+          return say("The editor is still loading. Try again in a moment.", true);
+        }
+        if (oauthReady === false) {
+          say("GitHub sign-in isn't set up yet. Use an access token for now (see Editor guide).", true);
+          return;
+        }
+        signIn.click(); // same click, so GitHub's sign-in window is allowed to open
+        say("Opening GitHub sign-in…");
+        reveal();
       });
+      document.getElementById("gToken").addEventListener("click", () => { findButton(/access token/i)?.click(); reveal(); });
+      document.getElementById("gLocal").addEventListener("click", () => { findButton(/local repository/i)?.click(); reveal(); });
     })();
   </script>
 </body>

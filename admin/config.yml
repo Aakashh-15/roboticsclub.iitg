@@ -25,6 +25,7 @@ collections:
   # ------------------------------------------------------------------ EVENTS
   - name: events
     label: Events
+    editor: { preview: true }
     description: Everything shown in "Events & Updates" on the home page.
     icon: event
     files:
@@ -36,6 +37,7 @@ collections:
             label: Events
             label_singular: Event
             widget: list
+            collapsed: true
             summary: "{{fields.start}} · {{fields.title}}"
             hint: The 3 latest appear on the home strip; all appear in the calendar. Order does not matter.
             fields:
@@ -48,15 +50,17 @@ collections:
               - { name: venue, label: Venue, widget: string, required: false, hint: "e.g. Core 5" }
               - { name: host, label: Organised by, widget: string, required: false }
               - { name: desc, label: Description, widget: text, required: false }
-              - { name: highlights, label: Highlights, widget: list, required: false, field: { name: highlight, label: Highlight, widget: string } }
+              - { name: highlights, label: Highlights, widget: list, collapsed: true, required: false, field: { name: highlight, label: Highlight, widget: string } }
               - { name: image, label: Poster, widget: image, required: false, hint: "WebP or JPG, under ~300 KB" }
               - name: links
                 label: Links
                 widget: list
+                summary: "{{fields.label}}"
+                collapsed: true
                 required: false
                 fields:
                   - { name: label, label: Button text, widget: string }
-                  - { name: url, label: Link, widget: string }
+                  - { name: url, label: Link or file, widget: file, choose_url: true, hint: "Upload a file (PDF…), pick one already uploaded, or paste a web link" }
 
       - name: announcements
         label: Announcements
@@ -66,6 +70,7 @@ collections:
             label: Announcements
             label_singular: Announcement
             widget: list
+            collapsed: true
             summary: "{{fields.date}} · {{fields.title}}"
             hint: Every announcement appears in the calendar on its date.
             fields:
@@ -76,10 +81,12 @@ collections:
               - name: links
                 label: Links / downloads
                 widget: list
+                summary: "{{fields.label}}"
+                collapsed: true
                 required: false
                 fields:
                   - { name: label, label: Button text, widget: string }
-                  - { name: url, label: Link, widget: string, hint: "Full https:// link, or a file path such as materials/guide.pdf" }
+                  - { name: url, label: Link or file, widget: file, choose_url: true, hint: "Upload a PDF / file, pick one already uploaded, or paste a web link" }
               - { name: timeline, label: Also show on the home strip, widget: boolean, default: false, required: false }
               - { name: pinned, label: Pinned, widget: boolean, default: false, required: false }
               - { name: sample, label: Placeholder (not real yet), widget: boolean, default: false, required: false }
@@ -92,6 +99,7 @@ collections:
             label: Flagship events
             label_singular: Flagship event
             widget: list
+            collapsed: true
             summary: "{{fields.title}}"
             fields:
               - { name: title, label: Title, widget: string }
@@ -102,6 +110,7 @@ collections:
   # ------------------------------------------------------------ ACHIEVEMENTS
   - name: achievements
     label: Achievements
+    editor: { preview: true }
     icon: trophy
     files:
       - name: achievements
@@ -112,6 +121,7 @@ collections:
             label: Achievements
             label_singular: Achievement
             widget: list
+            collapsed: true
             summary: "{{fields.year}} · {{fields.rank}} · {{fields.event}}"
             hint: Keep the newest at the top. The first gold becomes the big tile on the Achievements page.
             fields:
@@ -127,6 +137,7 @@ collections:
   # ---------------------------------------------------------------- PROJECTS
   - name: projects
     label: Projects
+    editor: { preview: true }
     icon: precision_manufacturing
     files:
       - name: projects
@@ -137,6 +148,7 @@ collections:
             label: Projects
             label_singular: Project
             widget: list
+            collapsed: true
             summary: "{{fields.title}} · {{fields.group}}"
             hint: The first project is the large featured card.
             fields:
@@ -152,19 +164,21 @@ collections:
               - { name: icon, label: Icon (when no photo), widget: select, options: [rover, arm, swarm, gear, bulb, trophy, bot, chip] }
               - { name: color, label: Accent colour, widget: select, options: [purple, pink, yellow] }
               - { name: lead, label: Project lead, widget: string, required: false }
-              - { name: mentors, label: Mentors, widget: list, required: false, field: { name: mentor, label: Name, widget: string } }
-              - { name: highlights, label: Highlights, widget: list, required: false, field: { name: highlight, label: Highlight, widget: string } }
+              - { name: mentors, label: Mentors, widget: list, collapsed: true, required: false, field: { name: mentor, label: Name, widget: string } }
+              - { name: highlights, label: Highlights, widget: list, collapsed: true, required: false, field: { name: highlight, label: Highlight, widget: string } }
               - name: specs
                 label: Fact sheet
                 widget: list
+                collapsed: true
                 required: false
                 fields:
                   - { name: label, label: Item, widget: string }
                   - { name: value, label: Value, widget: string }
-              - { name: stack, label: Tech stack, widget: list, required: false, field: { name: tech, label: Technology, widget: string } }
+              - { name: stack, label: Tech stack, widget: list, collapsed: true, required: false, field: { name: tech, label: Technology, widget: string } }
               - name: timeline
                 label: Roadmap
                 widget: list
+                collapsed: true
                 required: false
                 fields:
                   - { name: phase, label: Phase, widget: string }
@@ -172,14 +186,17 @@ collections:
               - name: links
                 label: Links
                 widget: list
+                summary: "{{fields.label}}"
+                collapsed: true
                 required: false
                 fields:
                   - { name: label, label: Button text, widget: string }
-                  - { name: url, label: Link, widget: string }
+                  - { name: url, label: Link or file, widget: file, choose_url: true, hint: "Upload a file (PDF…), pick one already uploaded, or paste a web link" }
 
   # -------------------------------------------------------------------- TEAM
   - name: team
     label: Team
+    editor: { preview: true }
     icon: groups
     files:
       - name: team
@@ -190,6 +207,7 @@ collections:
             label: Members
             label_singular: Member
             widget: list
+            collapsed: true
             summary: "{{fields.name}} · {{fields.role}}"
             hint: "Photos can also be dropped into images/team/<full-name>.jpg"
             fields:
@@ -204,6 +222,7 @@ collections:
   # ----------------------------------------------------------------- GALLERY
   - name: gallery
     label: Gallery
+    editor: { preview: true }
     icon: photo_library
     files:
       - name: gallery
@@ -214,6 +233,7 @@ collections:
             label: Photos
             label_singular: Photo
             widget: list
+            collapsed: true
             summary: "{{fields.tag}} · {{fields.caption}}"
             fields:
               - { name: image, label: Photo, widget: image }
@@ -223,6 +243,7 @@ collections:
   # --------------------------------------------------------------- RESOURCES
   - name: resources
     label: Resources
+    editor: { preview: true }
     icon: menu_book
     files:
       - name: resources
@@ -233,6 +254,7 @@ collections:
             label: Tabs
             label_singular: Tab
             widget: list
+            collapsed: true
             summary: "{{fields.tab}}"
             fields:
               - { name: tab, label: Tab name, widget: string }
@@ -241,11 +263,12 @@ collections:
                 label: Items
                 label_singular: Item
                 widget: list
+                collapsed: true
                 summary: "{{fields.title}}"
                 fields:
                   - { name: title, label: Title, widget: string }
                   - { name: desc, label: Description, widget: string }
-                  - { name: url, label: Link or file, widget: string, required: false, hint: "Not needed for inventory items" }
+                  - { name: url, label: Link or file, widget: file, choose_url: true, required: false, hint: "Upload a PDF / file, pick one already uploaded, or paste a web link. Not needed for inventory items" }
                   - { name: kind, label: Kind, widget: string, required: false, hint: "e.g. PDF, Docs, Course, Drive" }
                   - { name: qty, label: Availability (inventory), widget: select, required: false, options: [Available, Limited, On request] }
                   - { name: sample, label: Placeholder (not real yet), widget: boolean, default: false, required: false }
@@ -253,6 +276,7 @@ collections:
   # ---------------------------------------------------------------- SETTINGS
   - name: settings
     label: Site settings
+    editor: { preview: true }
     icon: settings
     files:
       - name: settings
@@ -267,11 +291,12 @@ collections:
             widget: object
             fields:
               - { name: heading, label: Heading, widget: string }
-              - { name: body, label: Paragraphs, widget: list, field: { name: paragraph, label: Paragraph, widget: text } }
-              - { name: pillars, label: Focus areas (pills), widget: list, field: { name: pill, label: Pill, widget: string } }
+              - { name: body, label: Paragraphs, widget: list, collapsed: true, field: { name: paragraph, label: Paragraph, widget: text } }
+              - { name: pillars, label: Focus areas (pills), widget: list, collapsed: true, field: { name: pill, label: Pill, widget: string } }
           - name: stats
             label: About counters
             widget: list
+            collapsed: true
             summary: "{{fields.label}}"
             fields:
               - { name: key, label: Counts automatically, widget: select, options: [projects, podiums, events, team] }
@@ -287,7 +312,8 @@ collections:
               - name: socials
                 label: Social links
                 widget: list
+                collapsed: true
                 summary: "{{fields.name}}"
                 fields:
                   - { name: name, label: Network, widget: select, options: [GitHub, Instagram, LinkedIn, YouTube, Facebook] }
-                  - { name: url, label: Link, widget: string }
+                  - { name: url, label: Link or file, widget: file, choose_url: true, hint: "Upload a file (PDF…), pick one already uploaded, or paste a web link" }

@@ -1,0 +1,106 @@
+/* =====================================================================
+   Site editor theme: makes Sveltia CMS look like the club website.
+   Only colours, fonts and a few accents change; the editor's own layout
+   is untouched, so editor updates can't break it.
+   ===================================================================== */
+:root, [data-theme] {
+  --sui-base-hue: 250 !important;
+  /* surfaces: black page, the site's dark cards (#0d0d11 / #15151b / #1e1e26) */
+  --sui-background-color-1-hsl: 240 12% 2% !important;
+  --sui-background-color-2-hsl: 240 13% 6% !important;
+  --sui-background-color-3-hsl: 240 12% 9% !important;
+  --sui-background-color-4-hsl: 240 12% 13% !important;
+  --sui-background-color-5-hsl: 252 45% 24% !important;   /* selected / hover: purple tint */
+  --sui-border-color-1-hsl: 240 8% 38% !important;
+  --sui-border-color-2-hsl: 240 7% 20% !important;
+  --sui-border-color-3-hsl: 240 7% 15% !important;
+  /* fonts */
+  --sui-font-family-default: "Manrope", system-ui, sans-serif !important;
+  --sui-control-font-family: "Manrope", system-ui, sans-serif !important;
+  --sui-textbox-font-family: "Manrope", system-ui, sans-serif !important;
+  --sui-heading-font-family: "Fira Sans Extra Condensed", "Manrope", sans-serif !important;
+  /* accents: site purple for buttons, lighter purple for links */
+  --sui-primary-accent-color: #7b5cfa !important;
+  --sui-primary-accent-color-light: #9d86ff !important;
+  --sui-primary-accent-color-dark: #4b33c7 !important;
+  --sui-primary-accent-color-text: #b3a2ff !important;
+  --sui-primary-accent-color-inverted: #ffffff !important;
+  --sui-button-medium-height: 38px !important;
+}
+/* the site's colour stripe along the top edge */
+body::before {
+  content: ""; position: fixed; left: 0; right: 0; top: 0; height: 3px; z-index: 2147482500; pointer-events: none;
+  background: linear-gradient(90deg, #7b5cfa, #f0a3d8 50%, #f7e34f);
+}
+
+/* ---------------- fuller section screens, site typography ---------------- */
+/* section title ("EVENTS") in the site's condensed uppercase */
+.main-inner h2 { font-size: 30px !important; text-transform: uppercase; letter-spacing: .01em; }
+/* sidebar: roomier rows, condensed labels */
+[role="treeitem"] { min-height: 44px; }
+[role="treeitem"] .label { font-size: 15.5px; font-weight: 600; }
+/* rows of a section screen become cards with a description (text set in help.js) */
+[role="grid"][aria-label="Files"] { display: grid !important; gap: 12px; padding: 14px 0 !important; }
+[role="grid"][aria-label="Files"] [role="row"] {
+  display: block !important; padding: 18px 22px !important; border-radius: 16px;
+  background: #0d0d11; border: 1px solid rgba(255,255,255,.1) !important;
+  font: 800 22px/1.1 "Fira Sans Extra Condensed", "Manrope", sans-serif !important; text-transform: uppercase; letter-spacing: .01em;
+  transition: border-color .2s, transform .2s, background .2s;
+}
+[role="grid"][aria-label="Files"] [role="row"]:hover { border-color: #7b5cfa !important; background: #15122a; transform: translateY(-2px); }
+[role="grid"][aria-label="Files"] [role="row"]::after {
+  display: block; margin-top: 6px; font: 500 14px/1.5 "Manrope", system-ui, sans-serif; text-transform: none; letter-spacing: 0; color: #a4a4b0;
+}
+/* quick-tip card under the rows */
+.rc-tip-card {
+  display: flex; align-items: center; gap: 16px; margin: 8px 0 20px; padding: 18px 20px; border-radius: 16px;
+  border: 1px solid rgba(247,227,79,.35); background: rgba(247,227,79,.05); color: #e4e4ea; font: 400 14.5px/1.5 "Manrope", system-ui, sans-serif;
+}
+.rc-tip-card b { color: #f7e34f; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
+.rc-tip-card p { margin: 2px 0 0; }
+.rc-tip-card code { padding: 1px 6px; border-radius: 5px; background: #1e1e26; color: #f7e34f; }
+.rc-tip-card > div { flex: 1; }
+.rc-tip-ico { display: grid; place-items: center; width: 34px; height: 34px; flex: none; border-radius: 50%; background: #f7e34f; color: #000; font-weight: 800; }
+.rc-tip-card button { flex: none; padding: 9px 16px; border-radius: 999px; border: 1.5px solid rgba(255,255,255,.4); background: none; color: #fff; font: 700 13px "Manrope", sans-serif; cursor: pointer; }
+.rc-tip-card button:hover { background: #fff; color: #000; }
+
+/* ---------------- help button + instructions panel ---------------- */
+.rc-help-btn {
+  position: fixed; right: 22px; bottom: 22px; z-index: 2147482000;
+  display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border: 0; border-radius: 999px;
+  background: #f7e34f; color: #000; font: 800 15px/1 "Manrope", system-ui, sans-serif; cursor: pointer;
+  box-shadow: 0 14px 40px -12px rgba(247, 227, 79, .7); transition: transform .2s;
+}
+.rc-help-btn:hover { transform: translateY(-2px); }
+.rc-help-btn b { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: #000; color: #f7e34f; font-size: 13px; }
+.rc-help-btn.pulse::after { content: ""; position: absolute; inset: -4px; border-radius: 999px; border: 2px solid #f7e34f; animation: rcPulse 1.6s ease-out infinite; }
+@keyframes rcPulse { from { opacity: .9; transform: scale(1); } to { opacity: 0; transform: scale(1.25); } }
+.rc-help-dim { position: fixed; inset: 0; z-index: 2147482100; background: rgba(0,0,0,.55); opacity: 0; transition: opacity .25s; }
+.rc-help-dim.open { opacity: 1; }
+.rc-help {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 2147482200; width: min(440px, 100vw);
+  display: flex; flex-direction: column; background: #0d0d11; color: #e4e4ea; border-left: 1px solid rgba(157,134,255,.45);
+  box-shadow: -30px 0 80px -30px rgba(123,92,250,.6); font: 400 15px/1.6 "Manrope", system-ui, sans-serif;
+  transform: translateX(105%); transition: transform .35s cubic-bezier(.2,.8,.2,1);
+}
+.rc-help.open { transform: none; }
+.rc-help-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 22px; background: linear-gradient(135deg, #7b5cfa, #4b33c7); color: #fff; }
+.rc-help-head span { font: 700 11px/1 "Manrope", sans-serif; letter-spacing: .16em; text-transform: uppercase; opacity: .9; }
+.rc-help-head h2 { margin: 4px 0 0; font: 800 30px/1 "Fira Sans Extra Condensed", sans-serif; text-transform: uppercase; }
+.rc-help-x { width: 34px; height: 34px; flex: none; border: 0; border-radius: 50%; background: rgba(0,0,0,.35); color: #fff; font-size: 20px; cursor: pointer; }
+.rc-help-x:hover { background: #fff; color: #000; }
+.rc-help-body { flex: 1; overflow-y: auto; padding: 18px 22px 30px; }
+.rc-help-body h3 { margin: 22px 0 8px; font: 800 20px/1.1 "Fira Sans Extra Condensed", sans-serif; text-transform: uppercase; color: #fff; }
+.rc-help-body h3:first-child { margin-top: 4px; }
+.rc-help-body ol, .rc-help-body ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.rc-help-body li::marker { color: #f7e34f; font-weight: 800; }
+.rc-help-body p { margin: 6px 0; color: #c8c8d2; }
+.rc-help-body b { color: #fff; }
+.rc-help-body code { padding: 1px 6px; border-radius: 5px; background: #1e1e26; color: #f7e34f; font-size: 13px; }
+.rc-help-tip { margin-top: 14px; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(247,227,79,.35); background: rgba(247,227,79,.06); font-size: 14px; }
+.rc-help-tip b { color: #f7e34f; }
+.rc-help-topics { margin-top: 26px; padding-top: 16px; border-top: 1px dashed rgba(255,255,255,.14); }
+.rc-help-topics p { margin: 0 0 10px; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #a4a4b0; }
+.rc-help-topics button { margin: 0 6px 8px 0; padding: 7px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,.2); background: none; color: #e4e4ea; font: 600 13px "Manrope", sans-serif; cursor: pointer; }
+.rc-help-topics button:hover, .rc-help-topics button.on { background: #fff; color: #000; }
+@media (prefers-reduced-motion: reduce) { .rc-help, .rc-help-dim { transition: none; } .rc-help-btn.pulse::after { animation: none; } }

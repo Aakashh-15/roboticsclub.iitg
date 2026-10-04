@@ -13,11 +13,12 @@ section of the site is a simple form, and pressing **Save** updates the website.
 1. Create a free GitHub account at <https://github.com/signup> if you don't have one.
 2. Ask the website admin to add you as a collaborator. They'll need your GitHub username.
 3. Accept the invitation email from GitHub.
-4. Open the editor address and click **Sign In with GitHub**, using your GitHub username and password.
+4. Click **Admin** in the website's top bar (or open the editor address) and press **Continue with GitHub**.
+   GitHub's own sign-in page opens: enter your GitHub **username and password** there. GitHub remembers you next time.
 
 Access is removed simply by removing you as a collaborator on GitHub.
 
-> **If "Sign In with GitHub" isn't set up yet**, use **Sign In Using Access Token**:
+> **If "Continue with GitHub" says it isn't set up yet**, click **Use an access token instead**:
 > on GitHub go to *Settings → Developer settings → Personal access tokens → Fine-grained tokens →
 > Generate new token*, choose the `roboticsclub.iitg` repository, give it
 > **Contents: Read and write** permission, and paste the token into the editor.
@@ -41,6 +42,9 @@ The **design never changes**: you only edit text, dates, links and pictures, and
 them out in the club's style automatically.
 
 ## 3. Everyday tasks
+
+> **Stuck? Click the yellow "? Help" button** in the bottom-right corner of the editor. It opens step-by-step
+> instructions for the section you are in, plus every other topic. (Admins: the text lives in `admin/help.js`.)
 
 **Add an event (with poster)**
 Events → Dated events → **Add Event** → fill in Title, Start date (and End date if it runs several

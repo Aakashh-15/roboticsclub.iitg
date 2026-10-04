@@ -34,7 +34,27 @@ function buildClub(f) {
 }
 const CONTENT_FILES = ["settings", "projects", "announcements", "timeline", "events", "achievements", "team", "gallery", "resources"];
 
+// Site editor preview (admin/preview.js): when this page runs inside the editor's preview
+// pane, the draft being edited replaces the saved file, so changes show before saving.
+const previewDraft = () => {
+  try {
+    if (!new URLSearchParams(location.search).has("cmsPreview")) return null;
+    // the editor may nest the preview in its own frame: look in every parent window
+    for (let w = window; w.parent !== w; ) { w = w.parent; if (w.__rcPreviewDraft) return w.__rcPreviewDraft; }
+    return null;
+  } catch { return null; }
+};
+
 if (typeof window !== "undefined") {
+  const draft = previewDraft();
+  if (draft) {
+    // keep the reader's place when the preview refreshes after each edit
+    const key = "rcPreviewScroll:" + location.pathname;
+    addEventListener("pagehide", () => { try { sessionStorage.setItem(key, String(scrollY)); } catch {} });
+    addEventListener("load", () => setTimeout(() => {
+      try { const y = +sessionStorage.getItem(key); if (y) scrollTo(0, y); } catch {}
+    }, 250));
+  }
   window.CLUB_READY = Promise.all(
     CONTENT_FILES.map((name) =>
       fetch(`content/${name}.json`, { cache: "no-cache" }).then((r) => {
@@ -43,7 +63,11 @@ if (typeof window !== "undefined") {
       })
     )
   )
-    .then((files) => (window.CLUB = buildClub(Object.fromEntries(CONTENT_FILES.map((n, i) => [n, files[i]])))))
+    .then((files) => {
+      const f = Object.fromEntries(CONTENT_FILES.map((n, i) => [n, files[i]]));
+      if (draft && f[draft.file] !== undefined) f[draft.file] = draft.data; // unsaved edits
+      return (window.CLUB = buildClub(f));
+    })
     .catch((err) => {
       console.error("Could not load site content:", err);
       document.addEventListener("DOMContentLoaded", () => {

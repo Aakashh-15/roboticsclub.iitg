@@ -46,6 +46,9 @@ jobs:
                 team.html gallery.html resources.html 404.html robots.txt .nojekyll \
                 css js images materials content admin _site/
           [ -f CNAME ] && cp CNAME _site/ || true
+          # cache-busting: append the commit id to css/js links so browsers fetch the new versions
+          v=${GITHUB_SHA::8}
+          sed -i -E "s#(href=\"(\.\./)?css/[a-z-]+\.css)\"#\1?v=$v\"#g; s#(src=\"js/[a-z-]+\.js)\"#\1?v=$v\"#g" _site/*.html _site/admin/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -144,9 +144,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .nav-cta-mobile { display: none; }
 .nav-cta { padding: 12px 28px; }
 .nav-actions { display: flex; align-items: center; gap: 10px; }
-.nav-admin { display: inline-flex; align-items: center; gap: 7px; padding: 11px 16px; border-radius: 999px; font-size: 14px; font-weight: 700; color: #c8c8d2; border: 1.5px solid transparent; transition: color .2s, border-color .2s, background .2s; }
+.nav-admin { display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 999px; font-size: 15px; font-weight: 700; color: var(--yellow); border: 1.5px solid rgba(247, 227, 79, .55); background: rgba(247, 227, 79, .06); transition: color .2s, border-color .2s, background .2s; }
 .nav-admin svg { width: 15px; height: 15px; }
-.nav-admin:hover { color: #000; background: var(--yellow); }
+.nav-admin:hover { color: #000; background: var(--yellow); border-color: var(--yellow); }
 .nav-admin-mobile svg { width: 26px; height: 26px; vertical-align: -2px; }
 .burger { display: none; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--line-strong); background: none; position: relative; }
 .burger span { position: absolute; left: 12px; right: 12px; height: 2px; background: #fff; border-radius: 2px; transition: transform 0.3s var(--ease); }
