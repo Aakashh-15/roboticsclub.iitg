@@ -7,7 +7,7 @@
       "event": "International Rover Challenge 2023",
       "desc": "Team Yuvaan took the club's Mars rover to the international stage in Bengaluru, finishing 17th among 36 university teams from across the world.",
       "project": "yuvaan",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/Yuvaan.jpg"
+      "image": "images/old-site/projects/yuvaan.webp"
     },
     {
       "year": "2020",
@@ -16,7 +16,7 @@
       "event": "Inter IIT Tech Meet 9.0",
       "desc": "RuTag's Agrobot: rocker-bogie farm robot with seed pickup, transplanting and camera-based weed detection.",
       "project": "agrobot",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/2020.jpg"
+      "image": "images/old-site/2020.webp"
     },
     {
       "year": "2019",
@@ -25,7 +25,7 @@
       "event": "Inter IIT Tech Meet 8.0",
       "desc": "DIC's Terrace Farming Robot: autonomous bot that climbs terrace steps to plough, seed, water and harvest.",
       "project": "terrace-farming",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/2019.jpg"
+      "image": "images/old-site/2019.webp"
     },
     {
       "year": "2018",
@@ -34,7 +34,7 @@
       "event": "Inter IIT Tech Meet 7.0",
       "desc": "Two problem statements tackled: Technology for Soldier Support and Safety Devices for Fishing Vessels.",
       "project": "soldier-support",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/2018.JPG"
+      "image": "images/old-site/2018.webp"
     },
     {
       "year": "2017–20",
@@ -42,7 +42,7 @@
       "title": "26 projects exhibited",
       "event": "Techevince 4.0 – 7.0",
       "desc": "Four editions of IIT Guwahati's tech exhibition, featuring bipeds, delta robots, swarm bots, Rubik's cube solvers and more.",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/20. warehouse.jpg",
+      "image": "images/old-site/projects/20-warehouse.webp",
       "link": "projects.html"
     }
   ]

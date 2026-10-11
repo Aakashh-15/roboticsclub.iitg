@@ -8,7 +8,7 @@
       "status": "Active",
       "icon": "rover",
       "color": "purple",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/Yuvaan.jpg",
+      "image": "images/old-site/projects/yuvaan.webp",
       "lead": "Tirth Patel",
       "summary": "Ever wondered what goes inside the core of a hyped space expedition programme? Yuvaan is the club's Mars-rover team.",
       "overview": "Yuvaan explores what it takes to land on another planet and operate there — through the design and development of a planetary rover. The team works across chassis and suspension, power, communication, manipulation and autonomy."
@@ -20,7 +20,7 @@
       "status": "Ongoing",
       "icon": "bulb",
       "color": "pink",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/21. ar_glasses.png",
+      "image": "images/old-site/projects/21-ar-glasses.webp",
       "mentors": [
         "Devesh Gupta"
       ],
@@ -33,7 +33,7 @@
       "status": "Ongoing",
       "icon": "rover",
       "color": "yellow",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/21. drivezee.jpeg",
+      "image": "images/old-site/projects/21-drivezee.webp",
       "mentors": [
         "Yash Joshi"
       ],
@@ -47,7 +47,7 @@
       "status": "Ongoing",
       "icon": "arm",
       "color": "purple",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/21. exoskeleton.jpg",
+      "image": "images/old-site/projects/21-exoskeleton.webp",
       "mentors": [
         "Saranyaa Thiagarajan"
       ],
@@ -61,7 +61,7 @@
       "status": "Ongoing",
       "icon": "bot",
       "color": "pink",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/21. fido.png",
+      "image": "images/old-site/projects/21-fido.webp",
       "mentors": [
         "Sree Rakhi Kudipudi"
       ],
@@ -75,7 +75,7 @@
       "status": "Ongoing",
       "icon": "swarm",
       "color": "yellow",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/21. awwc.jpg",
+      "image": "images/old-site/projects/21-awwc.webp",
       "mentors": [
         "Nahush Bhamre"
       ],
@@ -88,7 +88,7 @@
       "status": "Ongoing",
       "icon": "rover",
       "color": "purple",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/21. pipe.png",
+      "image": "images/old-site/projects/21-pipe.webp",
       "mentors": [
         "Shreya Singh"
       ],
@@ -102,7 +102,7 @@
       "status": "Ongoing",
       "icon": "arm",
       "color": "pink",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/21. rob_arm.jpg",
+      "image": "images/old-site/projects/21-rob-arm.webp",
       "mentors": [
         "Ritesh Ranjan",
         "Sanjana Reddy Kalsani"
@@ -117,7 +117,7 @@
       "status": "Ongoing",
       "icon": "bot",
       "color": "yellow",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/21. talk.jpeg",
+      "image": "images/old-site/projects/21-talk.webp",
       "mentors": [
         "Rahul Aggarwal"
       ],
@@ -130,7 +130,7 @@
       "status": "Ongoing",
       "icon": "arm",
       "color": "purple",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/21. wall_plotter.jpeg",
+      "image": "images/old-site/projects/21-wall-plotter.webp",
       "mentors": [
         "Varshith Kancharla"
       ],
@@ -144,7 +144,7 @@
       "status": "1st Position",
       "icon": "rover",
       "color": "yellow",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/20. agrobot.png",
+      "image": "images/old-site/projects/20-agrobot.webp",
       "summary": "The agricultural robot that won first place at Inter IIT Tech Meet 9.0.",
       "overview": "The Agrobot uses a rocker-bogie mechanism to navigate farm terrain. A vacuum pump picks up seeds, a tree-spade system handles transplanting, and a camera identifies weeds."
     },
@@ -156,7 +156,7 @@
       "status": "2nd Position",
       "icon": "rover",
       "color": "pink",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/19. dic.jpeg",
+      "image": "images/old-site/projects/19-dic.webp",
       "summary": "A lightweight autonomous farming bot that climbs terrace steps. Second place at Inter IIT Tech Meet 8.0.",
       "overview": "The robot climbs steep terrace steps and navigates reliably across uneven terrain to plough, seed, water and harvest."
     },
@@ -168,7 +168,7 @@
       "status": "Inter IIT",
       "icon": "chip",
       "color": "purple",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/18. soldier.png",
+      "image": "images/old-site/projects/18-soldier.webp",
       "summary": "A wearable suit with sensors for motion detection and real-time tracking.",
       "overview": "After a training period, the suit detects the wearer's motion and transmits real-time tracking information to a base station."
     },
@@ -180,7 +180,7 @@
       "status": "Inter IIT",
       "icon": "chip",
       "color": "yellow",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/18. fishing.png",
+      "image": "images/old-site/projects/18-fishing.webp",
       "summary": "Ship-proximity alerts for fishing vessels using AIS signals and solar-powered buoys.",
       "overview": "Ship distance is estimated from AIS signal power, a directional antenna estimates the direction of approach, and alerts are relayed over RF through a network of solar-powered buoys."
     },
@@ -192,7 +192,7 @@
       "status": "Completed",
       "icon": "bot",
       "color": "purple",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/biped.jpg",
+      "image": "images/old-site/projects/biped.webp",
       "summary": "A 10-DOF two-legged robot that walks on flat surfaces."
     },
     {
@@ -203,7 +203,7 @@
       "status": "Completed",
       "icon": "arm",
       "color": "pink",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/20. planar_man.png",
+      "image": "images/old-site/projects/20-planar-man.webp",
       "summary": "A planar arm modelled on the human hand, capable of pattern-based writing, path traversal and object manipulation."
     },
     {
@@ -214,7 +214,7 @@
       "status": "Completed",
       "icon": "arm",
       "color": "yellow",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/20. replication_bot.jpg",
+      "image": "images/old-site/projects/20-replication-bot.webp",
       "summary": "A microcontroller-based arm that mirrors the motion of a synchronised replica."
     },
     {
@@ -225,7 +225,7 @@
       "status": "Completed",
       "icon": "arm",
       "color": "purple",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/20. drawing-arm.png",
+      "image": "images/old-site/projects/20-drawing-arm.webp",
       "summary": "A two-axis pen-drawing machine for those short on drawing skill or time."
     },
     {
@@ -236,7 +236,7 @@
       "status": "Completed",
       "icon": "gear",
       "color": "pink",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/20. shapeshift.png",
+      "image": "images/old-site/projects/20-shapeshift.webp",
       "summary": "A terrain-adaptive wheel inspired by DARPA's shape-shifting wheel for all-terrain vehicles."
     },
     {
@@ -247,7 +247,7 @@
       "status": "Completed",
       "icon": "bot",
       "color": "yellow",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/20. wall_follow.png",
+      "image": "images/old-site/projects/20-wall-follow.webp",
       "summary": "An Arduino robot that follows a wall while holding a fixed distance from it."
     },
     {
@@ -258,7 +258,7 @@
       "status": "Completed",
       "icon": "rover",
       "color": "purple",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/20. warehouse.jpg",
+      "image": "images/old-site/projects/20-warehouse.webp",
       "summary": "A fully autonomous bot that avoids obstacles to locate, lift and transport inventory."
     },
     {
@@ -269,7 +269,7 @@
       "status": "Completed",
       "icon": "bulb",
       "color": "pink",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/19. augmata.png",
+      "image": "images/old-site/projects/19-augmata.webp",
       "summary": "Augmented reality that enhances the real world with sounds, images and interactive virtual objects."
     },
     {
@@ -280,7 +280,7 @@
       "status": "Completed",
       "icon": "gear",
       "color": "yellow",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/19. ballet_of_bot.png",
+      "image": "images/old-site/projects/19-ballet-of-bot.webp",
       "summary": "PID control of a weighted ball on a flat surface, moving it precisely to set-points."
     },
     {
@@ -291,7 +291,7 @@
       "status": "Completed",
       "icon": "rover",
       "color": "purple",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/19. cyrus.jpg",
+      "image": "images/old-site/projects/19-cyrus.webp",
       "summary": "A vehicle that tracks a sound source and drives autonomously towards it, using low-cost sensors and voice recognition."
     },
     {
@@ -302,7 +302,7 @@
       "status": "Completed",
       "icon": "gear",
       "color": "pink",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/19. lazy_fill.jpg",
+      "image": "images/old-site/projects/19-lazy-fill.webp",
       "summary": "Automated water-bottle filling that removes the manual steps."
     },
     {
@@ -313,7 +313,7 @@
       "status": "Completed",
       "icon": "arm",
       "color": "yellow",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/19. rearrange_robotic_arm.png",
+      "image": "images/old-site/projects/19-rearrange-robotic-arm.webp",
       "summary": "A 4R arm with vision and control for sorting, rearranging, obstacle avoidance and trajectory planning."
     },
     {
@@ -324,7 +324,7 @@
       "status": "Completed",
       "icon": "chip",
       "color": "purple",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/19. rubiks.jpeg",
+      "image": "images/old-site/projects/19-rubiks.webp",
       "summary": "Scans a cube and solves it with stepper motors on an acrylic, pillar-mounted frame."
     },
     {
@@ -335,7 +335,7 @@
       "status": "Completed",
       "icon": "rover",
       "color": "pink",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/19. stair_climber.jpg",
+      "image": "images/old-site/projects/19-stair-climber.webp",
       "summary": "A six-wheeled NodeMCU bot with a self-adjusting gimbal plate that climbs stairs.",
       "overview": "The robot uses high-torque DC motors, a self-adjusting gimbal plate, a flexible front elbow joint and rigid rear arms to climb stairs, all controlled through a NodeMCU."
     },
@@ -347,7 +347,7 @@
       "status": "Completed",
       "icon": "rover",
       "color": "yellow",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/18. all_ter.png",
+      "image": "images/old-site/projects/18-all-ter.webp",
       "summary": "A rocker-bogie vehicle, the Mars-rover mechanism for crossing rough terrain while staying stable."
     },
     {
@@ -358,7 +358,7 @@
       "status": "Completed",
       "icon": "bot",
       "color": "purple",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/18. attendance.png",
+      "image": "images/old-site/projects/18-attendance.webp",
       "summary": "Automated attendance recording using face recognition."
     },
     {
@@ -369,7 +369,7 @@
       "status": "Completed",
       "icon": "chip",
       "color": "pink",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/18. cycle_lock.png",
+      "image": "images/old-site/projects/18-cycle-lock.webp",
       "summary": "A Bluetooth lock that turns the key with a servo, driven by an Arduino Micro."
     },
     {
@@ -380,7 +380,7 @@
       "status": "Completed",
       "icon": "rover",
       "color": "yellow",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/17. abc.png",
+      "image": "images/old-site/projects/17-abc.webp",
       "summary": "The true tennis buddy: place it on the court and it collects the balls for you."
     },
     {
@@ -391,7 +391,7 @@
       "status": "Completed",
       "icon": "bot",
       "color": "purple",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/17. biped.png",
+      "image": "images/old-site/projects/17-biped.webp",
       "summary": "A ROS-controlled biped robot driven by a joystick."
     },
     {
@@ -402,7 +402,7 @@
       "status": "Completed",
       "icon": "arm",
       "color": "pink",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/17. arm.png",
+      "image": "images/old-site/projects/17-arm.webp",
       "summary": "An arm that finds coloured balls in 3D space and grasps them automatically."
     },
     {
@@ -413,7 +413,7 @@
       "status": "Completed",
       "icon": "arm",
       "color": "yellow",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/17. delta.png",
+      "image": "images/old-site/projects/17-delta.webp",
       "summary": "A parallel delta robot whose parallelogram arms keep the end-effector's orientation fixed.",
       "overview": "A delta robot has three arms connected to universal joints at the base. Its parallelogram arms keep the end-effector's orientation constant, the design used in industrial picking and packaging at up to 300 picks per minute."
     },
@@ -425,7 +425,7 @@
       "status": "Completed",
       "icon": "swarm",
       "color": "purple",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/17. hive.png",
+      "image": "images/old-site/projects/17-hive.webp",
       "summary": "The club's first prototype of an autonomous, intelligent multi-robot swarm system, built to be expanded."
     },
     {
@@ -436,7 +436,7 @@
       "status": "Completed",
       "icon": "rover",
       "color": "pink",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/17. mobile.png",
+      "image": "images/old-site/projects/17-mobile.webp",
       "summary": "A mobile robot that writes letters and words by driving around."
     },
     {
@@ -447,7 +447,7 @@
       "status": "Completed",
       "icon": "chip",
       "color": "yellow",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/17. rubik.png",
+      "image": "images/old-site/projects/17-rubik.webp",
       "summary": "Image processing detects the scrambled state, computes a solution and drives grippers to execute it."
     },
     {
@@ -458,7 +458,7 @@
       "status": "Completed",
       "icon": "bot",
       "color": "purple",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/17. transform.png",
+      "image": "images/old-site/projects/17-transform.webp",
       "summary": "A modular robot in the spirit of the Transformers films, part of an evolving robot ecosystem."
     },
     {
@@ -469,7 +469,7 @@
       "status": "Completed",
       "icon": "bulb",
       "color": "pink",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/projects/17. vein.png",
+      "image": "images/old-site/projects/17-vein.webp",
       "summary": "Near-infrared LEDs and a filtered camera make veins visible beneath the skin.",
       "overview": "A U-shaped arrangement of LEDs projects near-infrared light. Blood absorbs it while tissue reflects it, so veins stand out when viewed through an infrared-filtered camera."
     }

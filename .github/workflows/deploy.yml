@@ -44,7 +44,7 @@ jobs:
           mkdir _site
           cp -r index.html projects.html project.html achievements.html \
                 team.html gallery.html resources.html 404.html robots.txt .nojekyll \
-                css js images materials content admin _site/
+                css js fonts images materials content admin _site/
           [ -f CNAME ] && cp CNAME _site/ || true
           # cache-busting: append the commit id to css/js links so browsers fetch the new versions
           v=${GITHUB_SHA::8}

@@ -47,8 +47,9 @@ dependencies**, so anyone in the club can edit it, and it runs on any static hos
 │   ├── main.js           Renders each page's sections + Mars hero scene
 │   ├── project.js        Project deep-dive page
 │   └── icons.js          SVG icon set
-├── css/style.css         Theme and layout
-├── images/               Logo, social preview image, photos
+├── css/style.css         Theme and layout (css/fonts.css: the self-hosted fonts)
+├── fonts/                Font files, stored here so the site needs no Google Fonts
+├── images/               Logo, social preview image, photos (images/old-site/: photos copied from the old iitg.ac.in club page)
 ├── materials/            Downloadable PDFs (install guides, selection task)
 ├── scripts/validate.mjs  Content checker (runs in CI)
 └── .github/workflows/    Check + deploy to GitHub Pages

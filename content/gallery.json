@@ -1,52 +1,52 @@
 {
   "items": [
     {
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/walle_hi.jpg",
+      "image": "images/old-site/walle-hi.webp",
       "caption": "Say hi to the club",
       "tag": "Club"
     },
     {
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/2020.jpg",
+      "image": "images/old-site/2020.webp",
       "caption": "Inter IIT Tech Meet 9.0",
       "tag": "Competition"
     },
     {
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/2019.jpg",
+      "image": "images/old-site/2019.webp",
       "caption": "Inter IIT Tech Meet 8.0",
       "tag": "Competition"
     },
     {
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/orientation.jpg",
+      "image": "images/old-site/orientation.webp",
       "caption": "Introductory session",
       "tag": "Events"
     },
     {
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/arduino_workshop.jpg",
+      "image": "images/old-site/arduino-workshop.webp",
       "caption": "Arduino workshop",
       "tag": "Workshop"
     },
     {
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/opencv_workshop.jpg",
+      "image": "images/old-site/opencv-workshop.webp",
       "caption": "OpenCV workshop",
       "tag": "Workshop"
     },
     {
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/ai_workshop.jpg",
+      "image": "images/old-site/ai-workshop.webp",
       "caption": "AI workshop",
       "tag": "Workshop"
     },
     {
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/10_hr_chalenge.jpg",
+      "image": "images/old-site/10-hr-chalenge.webp",
       "caption": "10 Hours Robot Challenge",
       "tag": "Events"
     },
     {
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/Robothon.JPG",
+      "image": "images/old-site/robothon.webp",
       "caption": "Robothon",
       "tag": "Events"
     },
     {
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/2018.JPG",
+      "image": "images/old-site/2018.webp",
       "caption": "Inter IIT Tech Meet 7.0",
       "tag": "Competition"
     }

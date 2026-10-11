@@ -3,7 +3,7 @@
     {
       "title": "Freshers' Orientation",
       "desc": "The start-of-year introduction for the new batch: what the club does and how to get started.",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/orientation.jpg"
+      "image": "images/old-site/orientation.webp"
     },
     {
       "title": "ROBO101",
@@ -13,27 +13,27 @@
     {
       "title": "Arduino Workshop",
       "desc": "Microcontrollers, sensors and motors: your first working circuit.",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/arduino_workshop.jpg"
+      "image": "images/old-site/arduino-workshop.webp"
     },
     {
       "title": "OpenCV Workshop",
       "desc": "Computer vision fundamentals for robots that see.",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/opencv_workshop.jpg"
+      "image": "images/old-site/opencv-workshop.webp"
     },
     {
       "title": "AI Workshop",
       "desc": "Machine learning concepts applied to robotics.",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/ai_workshop.jpg"
+      "image": "images/old-site/ai-workshop.webp"
     },
     {
       "title": "10 Hours Robot Challenge",
       "desc": "Design, build and program a robot against the clock.",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/10_hr_chalenge.jpg"
+      "image": "images/old-site/10-hr-chalenge.webp"
     },
     {
       "title": "Robothon",
       "desc": "The club's robotics hackathon.",
-      "image": "https://www.iitg.ac.in/sa/roboclub/img/Robothon.JPG"
+      "image": "images/old-site/robothon.webp"
     }
   ]
 }
