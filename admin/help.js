@@ -263,18 +263,21 @@ const HELP = {
     const col = m && !m[2] ? m[1] : "";
     if (col) document.body.dataset.rcCol = col; else delete document.body.dataset.rcCol;
     // tip card below the rows of a section screen
-    const list = document.querySelector('[aria-label="File List"]');
+    // placed straight after the rows (inside the scrolling list, so it's always in view)
+    // (the editor keeps earlier screens in the page, hidden: use the one on screen)
+    const list = [...document.querySelectorAll('[aria-label="File List"] [role="grid"][aria-label="Files"]')]
+      .find((g) => g.getBoundingClientRect().width > 0);
     const info = SECTION_INFO[col];
     let card = document.querySelector(".rc-tip-card");
     if (!list || !info) { card?.remove(); return; }
-    if (card && card.parentElement === list && card.dataset.col === col) return;
+    if (card && card.previousElementSibling === list && card.dataset.col === col) return;
     card?.remove();
     card = document.createElement("div");
     card.className = "rc-tip-card";
     card.dataset.col = col;
     card.innerHTML = `<span class="rc-tip-ico">?</span><div><b>Quick tip</b><p>${info.tip[1]}</p></div><button type="button">Step-by-step guide</button>`;
     card.querySelector("button").addEventListener("click", () => window.openEditorHelp(info.tip[0]));
-    list.appendChild(card);
+    list.after(card);
   };
   addEventListener("hashchange", syncSection);
   let pending = 0;

@@ -33,30 +33,87 @@ body::before {
   background: linear-gradient(90deg, #7b5cfa, #f0a3d8 50%, #f7e34f);
 }
 
-/* ---------------- fuller section screens, site typography ---------------- */
-/* section title ("EVENTS") in the site's condensed uppercase */
-.main-inner h2 { font-size: 30px !important; text-transform: uppercase; letter-spacing: .01em; }
-/* sidebar: roomier rows, condensed labels */
-[role="treeitem"] { min-height: 44px; }
-[role="treeitem"] .label { font-size: 15.5px; font-weight: 600; }
-/* rows of a section screen become cards with a description (text set in help.js) */
-[role="grid"][aria-label="Files"] { display: grid !important; gap: 12px; padding: 14px 0 !important; }
-[role="grid"][aria-label="Files"] [role="row"] {
-  display: block !important; padding: 18px 22px !important; border-radius: 16px;
-  background: #0d0d11; border: 1px solid rgba(255,255,255,.1) !important;
-  font: 800 22px/1.1 "Fira Sans Extra Condensed", "Manrope", sans-serif !important; text-transform: uppercase; letter-spacing: .01em;
-  transition: border-color .2s, transform .2s, background .2s;
+/* ---------------- buttons: the site's pill buttons ---------------- */
+.sui.button { border-radius: 999px !important; }
+.sui.button.primary:not(.iconic) { padding-inline: 20px !important; font-weight: 700 !important; }
+/* main action (Save, Sign In…): white pill turning yellow, like .btn-solid on the site */
+.sui.button.primary {
+  background: #fff !important; color: #000 !important; border-color: #fff !important;
+  transition: background .2s, border-color .2s, color .2s !important;
 }
-[role="grid"][aria-label="Files"] [role="row"]:hover { border-color: #7b5cfa !important; background: #15122a; transform: translateY(-2px); }
+.sui.button.primary:hover:not([disabled]) { background: #f7e34f !important; border-color: #f7e34f !important; }
+.sui.button.primary[disabled] { opacity: .45 !important; }
+.sui.button.primary .icon, .sui.button.primary .label { color: #000 !important; }
+/* outlined secondary buttons, like .btn-outline */
+.sui.button.secondary { background: transparent !important; border: 1.5px solid rgba(255,255,255,.55) !important; color: #fff !important; }
+.sui.button.secondary:hover:not([disabled]) { background: #fff !important; color: #000 !important; }
+.sui.button.secondary:hover:not([disabled]) .icon, .sui.button.secondary:hover:not([disabled]) .label { color: #000 !important; }
+
+/* ---------------- top bars ---------------- */
+[role="toolbar"][aria-label="Global"] { background: #000 !important; border-bottom: 1px solid rgba(255,255,255,.14); }
+/* toolbar titles ("EVENTS", "CREATING TEAM") in the site's condensed uppercase */
+[role="toolbar"] h2 { font-family: "Fira Sans Extra Condensed", "Manrope", sans-serif !important; font-weight: 800 !important; text-transform: uppercase; letter-spacing: .01em; }
+.main-inner h2, main [role="toolbar"][aria-label="Collection"] h2 { font-size: 30px !important; }
+[role="toolbar"][aria-label="Primary"] h2 { font-size: 24px !important; }
+[role="toolbar"][aria-label="Collection"] .description { color: #a4a4b0 !important; }
+/* search box: pill */
+[role="toolbar"][aria-label="Global"] .sui.search-bar, [role="toolbar"][aria-label="Global"] .sui.text-input { border-radius: 999px !important; }
+
+/* ---------------- sidebar: like the site's chips ---------------- */
+[role="treeitem"] { min-height: 44px; }
+[role="treeitem"] .row { border-radius: 999px !important; padding-inline: 12px !important; transition: background .2s, color .2s; }
+[role="treeitem"] .label { font-size: 15.5px; font-weight: 600; }
+[role="treeitem"]:not([aria-selected="true"]) .row:hover { background: rgba(255,255,255,.07) !important; color: #fff !important; }
+[role="treeitem"][aria-selected="true"] > .row { background: #fff !important; color: #000 !important; }
+[role="treeitem"][aria-selected="true"] > .row * { color: #000 !important; }
+/* group label ("COLLECTIONS") like the site's eyebrow */
+[role="tree"] [role="group"] > .label { display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: .12em; font-size: 11.5px; font-weight: 700; }
+[role="tree"] [role="group"] > .label::before { content: ""; width: 18px; height: 2px; border-radius: 2px; background: #f7e34f; }
+
+/* ---------------- forms ---------------- */
+section.field > header h4 { font-weight: 700 !important; letter-spacing: .01em; color: #fff !important; }
+section.field > header .required { color: #f0a3d8 !important; }
+.sui.text-input, .sui.text-area, .sui.number-input, .sui.select-button-group:not(.tabs), .sui.combobox { border-radius: 12px !important; }
+.sui.text-input:focus-within, .sui.text-area:focus-within, .sui.number-input:focus-within { outline: 2px solid #f7e34f !important; outline-offset: 1px; }
+/* field hints read as muted help text */
+section.field .footer, section.field .hint { color: #a4a4b0 !important; }
+
+/* ---------------- section screens: rows become site-style cards ----------------
+   a description under each row comes from help.js (SECTION_INFO) */
+[role="grid"][aria-label="Files"] { display: grid !important; gap: 12px; padding: 14px 0 !important; height: auto !important; }
+[role="grid"][aria-label="Files"] [role="row"] {
+  --accent: #7b5cfa;
+  position: relative; display: flex !important; flex-direction: column; align-items: stretch; gap: 0;
+  height: auto !important; min-height: 0 !important; overflow: visible !important;
+  padding: 20px 56px 20px 24px !important; border-radius: 22px;
+  background: #0d0d11; border: 1px solid rgba(255,255,255,.14) !important;
+  font: 800 24px/1.1 "Fira Sans Extra Condensed", "Manrope", sans-serif !important; text-transform: uppercase; letter-spacing: .01em; color: #fff !important;
+  transition: border-color .2s, transform .25s cubic-bezier(.2,.8,.2,1), background .2s;
+}
+[role="grid"][aria-label="Files"] [role="row"]:nth-child(3n + 2) { --accent: #f7e34f; }
+[role="grid"][aria-label="Files"] [role="row"]:nth-child(3n + 3) { --accent: #f0a3d8; }
+[role="grid"][aria-label="Files"] [role="row"] [role="gridcell"] { padding: 0 !important; height: auto !important; border: 0 !important; color: #fff !important; }
+[role="grid"][aria-label="Files"] [role="row"] [role="gridcell"] * { color: inherit !important; }
+[role="grid"][aria-label="Files"] [role="row"] [role="gridcell"]:not(.title) { display: none !important; }
+[role="grid"][aria-label="Files"] [role="row"]::before {
+  /* arrow, like the site's explore tiles */
+  content: "→"; position: absolute; right: 20px; top: 50%; translate: 0 -50%;
+  display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,.3); font: 700 16px/1 "Manrope", sans-serif; color: #fff;
+  transition: background .2s, border-color .2s, color .2s;
+}
+[role="grid"][aria-label="Files"] [role="row"]:hover { border-color: var(--accent) !important; background: #121218; transform: translateY(-2px); }
+[role="grid"][aria-label="Files"] [role="row"]:hover::before { background: var(--accent); border-color: var(--accent); color: #000; }
 [role="grid"][aria-label="Files"] [role="row"]::after {
-  display: block; margin-top: 6px; font: 500 14px/1.5 "Manrope", system-ui, sans-serif; text-transform: none; letter-spacing: 0; color: #a4a4b0;
+  display: block; margin-top: 6px; font: 500 14.5px/1.5 "Manrope", system-ui, sans-serif; text-transform: none; letter-spacing: 0; color: #a4a4b0;
 }
 /* quick-tip card under the rows */
 .rc-tip-card {
   display: flex; align-items: center; gap: 16px; margin: 8px 0 20px; padding: 18px 20px; border-radius: 16px;
   border: 1px solid rgba(247,227,79,.35); background: rgba(247,227,79,.05); color: #e4e4ea; font: 400 14.5px/1.5 "Manrope", system-ui, sans-serif;
 }
-.rc-tip-card b { color: #f7e34f; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
+.rc-tip-card > div > b { color: #f7e34f; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
+.rc-tip-card p b { color: #fff; }
 .rc-tip-card p { margin: 2px 0 0; }
 .rc-tip-card code { padding: 1px 6px; border-radius: 5px; background: #1e1e26; color: #f7e34f; }
 .rc-tip-card > div { flex: 1; }

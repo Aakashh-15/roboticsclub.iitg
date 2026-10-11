@@ -40,7 +40,7 @@ dependencies**, so anyone in the club can edit it, and it runs on any static hos
 ├── 404.html              Not-found page
 │
 ├── content/              ← ALL SITE CONTENT (one JSON file per section)
-├── admin/                Site editor (Sveltia CMS): index.html + config.yml
+├── admin/                Site editor (Sveltia CMS): config.yml + sign-in page (index.html + gate.js)
 ├── js/
 │   ├── data.js           Loads content/*.json into the pages
 │   ├── common.js         Shared header/footer (nav links in PAGES), helpers

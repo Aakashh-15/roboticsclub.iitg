@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
+  <meta name="referrer" content="same-origin" />
   <meta name="theme-color" content="#000000" />
   <title>Members area · Robotics Club IIT Guwahati</title>
   <link rel="icon" href="../images/logo.svg" type="image/svg+xml" />
@@ -56,6 +57,25 @@
     .g-status.warn { color: #ffcf6e; }
     .g-foot { position: relative; z-index: 2; padding: 16px; text-align: center; font-size: 12.5px; color: var(--muted); }
     @media (prefers-reduced-motion: reduce) { .g-sky i { animation: none; } #gate { transition: none; } }
+
+    /* ---- token sign-in inside the same card, in the same style ---- */
+    #gate [hidden] { display: none !important; }
+    #gate { overflow-y: auto; }
+    .g-card p a, .g-status a { color: #fff; border-bottom: 1px solid var(--yellow); }
+    .g-card code { padding: 1px 6px; border-radius: 5px; background: #1e1e26; color: var(--yellow); font-size: 13px; }
+    .g-token { margin-top: 22px; display: grid; gap: 10px; text-align: left; }
+    .g-token p { margin: 0; font-size: 14px; }
+    .g-token .g-btn { margin-top: 6px; }
+    .g-field { position: relative; display: block; }
+    .g-field input { width: 100%; padding: 14px 72px 14px 18px; border-radius: 999px; border: 1.5px solid rgba(255,255,255,.3); background: #000; color: #fff; font: 500 15px/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .g-field input:focus { outline: none; border-color: var(--yellow); }
+    .g-eye { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: #15151b; color: #d6d6de; font: 700 12.5px/1.2 "Manrope", sans-serif; cursor: pointer; }
+    .g-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .g-status:empty { display: none; }
+    .g-status.error { padding: 12px 14px; border-radius: 12px; text-align: left; font-weight: 500; color: #ffd9d4; background: rgba(255,138,128,.08); border: 1px solid rgba(255,138,128,.4); }
+    .g-status.error b { color: #fff; }
+    /* the editor's token dialog is driven from the entrance; keep it out of sight meanwhile */
+    body.rc-signing dialog { opacity: 0 !important; pointer-events: none !important; }
   </style>
 </head>
 <body>
@@ -79,17 +99,40 @@
         <h1 id="g-title">Members <em>area</em></h1>
         <p>Sign in to update the club website: events, achievements, projects, team, gallery and resources.</p>
 
-        <button class="g-btn" id="gGo" type="button">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22v3.29c0 .32.21.7.82.58A12 12 0 0 0 12 .3"/></svg>
-          <span id="gGoLabel">Continue with GitHub</span>
-        </button>
-        <p class="g-how">GitHub's sign-in page opens: enter your GitHub <b>username and password</b> there.</p>
-        <div class="g-status" id="gStatus" aria-live="polite"></div>
+        <!-- signed in already -->
+        <div data-panel="ready" hidden>
+          <button class="g-btn" id="gOpen" type="button">Open the editor</button>
+          <p class="g-how">You're already signed in.</p>
+        </div>
+
+        <!-- GitHub sign-in (when the auth helper is set up, see EDITORS.md) -->
+        <div data-panel="oauth" hidden>
+          <button class="g-btn" id="gGo" type="button">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22v3.29c0 .32.21.7.82.58A12 12 0 0 0 12 .3"/></svg>
+            <span>Continue with GitHub</span>
+          </button>
+          <p class="g-how">GitHub's sign-in page opens: enter your GitHub <b>username and password</b> there.</p>
+        </div>
+
+        <!-- access token sign-in -->
+        <form class="g-token" data-panel="token" id="gTokenForm" autocomplete="off" hidden>
+          <p><b>1.</b> <a href="https://github.com/settings/tokens/new?scopes=public_repo&amp;description=Robotics%20Club%20site%20editor" target="_blank" rel="noopener">Create a token on GitHub ↗</a>: leave <code>public_repo</code> ticked, pick an expiry, press <b>Generate token</b>.</p>
+          <p><b>2.</b> Paste it here:</p>
+          <label class="g-field">
+            <span class="g-sr">Access token</span>
+            <input id="gToken" type="password" placeholder="ghp_…" spellcheck="false" autocapitalize="off" autocomplete="off" />
+            <button type="button" class="g-eye" id="gEye" aria-label="Show token" aria-pressed="false">Show</button>
+          </label>
+          <button class="g-btn" id="gTokenGo" type="submit">Sign in</button>
+        </form>
+
+        <div class="g-status" id="gStatus" role="status" aria-live="polite"></div>
 
         <div class="g-alt">
-          <button type="button" id="gToken">Use an access token instead</button>
+          <button type="button" data-show="token" id="gShowToken" hidden>Use an access token instead</button>
+          <button type="button" data-show="oauth" id="gBackOauth" hidden>Continue with GitHub instead</button>
           <button type="button" id="gLocal" hidden>Edit files on this computer</button>
-          <a href="https://github.com/Aakashh-15/roboticsclub.iitg/blob/main/EDITORS.md" target="_blank" rel="noopener">Editor guide</a>
+          <a id="gGuide" href="https://github.com/Aakashh-15/roboticsclub.iitg/blob/main/EDITORS.md" target="_blank" rel="noopener">Editor guide</a>
         </div>
       </section>
     </main>
@@ -104,63 +147,7 @@
   <script src="preview.js"></script>
   <!-- "? Help" button + step-by-step instructions (edit the text in admin/help.js) -->
   <script src="help.js"></script>
-  <script>
-    (() => {
-      const gate = document.getElementById("gate");
-      const status = document.getElementById("gStatus");
-      const say = (t, warn = false) => { status.textContent = t; status.classList.toggle("warn", warn); };
-      const reveal = () => { gate.classList.add("gone"); setTimeout(() => gate.remove(), 500); };
-
-      // stars
-      const sky = document.getElementById("gSky");
-      for (let i = 0; i < 80; i++) {
-        const s = document.createElement("i");
-        s.style.cssText = `left:${Math.random() * 100}%;top:${Math.random() * 78}%;opacity:${(0.3 + Math.random() * 0.7).toFixed(2)};animation-delay:${(Math.random() * 4).toFixed(2)}s`;
-        sky.appendChild(s);
-      }
-
-      // keep the editor in its dark theme (matches the site)
-      const forceDark = () => document.querySelectorAll('[data-theme="light"]').forEach((el) => el.setAttribute("data-theme", "dark"));
-      new MutationObserver(forceDark).observe(document.documentElement, { subtree: true, attributes: true, attributeFilter: ["data-theme"] });
-
-      // find the editor's own sign-in buttons (rendered underneath the entrance)
-      const findButton = (re) => [...document.querySelectorAll("button")].find((b) => !gate.contains(b) && re.test(b.textContent));
-      const editorText = () => document.body.innerText.length - gate.innerText.length; // text shown by the editor itself
-      const isLocal = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
-      if (isLocal) document.getElementById("gLocal").hidden = false;
-
-      // is "Sign in with GitHub" set up? (base_url in config.yml, see EDITORS.md)
-      let oauthReady = null;
-      fetch("config.yml", { cache: "no-cache" }).then((r) => r.text()).then((t) => (oauthReady = /^\s*base_url:\s*\S+/m.test(t))).catch(() => (oauthReady = false));
-
-      // already signed in? then the editor is showing underneath and there is no sign-in button
-      let checks = 0;
-      const watch = setInterval(() => {
-        if (findButton(/sign in with/i)) { clearInterval(watch); return; }
-        if (++checks > 12 && editorText() > 400) {
-          clearInterval(watch);
-          document.getElementById("gGoLabel").textContent = "Open the editor";
-          say("You're already signed in.");
-        }
-      }, 400);
-
-      document.getElementById("gGo").addEventListener("click", () => {
-        const signIn = findButton(/sign in with/i);
-        if (!signIn) {
-          if (editorText() > 400) return reveal(); // signed in already
-          return say("The editor is still loading. Try again in a moment.", true);
-        }
-        if (oauthReady === false) {
-          say("GitHub sign-in isn't set up yet. Use an access token for now (see Editor guide).", true);
-          return;
-        }
-        signIn.click(); // same click, so GitHub's sign-in window is allowed to open
-        say("Opening GitHub sign-in…");
-        reveal();
-      });
-      document.getElementById("gToken").addEventListener("click", () => { findButton(/access token/i)?.click(); reveal(); });
-      document.getElementById("gLocal").addEventListener("click", () => { findButton(/local repository/i)?.click(); reveal(); });
-    })();
-  </script>
+  <!-- the entrance's sign-in logic: checks access with GitHub, then hands over to the editor -->
+  <script src="gate.js"></script>
 </body>
 </html>
